@@ -874,6 +874,61 @@ html.fs-l .mfront.zh{font-size:clamp(15px,4.4vw,19px)}html.fs-xl .mfront.zh{font
 .gdr.me i::before{background:var(--hl)}
 .gdr em{position:relative;font-style:normal;padding-left:calc(max(6px,calc(var(--w)*.88)) + 6px);font-size:12px;line-height:20px;color:var(--muted)}
 @media (min-width:900px){.gwrap>.gclue,.gwrap>.ggrid,.gwrap>.gkb,.gwrap>.gres{max-width:560px;width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box}}
+/* ================= v21 小遊戲：句子重組（紙條字卡＋筆記本橫線，排對後螢光筆一路劃過去） ================= */
+.gentry.go::before{background:repeating-linear-gradient(180deg,var(--ink) 0 6px,transparent 6px 10px);opacity:.55}
+.oico{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+.oico.gico i{position:static;width:auto;height:auto;box-sizing:border-box;background-image:none;font:italic 600 10px/1 var(--f-phon);color:#141c3a;background:#fffefb;border:1.3px solid var(--edge);border-radius:2px;padding:2px 5px;box-shadow:1.5px 1.5px 0 var(--edge)}
+.oico.gico i:nth-child(1){transform:rotate(-6deg) translateX(12px)}
+.oico.gico i:nth-child(2){transform:rotate(3deg);background:var(--hl)}
+.oico.gico i:nth-child(3){transform:rotate(-2deg) translateX(6px)}
+.oclue{gap:6px}
+.ometa{display:flex;justify-content:space-between;font-size:12.5px;opacity:.75;font-variant-numeric:tabular-nums}
+.ozh{font:700 clamp(18px,5vw,21px)/1.5 var(--f-body)}
+.ohint{font-size:13.5px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px}
+.ohint b{font:700 16px var(--f-display);background:linear-gradient(transparent 62%,color-mix(in srgb,var(--pink) 55%,transparent) 62% 92%,transparent 92%)}
+.ohint .pos{font:italic 600 12.5px var(--f-phon);opacity:.75;margin:0}
+.oline{min-height:64px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px 7px;padding:14px 14px 14px 30px;border-radius:10px;border:1.5px solid var(--line);position:relative;
+  background-color:var(--surface);background-image:linear-gradient(90deg,transparent 19px,color-mix(in srgb,var(--margin) 55%,transparent) 19px 20.5px,transparent 20.5px),repeating-linear-gradient(transparent 0 47px,var(--rule) 47px 48.5px);background-position:0 0,0 6px;
+  transition:border-color .15s,box-shadow .15s}
+.oline.over{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.oline.shake{animation:wbad .35s ease}
+.oph{align-self:center;font-size:14px;color:var(--muted);line-height:34px}
+.oph.small{font-size:13px;line-height:1.5}
+.obank{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 10px;padding:6px 2px 4px;min-height:44px}
+.ochip{font:500 17px/1 var(--f-phon);color:#141c3a;background:#fffefb;border:1.5px solid var(--edge);border-radius:3px;padding:0 12px;min-height:44px;min-width:44px;box-shadow:3px 3px 0 var(--edge);
+  cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;position:relative;transition:transform .08s,box-shadow .08s,background-color .2s}
+.obank .ochip:nth-child(3n+1){transform:rotate(-2deg)}.obank .ochip:nth-child(3n+2){transform:rotate(1.5deg)}.obank .ochip:nth-child(4n){transform:rotate(-.8deg) translateY(2px)}
+.obank .ochip::before{content:"";position:absolute;top:-6px;left:50%;width:22px;height:9px;margin-left:-11px;background:color-mix(in srgb,var(--hl) 75%,transparent);transform:rotate(-5deg)}
+.obank .ochip:nth-child(even)::before{background:color-mix(in srgb,var(--pink) 50%,transparent);transform:rotate(4deg)}
+.ochip:active{transform:translate(3px,3px)!important;box-shadow:0 0 0 var(--edge)}
+.oline .ochip{box-shadow:2px 2px 0 var(--edge);min-height:40px;padding:0 10px}
+.ochip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.ochip.ghost{opacity:.25;box-shadow:none}
+.ochip.float{position:fixed;z-index:999;margin:0;pointer-events:none;transform:rotate(-4deg) scale(1.08);box-shadow:6px 7px 0 var(--edge);cursor:grabbing}
+.ophs{display:inline-block;height:40px;border:2px dashed var(--accent);border-radius:4px;background:color-mix(in srgb,var(--accent) 10%,transparent);box-sizing:border-box}
+.ochip.land{animation:oland .22s ease-out}
+@keyframes oland{from{transform:translateY(-6px) scale(1.06)}}
+.ochip.bad{border-color:var(--bad);box-shadow:2px 2px 0 var(--bad);color:var(--bad)}
+.ochip.bad::after{content:"";position:absolute;left:6px;right:6px;bottom:4px;height:2px;background:repeating-linear-gradient(90deg,var(--bad) 0 4px,transparent 4px 7px)}
+.oline.ok .ochip{cursor:default;opacity:1;background:linear-gradient(90deg,color-mix(in srgb,var(--hl) 92%,transparent) 50%,#fffefb 50%) left/200% 100% no-repeat;animation:osweep .3s ease-out both}
+.oline.ok .ochip:nth-child(1){animation-delay:0s}.oline.ok .ochip:nth-child(2){animation-delay:.05s}.oline.ok .ochip:nth-child(3){animation-delay:.1s}.oline.ok .ochip:nth-child(4){animation-delay:.15s}.oline.ok .ochip:nth-child(5){animation-delay:.2s}.oline.ok .ochip:nth-child(6){animation-delay:.25s}.oline.ok .ochip:nth-child(7){animation-delay:.3s}.oline.ok .ochip:nth-child(8){animation-delay:.35s}.oline.ok .ochip:nth-child(9){animation-delay:.4s}.oline.ok .ochip:nth-child(10){animation-delay:.45s}.oline.ok .ochip:nth-child(11){animation-delay:.5s}.oline.ok .ochip:nth-child(12){animation-delay:.55s}
+@keyframes osweep{from{background-position:right}}
+.oline.ok .ochip.tgt{color:var(--accent-on-hl,#2440d8);font-weight:700}
+.oyes{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px}
+.ostamp{border:3px double var(--good);color:var(--good);border-radius:10px;padding:3px 10px;font:700 17px "Noto Serif TC",serif;transform:rotate(-8deg);animation:mstampin .35s cubic-bezier(.2,1.6,.4,1);background:var(--surface)}
+.oyes .gsay{margin-left:auto}
+.obar{display:flex;gap:10px}.obar .btn{flex:1}
+.obar .btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.ores p{padding-right:84px}
+.olist{margin:0;padding:0 0 0 22px;display:flex;flex-direction:column;gap:10px}
+.olist li{padding:10px 12px;border-radius:10px;background:var(--bg);border:1.5px solid var(--line)}
+.olist li.one{border-color:color-mix(in srgb,var(--good) 55%,var(--line))}
+.olist li::marker{font:700 13px var(--f-display);color:var(--muted)}
+.oex{display:flex;gap:8px;align-items:flex-start}.oex .ex{flex:1;font-size:15px;line-height:1.55}.oex .r{display:flex;flex:none}
+.olist .exzh{margin:4px 0 0;font-size:13.5px}
+.otag{margin-top:6px;font-size:12px;color:var(--muted)}
+.olist li.one .otag{color:var(--good);font-weight:700}
+@media (min-width:900px){.owrap>.oclue,.owrap>.oline,.owrap>.obank,.owrap>.oyes,.owrap>.obar,.owrap>.ores,.owrap>.progress{max-width:640px;width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -4193,6 +4248,7 @@ function renderQuiz(){
   if(game)return renderMatch();
   if(whack)return renderWhack();
   if(guess)return renderGuess();
+  if(order)return renderOrder();
   if(!quiz||quiz.src!==quizSrc||quiz.mode!==qmode)startQuiz();
   const Q=quiz,head=`${topbar("測驗")}${srcChips(quizSrc,"srcQ")}
     <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?gentryHtml():""}`;
@@ -4251,6 +4307,7 @@ function renderQuiz(){
   $("#modeQ").onclick=e=>{const b=e.target.closest("[data-m]");if(b){qmode=b.dataset.m;quiz=null;renderQuiz()}};
   {const gm=$("#gMatch");if(gm)gm.onclick=()=>{game=null;startMatch();renderMatch();window.scrollTo(0,0)}}
   {const gg=$("#gGuess");if(gg)gg.onclick=()=>{whack=null;game=null;guess=null;startGuess();renderGuess();const c=$(".gclue");window.scrollTo(0,c&&innerWidth<900?Math.max(0,c.getBoundingClientRect().top+scrollY-22):0)}}
+  {const go=$("#gOrder");if(go)go.onclick=()=>{whack=null;game=null;guess=null;order=null;startOrder();renderOrder();window.scrollTo(0,0)}}
   {const gw=$("#gWhack");if(gw)gw.onclick=()=>{whack=null;game=null;startWhack();renderWhack();window.scrollTo(0,0)}}
   if(Q.empty)return;
   if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
@@ -4301,7 +4358,7 @@ function startMatch(){
 function mclock(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
 function melapsed(){const G=game;if(!G||!G.t0)return 0;return ((G.t1||Date.now())-G.t0)/1000}
 function gentryHtml(){const r=gameRec().match;
-  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`+wentryHtml()+gentry3Html()}
+  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`+wentryHtml()+gentry3Html()+oentryHtml()}
 function wentryHtml(){const r=gameRec().whack;
   return `<button class="gentry gw" id="gWhack"><span class="gico wico" aria-hidden="true"><i></i><b></b></span><span class="gtx"><b>小遊戲：口袋快打</b><span>${WDUR} 秒點出正確中文${r&&r.best?`　最高 ${r.best} 分`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
 function renderMatch(){
@@ -4523,6 +4580,102 @@ document.addEventListener("keydown",e=>{if(!U||tab!=="quiz"||!guess||guess.over|
   else if(e.key==="Backspace"){e.preventDefault();gkey("back")}
   else if(/^[a-zA-Z]$/.test(e.key)){e.preventDefault();gkey(e.key.toLowerCase())}});
 
+/* ================= 小遊戲：句子重組（例句字條拖回正確順序；紀錄同存 KEY+":game:"+使用者 的 order 欄位，不動使用者資料） ================= */
+let order=null;
+const ORN=5;
+function otoks(s){return String(s||"").trim().split(/\s+/).filter(Boolean)}
+function startOrder(){
+  const ok=l=>l.filter(x=>{if(!x.ex)return false;const n=otoks(x.ex).length;return n>=4&&n<=12});
+  let pool=ok(srcWords(quizSrc));
+  if(pool.length<3)pool=ok(wordsOf(defaultSrc()));
+  if(!pool.length){order={src:quizSrc,empty:true};return}
+  const qs=shuffle(pool).slice(0,ORN).map(x=>{const toks=otoks(x.ex).map((t,k)=>({k,t}));
+    let bank=shuffle(toks.map(o=>o.k));for(let g=0;g<6&&bank.every((v,i)=>toks[v].t===toks[i].t);g++)bank=shuffle(bank);
+    return {x,toks,bank,ans:[],tries:0,hint:0,solved:false,bad:[],gave:false}});
+  order={src:quizSrc,qs,i:0,score:0,done:false,fresh:-1};
+}
+function oentryHtml(){const r=gameRec().order;
+  return `<button class="gentry go" id="gOrder"><span class="gico oico" aria-hidden="true"><i>I</i><i>like</i><i>tea</i></span><span class="gtx"><b>小遊戲：句子重組</b><span>把例句字條排回正確順序${r&&r.plays?`　全對 ${r.perfect||0} 輪`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
+function oSent(q){return q.ans.map(k=>q.toks[k].t).join(" ")}
+function oRight(q){return oSent(q)===q.toks.map(o=>o.t).join(" ")}
+function ochip(q,k,where,i){const t=q.toks[k].t,bad=where==="a"&&q.bad.includes(i),tgt=q.solved&&wordRe(q.x.w,q.x.forms).test(t);
+  return `<button class="ochip${bad?" bad":""}${q.solved&&tgt?" tgt":""}" data-k="${k}" data-w="${where}" ${q.solved?"disabled":""} aria-label="${esc(t)}${where==="a"?`，第 ${i+1} 個，按一下放回`:"，按一下放進句子"}">${esc(t)}</button>`}
+function renderOrder(){
+  closeSheet();
+  if(!order||order.src!==quizSrc)startOrder();
+  const O=order,rec=gameRec().order||{};
+  let body;
+  if(O.empty)body=`<div class="empty"><h2>這組沒有適合重組的例句</h2><p>句子重組用 4–12 個字的例句，換一個分類試試。</p></div>`;
+  else if(O.done){
+    const pf=O.score===O.qs.length;
+    body=`<div class="mwin ores"><div class="mwstamp${pf?" gok":""}">${pf?"全對":O.score>=3?"不錯":"再練"}</div>
+      <p><b>${O.score}</b> / ${O.qs.length} 句一次就排對。<br><span class="wsub gsub"><span>已玩 ${rec.plays||0} 輪</span>・<span>全對 ${rec.perfect||0} 輪</span>・<span>累計排好 ${rec.solved||0} 句</span></span></p>
+      <ol class="olist">${O.qs.map(q=>`<li class="${q.tries===1&&!q.hint&&!q.gave?"one":""}"><div class="oex"><span class="ex">${exHtml(q.x.ex,q.x.w,q.x.forms)}</span><span class="r"><button class="icon" data-say="${esc(q.x.ex)}" aria-label="朗讀例句">${ICON.spk}</button>${starBtn(q.x.id)}</span></div>${q.x.exzh?`<div class="exzh">${esc(q.x.exzh)}</div>`:""}<div class="otag">${q.gave?"看了答案":q.tries===1&&!q.hint?"一次排對":`試了 ${q.tries} 次${q.hint?`・提示 ${q.hint} 次`:""}`}</div></li>`).join("")}</ol></div>`;
+  }else{
+    const q=O.qs[O.i],full=!q.bank.length;
+    body=`<div class="progress"><i style="width:${O.i/O.qs.length*100}%"></i></div>
+      <div class="gclue oclue"><div class="ometa"><span>第 ${O.i+1} / ${O.qs.length} 句</span><span>一次排對 ${O.score}</span></div>
+        <div class="ozh">${esc(q.x.exzh||q.x.zh)}</div>
+        <div class="ohint">關鍵字 <b>${esc(q.x.w)}</b> <span class="pos">${esc(q.x.pos)}</span>${esc(q.x.zh)}</div></div>
+      <div class="oline${q.solved?" ok":""}${O.fresh===O.i?" fresh":""}" id="oAns" aria-label="你的句子">${q.ans.length?q.ans.map((k,i)=>ochip(q,k,"a",i)).join(""):`<span class="oph">按下面的字條，或拖到這條線上</span>`}</div>
+      ${q.solved?`<div class="oyes"><span class="ostamp">${q.gave?"答案":q.tries===1&&!q.hint?"一次就對":"排對了"}</span><button class="gsay" id="oSay">${ICON.spk}聽整句</button>${starBtn(q.x.id)}</div>`
+        :`<div class="obank" id="oBank" aria-label="字條">${q.bank.map(k=>ochip(q,k,"b")).join("")||`<span class="oph small">字條都放上去了，按「檢查」</span>`}</div>`}
+      <div class="row2 obar">${q.solved?`<button class="btn" id="oNext">${O.i+1<O.qs.length?"下一句":"看結果"}</button>`
+        :`<button class="btn ghost small" id="oHint" ${oRight(q)?"disabled":""}>提示一個字</button>${q.tries>=2?`<button class="btn ghost small" id="oGive">看答案</button>`:""}<button class="btn small" id="oCheck" ${full?"":"disabled"}>檢查</button>`}</div>`;
+  }
+  view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px" class="gwrap owrap">${topbar("句子重組",`來源：${esc(srcName(quizSrc))}`)}
+    <div class="row2 mbar"><button class="btn ghost small" id="oBack">回到測驗</button><button class="btn${O.done?"":" ghost"} small" id="oNew">${O.done?"再玩一輪":"換一組句子"}</button></div>${body}</div>`;
+  bindTop();O.fresh=-1;
+  $("#oBack").onclick=()=>{order=null;renderQuiz()};
+  $("#oNew").onclick=()=>{order=null;renderOrder();window.scrollTo(0,0)};
+  view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
+  view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderOrder();window.scrollTo(0,y)});
+  if(O.empty||O.done)return;
+  const q=O.qs[O.i],re=()=>{const y=window.scrollY;renderOrder();window.scrollTo(0,y)};
+  {const s=$("#oSay");if(s)s.onclick=()=>say(q.x.ex)}
+  {const n=$("#oNext");if(n)n.onclick=()=>{O.i++;if(O.i>=O.qs.length)oFinish();renderOrder();if(!O.done){const a=$(".oclue");if(a&&a.getBoundingClientRect().top<0)a.scrollIntoView({block:"start"})}else window.scrollTo(0,0)}}
+  {const h=$("#oHint");if(h)h.onclick=()=>{
+    // 從頭找第一個放錯的位置，把正確的字條換上去
+    let i=0;while(i<q.ans.length&&q.toks[q.ans[i]].t===q.toks[i].t)i++;
+    const back=q.ans.splice(i);q.bank.push(...back.filter(k=>k!==undefined));
+    const need=q.toks[i].t,bi=q.bank.findIndex(k=>q.toks[k].t===need);q.ans.push(q.bank.splice(bi,1)[0]);
+    q.hint++;q.bad=[];re()}}
+  {const g=$("#oGive");if(g)g.onclick=()=>{q.ans=q.toks.map(o=>o.k);q.bank=[];q.gave=true;q.solved=true;q.bad=[];activity();re();say(q.x.ex)}}
+  {const c=$("#oCheck");if(c)c.onclick=()=>{q.tries++;activity();
+    if(oRight(q)){q.solved=true;q.bad=[];if(q.tries===1&&!q.hint)O.score++;re();say(q.x.ex)}
+    else{q.bad=q.ans.map((k,i)=>q.toks[k].t!==q.toks[i].t?i:-1).filter(i=>i>=0);re();const l=$("#oAns");if(l){l.classList.remove("shake");void l.offsetWidth;l.classList.add("shake")}toast(`有 ${q.bad.length} 個字條位置不對`)}}}
+  if(!q.solved)obind(q,re);
+}
+function oFinish(){const O=order;O.done=true;const R=gameRec(),m=R.order||{},pf=O.score===O.qs.length;
+  R.order={plays:(m.plays||0)+1,perfect:(m.perfect||0)+(pf?1:0),solved:(m.solved||0)+O.qs.filter(q=>!q.gave).length,best:Math.max(m.best||0,O.score)};gameRecSet(R);
+  if(pf)setTimeout(party,300)}
+/* 點一下＝放進／放回；拖曳＝插到線上任一位置（指標事件，手機也能拖） */
+function obind(q,re){
+  const line=$("#oAns"),bank=$("#oBank");let drag=null;
+  const move=(k,from,to,at)=>{const src=from==="a"?q.ans:q.bank,j=src.indexOf(k);if(j<0)return;src.splice(j,1);
+    if(to==="a"){q.ans.splice(at==null?q.ans.length:at,0,k)}else q.bank.push(k);q.bad=[];
+    if(to==="a")order.fresh=-1;re();const el=view.querySelector(`.ochip[data-k="${k}"]`);if(el){el.classList.add("land");el.focus({preventScroll:true})}};
+  const slot=(x,y)=>{const cs=[...line.querySelectorAll(".ochip:not(.ghost)")];let at=cs.length;
+    for(let i=0;i<cs.length;i++){const r=cs[i].getBoundingClientRect();if(y<r.top-4)  {at=i;break}if(y<=r.bottom+4&&x<r.left+r.width/2){at=i;break}}return at};
+  view.querySelectorAll(".ochip").forEach(b=>{
+    b.addEventListener("click",e=>{if(b.dataset.drag){delete b.dataset.drag;return}const k=+b.dataset.k;move(k,b.dataset.w,b.dataset.w==="a"?"b":"a")});
+    b.addEventListener("pointerdown",e=>{if(e.button>0)return;drag={b,k:+b.dataset.k,w:b.dataset.w,x0:e.clientX,y0:e.clientY,on:false,id:e.pointerId}});
+  });
+  const onMove=e=>{if(!drag||e.pointerId!==drag.id)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0;
+    if(!drag.on){if(Math.hypot(dx,dy)<8)return;drag.on=true;drag.b.dataset.drag="1";
+      const r=drag.b.getBoundingClientRect();drag.fl=drag.b.cloneNode(true);drag.fl.className="ochip float";drag.fl.style.cssText=`left:${r.left}px;top:${r.top}px;width:${r.width}px`;document.body.appendChild(drag.fl);
+      drag.ox=drag.x0-r.left;drag.oy=drag.y0-r.top;drag.b.classList.add("ghost");drag.ph=document.createElement("span");drag.ph.className="ophs";drag.ph.style.width=r.width+"px";
+      try{drag.b.setPointerCapture(drag.id)}catch(_){}}
+    e.preventDefault();drag.fl.style.left=(e.clientX-drag.ox)+"px";drag.fl.style.top=(e.clientY-drag.oy)+"px";
+    const lr=line.getBoundingClientRect(),over=e.clientY>lr.top-24&&e.clientY<lr.bottom+24;line.classList.toggle("over",over);
+    if(over){const at=slot(e.clientX,e.clientY),cs=[...line.querySelectorAll(".ochip:not(.ghost)")];const p=line.querySelector(".oph");if(p)p.style.display="none";
+      if(at<cs.length)line.insertBefore(drag.ph,cs[at]);else line.appendChild(drag.ph);drag.at=at}else{drag.ph.remove();drag.at=null}};
+  const onUp=e=>{if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.on)return;d.fl.remove();d.ph.remove();line.classList.remove("over");
+    if(d.at!=null){move(d.k,d.w,"a",d.at)}
+    else{const br=bank&&bank.getBoundingClientRect();if(d.w==="a"&&br&&e.clientY>br.top-20)move(d.k,"a","b");else{d.b.classList.remove("ghost");const p=line.querySelector(".oph");if(p)p.style.display=""}}
+    setTimeout(()=>{if(d.b)delete d.b.dataset.drag},0)};
+  view.querySelectorAll(".ochip").forEach(b=>{b.addEventListener("pointermove",onMove);b.addEventListener("pointerup",onUp);b.addEventListener("pointercancel",e=>{if(drag&&drag.on){drag.fl.remove();drag.ph.remove();drag.b.classList.remove("ghost");line.classList.remove("over")}drag=null})});
+}
 /* ================= 筆記本 ================= */
 /* 筆記本排序：只是畫面上的排列方式，不寫進使用者資料 */
 const NBS={new:"最新加入",wrong:"錯最多次",az:"A–Z"};
