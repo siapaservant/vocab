@@ -664,6 +664,60 @@ nav.tabs button[aria-current="page"]{background:var(--hl);color:#141c3a}
   #view>div:has(>.today)>.daily{grid-column:1}
   #view>div:has(>.today)>.nteasep{grid-column:2}
 }
+/* ================= v17 小遊戲：配對翻牌（索引卡翻面＋螢光筆配對＋印章） ================= */
+.gentry{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;color:var(--note-ink);background:var(--note);
+  border:1.5px solid var(--edge);border-radius:6px 14px 14px 6px;padding:12px 14px;box-shadow:3px 3px 0 var(--edge);font:inherit;position:relative;transition:transform .08s,box-shadow .08s}
+.gentry::before{content:"";position:absolute;left:-6px;top:10px;bottom:10px;width:10px;background:repeating-linear-gradient(180deg,var(--pink) 0 6px,transparent 6px 10px);border-radius:2px;opacity:.85}
+.gentry:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+.gico{position:relative;flex:none;width:42px;height:40px}
+.gico i{position:absolute;width:24px;height:32px;border:1.5px solid var(--edge);border-radius:4px;background:var(--accent);top:4px;left:2px;transform:rotate(-9deg);
+  background-image:radial-gradient(circle,color-mix(in srgb,#fff 45%,transparent) 1px,transparent 1.4px);background-size:6px 6px}
+.gico i+i{left:15px;top:2px;transform:rotate(7deg);background:var(--surface);background-image:linear-gradient(transparent 9px,var(--pink) 9px 10.5px,transparent 10.5px)}
+.gtx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.gtx b{font:700 16px var(--f-body)}
+.gtx span{font-size:13px;opacity:.82}
+.gplay{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);border:1.5px solid var(--edge);font:700 15px var(--f-body)}
+.mbar{display:flex;gap:10px}.mbar .btn{flex:1}
+.mstats{display:flex;gap:8px;font-variant-numeric:tabular-nums}
+.mstats>div{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:1px}
+.mstats b{font:700 22px var(--f-display);line-height:1.15;color:var(--ink)}
+.mstats b small{font-size:14px;color:var(--muted);font-weight:600}
+.mstats span{font-size:12px;color:var(--muted)}
+.mstats .mbest{background:var(--note);border-color:color-mix(in srgb,var(--note-ink) 30%,transparent)}
+.mstats .mbest b,.mstats .mbest span{color:var(--note-ink)}
+.mtip{margin:0;text-align:center}
+.mgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;perspective:900px}
+@media (min-width:600px){.mgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+@media (min-width:900px){.mgrid{max-width:600px;width:100%;margin:0 auto}}
+.mcard{position:relative;aspect-ratio:1/1.08;min-height:92px;border:0;padding:0;background:none;cursor:pointer;color:var(--ink);transform-style:preserve-3d;transition:transform .42s cubic-bezier(.3,1.35,.5,1);border-radius:12px}
+.mcard.up{transform:rotateY(180deg)}
+.mcard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.mface{position:absolute;inset:0;border-radius:12px;border:2px solid var(--edge);-webkit-backface-visibility:hidden;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:8px 6px;box-sizing:border-box;overflow:hidden}
+.mback{background:var(--accent);box-shadow:3px 3px 0 var(--edge);
+  background-image:radial-gradient(circle,color-mix(in srgb,#fff 32%,transparent) 1.1px,transparent 1.5px);background-size:12px 12px}
+.mback .mq{width:38px;height:38px;border-radius:50%;background:var(--surface);color:var(--accent);display:grid;place-items:center;font:800 20px var(--f-display);border:2px solid var(--edge);transform:rotate(-8deg)}
+.mback::after{content:"";position:absolute;top:-4px;left:50%;width:34px;height:12px;transform:translateX(-50%) rotate(-3deg);background:color-mix(in srgb,var(--hl) 80%,transparent)}
+.mfront{transform:rotateY(180deg);background:var(--surface);box-shadow:3px 3px 0 var(--edge);text-align:center;overflow-wrap:anywhere;
+  background-image:linear-gradient(90deg,transparent 13px,color-mix(in srgb,var(--pink) 55%,transparent) 13px 14.5px,transparent 14.5px)}
+.mfront.en{font:700 clamp(15px,4.4vw,19px)/1.15 var(--f-display);color:var(--accent)}
+.mfront.zh{font:700 clamp(14px,4.1vw,17px)/1.35 var(--f-body)}
+.mpos{font:500 11px var(--f-body);color:var(--muted)}
+.mcard.got .mfront{background-color:var(--note);color:var(--note-ink);box-shadow:1px 1px 0 var(--edge)}
+.mcard.got{cursor:default}.mcard.just{animation:mpop .45s ease .45s}
+.mstamp{position:absolute;right:5px;bottom:4px;width:22px;height:22px;border-radius:50%;border:2px solid var(--good);color:var(--good);display:grid;place-items:center;font:800 12px var(--f-body);transform:rotate(-14deg);opacity:.9}
+.mcard.bad .mfront{border-color:var(--bad);box-shadow:3px 3px 0 var(--bad)}
+.mcard.bad{animation:mshake .4s ease .45s}
+@keyframes mpop{50%{transform:rotateY(180deg) scale(1.08)}}
+@keyframes mshake{20%,60%{transform:rotateY(180deg) translateX(-5px)}40%,80%{transform:rotateY(180deg) translateX(5px)}}
+.mfront.en.long{font-size:clamp(13px,3.7vw,16px);overflow-wrap:normal;word-break:normal}
+.mfront.zh.long{font-size:clamp(13px,3.7vw,15px)}
+.mwin{background:var(--surface);border:2px solid var(--edge);box-shadow:5px 5px 0 var(--edge);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+.mwin p{margin:0;padding-right:96px}
+.mwin p b{font:700 22px var(--f-display);color:var(--accent)}
+.mwstamp{position:absolute;right:14px;top:12px;border:3px double var(--bad);color:var(--bad);border-radius:10px;padding:4px 10px;font:700 18px "Noto Serif TC",serif;transform:rotate(-10deg);animation:mstampin .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes mstampin{from{transform:rotate(-10deg) scale(2.2);opacity:0}}
+.mlist{background:var(--bg)}
+html.fs-l .mfront.zh{font-size:clamp(15px,4.4vw,19px)}html.fs-xl .mfront.zh{font-size:clamp(16px,4.6vw,20px)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -3967,9 +4021,10 @@ function startQuiz(){
 }
 function renderQuiz(){
   closeSheet();
+  if(game)return renderMatch();
   if(!quiz||quiz.src!==quizSrc||quiz.mode!==qmode)startQuiz();
   const Q=quiz,head=`${topbar("測驗")}${srcChips(quizSrc,"srcQ")}
-    <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>`;
+    <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?gentryHtml():""}`;
   let body;
   if(Q.empty&&Q.mode==="confuse"){body=`<div class="empty"><h2>${Q.loading?"易混字題庫載入中…":"題庫暫時讀不到"}</h2><p>稍等一下，或重新整理頁面。</p></div>`}
   else if(Q.empty){body=`<div class="empty"><h2>這裡還沒有單字</h2><p>${qmode==="cloze"?"這組單字沒有例句可以出填空題，換一個分類或題型試試。":quizSrc==="nb"?"把不會的字加進筆記本，就能專門測它們。":quizSrc==="weak"?"還沒有答錯或標「不熟」的字，先去翻卡或測驗吧。":"換一個分類試試。"}</p></div>`}
@@ -4023,6 +4078,7 @@ function renderQuiz(){
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderQuiz();window.scrollTo(0,y)});
   $("#srcQ").onclick=e=>{const b=e.target.closest("[data-src]");if(b){quizSrc=b.dataset.src;quiz=null;renderQuiz()}};
   $("#modeQ").onclick=e=>{const b=e.target.closest("[data-m]");if(b){qmode=b.dataset.m;quiz=null;renderQuiz()}};
+  {const gm=$("#gMatch");if(gm)gm.onclick=()=>{game=null;startMatch();renderMatch();window.scrollTo(0,0)}}
   if(Q.empty)return;
   if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
   const q=Q.qs[Q.i];
@@ -4051,6 +4107,72 @@ function renderQuiz(){
     const hb=$("#spHint");if(hb)hb.onclick=()=>{Q.typed=$("#spIn").value;Q.hint=true;renderQuiz();const n=$("#spIn");if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}};
   }else view.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{if(Q.picked!==null)return;const k=+b.dataset.k;Q.picked=k;finish(q.opts[k].id===q.x.id)});
   const nx=$("#next");if(nx){nx.onclick=()=>{Q.i++;Q.picked=null;Q.typed="";Q.spoke=false;Q.hint=false;renderQuiz()};nx.focus()}
+}
+
+/* ================= 小遊戲：配對翻牌（紀錄另存 KEY+":game:"+使用者，不動使用者資料） ================= */
+let game=null,gameT=0;
+const MPAIRS=6;
+function gameRec(){try{return JSON.parse(localStorage.getItem(KEY+":game:"+U.id))||{}}catch(e){return {}}}
+function gameRecSet(r){try{localStorage.setItem(KEY+":game:"+U.id,JSON.stringify(r))}catch(e){}}
+function mzh(x){const s=(x.zh||"").split(/[；;，,、／/]/)[0].replace(/[（(].*?[)）]/g,"").trim();return s||x.zh||""}
+function gshuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startMatch(){
+  const ok=l=>l.filter(x=>x.w&&x.w.length<=14&&mzh(x).length&&mzh(x).length<=9);
+  let pool=ok(quizSrc==="all"?srcWords("all"):srcWords(quizSrc));
+  if(pool.length<MPAIRS)pool=ok(wordsOf(defaultSrc()));
+  const pick=[],seenW=new Set(),seenZ=new Set();
+  for(const x of gshuf(pool)){const z=mzh(x),w=x.w.toLowerCase();if(seenW.has(w)||seenZ.has(z))continue;seenW.add(w);seenZ.add(z);pick.push(x);if(pick.length===MPAIRS)break}
+  const cards=gshuf(pick.flatMap((x,i)=>[{p:i,en:true,t:x.w},{p:i,en:false,t:mzh(x),pos:x.pos}]));
+  game={words:pick,cards,open:[],done:new Set(),moves:0,t0:0,t1:0,lock:false,bad:[],src:quizSrc};
+}
+function mclock(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function melapsed(){const G=game;if(!G||!G.t0)return 0;return ((G.t1||Date.now())-G.t0)/1000}
+function gentryHtml(){const r=gameRec().match;
+  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
+function renderMatch(){
+  closeSheet();clearInterval(gameT);
+  if(!game||game.src!==quizSrc)startMatch();
+  const G=game,n=G.words.length,fin=n>0&&G.done.size===n,rec=gameRec().match||{};
+  let body;
+  if(n<2)body=`<div class="empty"><h2>單字不夠玩配對</h2><p>換一個分類試試，或先去翻卡學幾個字。</p></div>`;
+  else{
+    const cards=G.cards.map((c,i)=>{const up=G.open.includes(i)||G.done.has(c.p),dn=G.done.has(c.p);
+      const fi=(G.flipIn||[]).includes(i);return `<button class="mcard${up&&!fi?" up":""}${dn&&G.just===c.p?" got just":dn?" got":""}${G.bad.includes(i)?" bad":""}" data-i="${i}" ${dn?'aria-disabled="true"':""} aria-label="${up?esc((c.en?"英文 ":"中文 ")+c.t)+(dn?"，已配對":""):"第 "+(i+1)+" 張，蓋著"}">
+        <span class="mface mback" aria-hidden="true"><span class="mq">?</span></span>
+        <span class="mface mfront ${c.en?"en":"zh"}${c.t.length>=(c.en?10:6)?" long":""}" aria-hidden="true">${c.en?esc(c.t):`${c.pos?`<span class="mpos">${esc(c.pos)}</span>`:""}${esc(c.t)}`}${dn?'<span class="mstamp">✓</span>':""}</span></button>`}).join("");
+    body=`<div class="mstats" role="status"><div><b id="mTime">${mclock(melapsed())}</b><span>時間</span></div><div><b>${G.moves}</b><span>步數</span></div><div><b>${G.done.size}<small>/${n}</small></b><span>配對</span></div>${rec.best?`<div class="mbest"><b>${mclock(rec.best)}</b><span>最快紀錄</span></div>`:""}</div>
+      ${fin?`<div class="mwin"><div class="mwstamp">${G.newBest?"新紀錄":"完成"}</div><p><b>${mclock(melapsed())}</b>、${G.moves} 步配完 ${n} 對。${G.moves<=n+2?"幾乎沒翻錯，記得很牢！":"再玩一次，試著少翻幾步。"}</p>
+        <div class="list mlist">${G.words.map(x=>`<div class="item"><div class="w">${esc(x.w)}<span>${esc(x.ipa)}</span></div><div class="z">${esc(x.pos)} ${esc(x.zh)}</div><div class="r"><button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button>${starBtn(x.id)}</div></div>`).join("")}</div></div>`:
+      `<p class="note mtip">${G.moves?"記住翻過的位置，配對越快越好。":"點一張卡開始計時，再找出它的另一半。"}</p>`}
+      ${fin?"":`<div class="mgrid">${cards}</div>`}`;
+  }
+  view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${topbar("配對翻牌",`來源：${esc(srcName(quizSrc))}`)}
+    <div class="row2 mbar"><button class="btn ghost small" id="mBack">回到測驗</button><button class="btn${fin?"":" ghost"} small" id="mNew">${fin?"再玩一次":"重新洗牌"}</button></div>${body}</div>`;
+  bindTop();
+  $("#mBack").onclick=()=>{clearInterval(gameT);game=null;renderQuiz()};
+  $("#mNew").onclick=()=>{clearInterval(gameT);game=null;renderMatch()};
+  view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
+  view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderMatch();window.scrollTo(0,y)});
+  if(G.t0&&!fin)gameT=setInterval(()=>{const el=document.getElementById("mTime");if(!el||game!==G||tab!=="quiz"){clearInterval(gameT);return}el.textContent=mclock(melapsed())},500);
+  view.querySelectorAll(".mcard").forEach(b=>b.onclick=()=>mflip(+b.dataset.i));
+  if(G.flipIn&&G.flipIn.length){const ids=G.flipIn;G.flipIn=[];requestAnimationFrame(()=>requestAnimationFrame(()=>ids.forEach(k=>{const el=view.querySelector(`.mcard[data-i="${k}"]`);if(el)el.classList.add("up")})))}
+  G.just=null;
+}
+function mflip(i){const G=game;if(!G||G.lock)return;const c=G.cards[i];if(G.done.has(c.p)||G.open.includes(i))return;
+  if(!G.t0)G.t0=Date.now();
+  if(c.en)say(c.t);
+  G.open.push(i);G.bad=[];G.flipIn=[i];
+  if(G.open.length===2){G.moves++;const [a,b]=G.open.map(k=>G.cards[k]);
+    if(a.p===b.p){G.done.add(a.p);G.open=[];G.just=a.p;
+      if(!c.en)say(G.words[a.p].w);
+      if(G.done.size===G.words.length){G.t1=Date.now();const r=gameRec(),m=r.match||{},s=Math.round(melapsed());
+        G.newBest=!m.best||s<m.best;r.match={best:G.newBest?s:m.best,bestMoves:Math.min(m.bestMoves||999,G.moves),plays:(m.plays||0)+1};gameRecSet(r);setTimeout(party,350)}
+    }else{G.lock=true;G.bad=G.open.slice();const y=window.scrollY;renderMatch();window.scrollTo(0,y);
+      setTimeout(()=>{if(game!==G)return;view.querySelectorAll(".mcard.bad").forEach(el=>el.classList.remove("up","bad"))},1000);
+      setTimeout(()=>{if(game!==G)return;G.open=[];G.bad=[];G.lock=false;if(tab==="quiz"){const y2=window.scrollY;renderMatch();window.scrollTo(0,y2)}},1450);return}
+  }
+  const y=window.scrollY;renderMatch();window.scrollTo(0,y);
+  const f=view.querySelector(`.mcard[data-i="${i}"]`);if(f)f.focus({preventScroll:true});
 }
 
 /* ================= 筆記本 ================= */
