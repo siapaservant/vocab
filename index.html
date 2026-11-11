@@ -3013,7 +3013,37 @@ function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.is
 let DB=load();
 DB.users=DB.users.filter(u=>!(u.id==="u1"&&u.name==="siapa"&&!Object.keys(u.prog||{}).length));
 DB.users.forEach(u=>{u.hist=u.hist||{};u.opt=Object.assign({auto:false,slow:false},u.opt||{})});
-function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){toast("這台裝置無法儲存，關掉頁面後進度會消失")}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){toast("這台裝置無法儲存，關掉頁面後進度會消失")}
+  let cu=null;try{cu=U}catch(e){}if(cu&&acctGet()&&acctGet().uid===cu.id)cloudDirty()}
+/* ================= 雲端帳號（Supabase）：帳號＋密碼登入，進度存在雲端；網頁只能透過 vocab_* 函式讀寫 ================= */
+const SB_URL="https://xrkiqzfbbummxykhggxm.supabase.co",SB_KEY="sb_publishable_oaOc1swoVR0yrM6XIqt7HQ_Eam2srEY";
+const ACKEY=KEY+":acct";
+function acctGet(){try{return JSON.parse(localStorage.getItem(ACKEY))||null}catch(e){return null}}
+function acctSet(v){try{v?localStorage.setItem(ACKEY,JSON.stringify(v)):localStorage.removeItem(ACKEY)}catch(e){}}
+let cloudSt="ok",cloudTimer=null,cloudDirtyF=false,cloudBusy=false;
+const CERR={bad_username:"帳號只能用 3–20 個英文小寫、數字或底線",short_password:"密碼至少 6 個字",username_taken:"這個帳號已經有人用了",wrong_login:"帳號或密碼不對",bad_session:"登入已失效，請重新登入"};
+async function rpc(fn,args){let r;try{r=await fetch(SB_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(args)})}catch(e){throw new Error("net")}
+  const t=await r.text();let j=null;try{j=t?JSON.parse(t):null}catch(e){}
+  if(!r.ok){const m=(j&&(j.message||j.msg))||"";const k=Object.keys(CERR).find(x=>m.includes(x));throw new Error(k||"server")}return j}
+function errText(e){return CERR[e.message]||(e.message==="net"?"連不上網路，請稍後再試":"伺服器出了點問題，請稍後再試")}
+function cloudDirty(){const a=acctGet();if(!a)return;a.local=Date.now();acctSet(a);cloudDirtyF=true;clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudPush,1500)}
+async function cloudPush(){const a=acctGet();if(cloudBusy||!a||!cloudDirtyF)return;const u=DB.users.find(x=>x.id===a.uid);if(!u)return;
+  cloudBusy=true;cloudDirtyF=false;
+  try{const ts=await rpc("vocab_save",{p_token:a.token,p_name:u.name,p_data:u});const b=acctGet();if(b){b.server=Date.parse(ts)||Date.now();acctSet(b)}cloudSt="ok"}
+  catch(e){cloudDirtyF=true;cloudSt=e.message==="bad_session"?"expired":"err"}
+  cloudBusy=false;cloudBadge();if(cloudDirtyF&&cloudSt==="ok")cloudPush()}
+async function cloudPull(){const a=acctGet();if(!a)return;
+  try{const r=await rpc("vocab_load",{p_token:a.token});const t=Date.parse(r.updated_at)||0;
+    if(r.data&&r.data.id&&t>(a.server||0)&&!cloudDirtyF){const i=DB.users.findIndex(x=>x.id===r.data.id);if(i<0)DB.users.push(r.data);else DB.users[i]=r.data;
+      a.server=t;acctSet(a);try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}
+      let cu=null;try{cu=U}catch(e){}if(cu&&cu.id===r.data.id){U=r.data;session=quiz=null;if(tab==="home")render()}}
+    cloudSt="ok";if(cloudDirtyF)cloudPush()}
+  catch(e){cloudSt=e.message==="bad_session"?"expired":"err"}cloudBadge()}
+function cloudLabel(){const a=acctGet();if(!a)return "沒有登入雲端帳號：進度只存在這支手機";
+  return {ok:"☁ 已同步到雲端（帳號 "+a.uname+"）",err:"⚠ 暫時連不上雲端，進度先存在手機，連上後會自動補傳",expired:"⚠ 登入已失效，請按「登出」後重新登入"}[cloudSt]}
+function cloudBadge(){document.querySelectorAll("[data-cloud]").forEach(e=>e.textContent=cloudLabel())}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")cloudPush();else cloudPull()});
+setTimeout(cloudPull,50);
 let U=null; // current user
 /* 字體大小：獨立存放（不動用戶資料結構），每個人各自設定 */
 const FS={m:"標準",l:"大",xl:"特大"};
@@ -3044,7 +3074,7 @@ function tdAdd(id){if(!id)return;try{const ids=tdGet().filter(x=>x!==id);ids.uns
 const exaMem={};
 function exaGet(){if(U.id in exaMem)return exaMem[U.id];try{return localStorage.getItem(KEY+":exa:"+U.id)==="1"}catch(e){return false}}
 function exaSet(v){exaMem[U.id]=v;try{localStorage.setItem(KEY+":exa:"+U.id,v?"1":"0")}catch(e){}}
-try{const id=sessionStorage.getItem(KEY+":who");U=DB.users.find(u=>u.id===id)||null}catch(e){}
+try{const a=acctGet();U=a?(DB.users.find(u=>u.id===a.uid)||null):null}catch(e){}
 
 async function hash(pw,salt){
   const text=salt+"|"+pw;
@@ -3161,7 +3191,7 @@ function render(){
 function topbar(title,sub){return `<header class="top"><div><h1>${title}</h1>${sub?`<p class="sub">${sub}</p>`:""}</div>
   <button class="who" id="switch" aria-label="切換用戶">${avatar(U)}${esc(U.name)}</button></header>`}
 function bindTop(){$("#switch").onclick=logout}
-function logout(){U=null;session=null;quiz=null;studySrc=null;quizSrc=null;try{sessionStorage.removeItem(KEY+":who")}catch(e){}render()}
+function logout(){{const a=acctGet();if(a){cloudPush();rpc("vocab_logout",{p_token:a.token}).catch(()=>{});acctSet(null)}}U=null;session=null;quiz=null;studySrc=null;quizSrc=null;try{sessionStorage.removeItem(KEY+":who")}catch(e){}render()}
 function srcChips(cur,id,withNb=true){
   const keys=["all",...Object.keys(CATS).filter(k=>k!=="mine"||U.custom.length)];
   if(withNb&&(weakCount()||cur==="weak"))keys.push("weak");
@@ -3172,32 +3202,41 @@ function srcChips(cur,id,withNb=true){
 /* ================= 登入 ================= */
 let pick=null,loginErr="";
 function renderLogin(){
-  const isNew=pick==="new"||!DB.users.length;
+  const reg=pick==="new",locals=DB.users.filter(u=>u.prog&&Object.keys(u.prog).length);
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:20px">
-    <div><h1>單字卡片盒</h1><p class="sub">${DB.users.length?"點你的名字就能開始，第一次用就按「新增用戶」。":"第一次使用，先建立你的名字。"}進度存在這支手機裡，每個人各自獨立。</p></div>
-    ${DB.users.length?`<div class="users">${DB.users.map(x=>`<button class="ucard" data-u="${x.id}">${avatar(x)}<b>${esc(x.name)}</b></button>`).join("")}
-      <button class="ucard add" id="addU" aria-pressed="${pick==="new"}">＋ 新增用戶</button></div>`:""}
-    ${isNew?`<form class="panel" id="newF">
-      <h2>建立你的名字</h2>
-      <label class="field">你的名字<input id="nName" maxlength="12" required autocomplete="off" placeholder="例如：小美"></label>
-      <label class="field">學習目標<select id="nGoal">${Object.entries(GOALS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></label>
-      <div class="err">${esc(loginErr)}</div>
-      <button class="btn" type="submit">開始使用</button>
-    </form>`:""}
-    <p class="note">換手機時可以在「首頁 → 設定」複製備份碼，到新手機貼上還原。</p>
+    <div><h1>單字卡片盒</h1><p class="sub">${reg?"建立自己的帳號，進度會存在雲端，換手機也能接著背。":"用你的帳號和密碼登入。"}</p></div>
+    <div class="chips" role="tablist"><button data-lt="in" aria-pressed="${!reg}">登入</button><button data-lt="new" aria-pressed="${reg}">註冊新帳號</button></div>
+    <form class="panel" id="authF">
+      ${reg?`<label class="field">你的名字（顯示用）<input id="aName" maxlength="12" autocomplete="nickname" placeholder="例如：小美"></label>`:""}
+      <label class="field">帳號<input id="aUser" maxlength="20" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="英文小寫或數字，例如 siapa"></label>
+      <label class="field">密碼<input id="aPass" type="password" autocomplete="${reg?"new-password":"current-password"}" placeholder="${reg?"至少 6 個字":""}"></label>
+      ${reg?`<label class="field">學習目標<select id="aGoal">${Object.entries(GOALS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></label>
+        ${locals.length?`<label class="field">這支手機上已經有的進度<select id="aImp"><option value="">不用，從頭開始</option>${locals.map(u=>`<option value="${esc(u.id)}">帶入「${esc(u.name)}」的進度（學過 ${Object.keys(u.prog).length} 字）</option>`).join("")}</select></label>`:""}`:""}
+      <div class="err" id="aErr">${esc(loginErr)}</div>
+      <button class="btn" type="submit" id="aGo">${reg?"註冊並開始":"登入"}</button>
+    </form>
+    <p class="note">${reg?"帳號註冊後不能改，密碼之後可以在「設定」修改。請記好帳號密碼，忘記的話要請家人幫你重設。":"還沒有帳號就按「註冊新帳號」。"}</p>
   </div>`;
-  const enter=u=>{U=u;pick=null;loginErr="";tab="home";try{sessionStorage.setItem(KEY+":who",u.id)}catch(e){}render()};
-  view.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{const u=DB.users.find(x=>x.id===b.dataset.u);if(u)enter(u)});
-  const ad=$("#addU");if(ad)ad.onclick=()=>{pick="new";loginErr="";renderLogin();setTimeout(()=>$("#nName")?.focus(),0)};
-  const nf=$("#newF");
-  if(nf)nf.onsubmit=e=>{e.preventDefault();
-    const name=$("#nName").value.trim(),goal=$("#nGoal").value;
-    const keep=()=>{renderLogin();$("#nName").value=name;$("#nGoal").value=goal};
-    if(!name){loginErr="請輸入名字";return keep()}
-    if(DB.users.some(x=>x.name===name)){loginErr="這個名字已經有人用了";return keep()}
-    const n=DB.users.length,id="u"+Date.now().toString(36);
-    const nu=blankUser(id,name,goal,COLORS[n%COLORS.length]);
-    DB.users.push(nu);save();enter(nu)};
+  const enter=u=>{U=u;pick=null;loginErr="";tab="home";render()};
+  view.querySelectorAll("[data-lt]").forEach(b=>b.onclick=()=>{pick=b.dataset.lt==="new"?"new":null;loginErr="";renderLogin();setTimeout(()=>$(reg?"#aUser":"#aName")?.focus(),0)});
+  $("#authF").onsubmit=async e=>{e.preventDefault();const err=m=>{$("#aErr").textContent=m};
+    const user=$("#aUser").value.trim().toLowerCase(),pass=$("#aPass").value;
+    if(!user||!pass)return err("請輸入帳號和密碼");
+    const go=$("#aGo");go.disabled=true;go.textContent="連線中…";
+    try{let r,u;
+      if(reg){const name=$("#aName").value.trim();if(!name){go.disabled=false;go.textContent="註冊並開始";return err("請輸入你的名字")}
+        if(!/^[a-z0-9_]{3,20}$/.test(user)){go.disabled=false;go.textContent="註冊並開始";return err(CERR.bad_username)}
+        if(pass.length<6){go.disabled=false;go.textContent="註冊並開始";return err(CERR.short_password)}
+        const imp=$("#aImp")?.value,src=imp&&DB.users.find(x=>x.id===imp);
+        u=src?Object.assign(JSON.parse(JSON.stringify(src)),{id:"a:"+user,name}):blankUser("a:"+user,name,$("#aGoal").value,COLORS[DB.users.length%COLORS.length]);
+        r=await rpc("vocab_register",{p_user:user,p_pass:pass,p_name:name,p_data:u});
+        if(src){const s=src.id,t=u.id;["fs","np","xn","tip","bk","dir","td","exa"].forEach(k=>{try{const v=localStorage.getItem(KEY+":"+k+":"+s);if(v!=null)localStorage.setItem(KEY+":"+k+":"+t,v)}catch(_){}})}
+      }else{r=await rpc("vocab_login",{p_user:user,p_pass:pass});
+        u=r.data&&r.data.id?r.data:blankUser("a:"+r.username,r.name||r.username,"ielts",COLORS[0])}
+      const i=DB.users.findIndex(x=>x.id===u.id);if(i<0)DB.users.push(u);else DB.users[i]=u;
+      acctSet({token:r.token,uname:r.username,uid:u.id,server:Date.parse(r.updated_at)||Date.now()});cloudSt="ok";
+      try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(_){}enter(u);toast(reg?"帳號建立好了":"歡迎回來，"+u.name)}
+    catch(ex){go.disabled=false;go.textContent=reg?"註冊並開始":"登入";err(errText(ex))}};
 }
 
 /* ================= 每日一句 ================= */
@@ -3467,7 +3506,12 @@ function renderHome(){
       <label class="sw">翻到新卡片時自動發音<input type="checkbox" id="oAuto" ${U.opt.auto?"checked":""}></label>
       <label class="sw">翻面後自動念例句<input type="checkbox" id="oExa" ${exaGet()?"checked":""}></label>
       <label class="sw">慢速發音（聽力初學者）<input type="checkbox" id="oSlow" ${U.opt.slow?"checked":""}></label>
-      <div class="row2"><button class="btn ghost small" id="sOut">切換用戶</button></div>
+      <p class="note" style="margin:0" data-cloud>${cloudLabel()}</p>
+      ${acctGet()?`<details class="set"><summary>修改密碼</summary><div class="setgrid">
+        <label class="field">目前的密碼<input id="pwOld" type="password" autocomplete="current-password"></label>
+        <label class="field">新密碼（至少 6 個字）<input id="pwNew" type="password" autocomplete="new-password"></label>
+        <div class="err" id="pwErr"></div><button class="btn ghost small" id="pwGo">確定修改</button></div></details>`:""}
+      <div class="row2"><button class="btn ghost small" id="sOut">${acctGet()?"登出":"切換用戶"}</button></div>
       <hr style="border:0;border-top:1px solid var(--line);width:100%;margin:4px 0">
       <b>換手機：備份碼</b>
       <p class="note" style="margin:0">複製備份碼，用 LINE 傳給自己，到新手機打開這個 App，貼上後按「還原」。會覆蓋新手機上「${esc(U.name)}」的資料。</p>
@@ -3494,6 +3538,10 @@ function renderHome(){
   $("#sGoal").onchange=e=>{U.goal=e.target.value;save();studySrc=quizSrc=null;session=quiz=null;render()};
   $("#sDaily").onchange=e=>{U.daily=+e.target.value;save();renderHome()};
   $("#sOut").onclick=logout;
+  const pg=$("#pwGo");if(pg)pg.onclick=async()=>{const a=acctGet(),o=$("#pwOld").value,n=$("#pwNew").value;
+    if(n.length<6){$("#pwErr").textContent=CERR.short_password;return}
+    try{await rpc("vocab_change_password",{p_token:a.token,p_old:o,p_new:n});$("#pwOld").value=$("#pwNew").value="";$("#pwErr").textContent="";toast("密碼已修改，其他手機要重新登入")}
+    catch(e){$("#pwErr").textContent=errText(e)}};
   $("#sFs").onclick=e=>{const b=e.target.closest("[data-fs]");if(!b)return;try{localStorage.setItem(KEY+":fs:"+U.id,b.dataset.fs)}catch(_){}fsApply();
     view.querySelectorAll("#sFs [data-fs]").forEach(x=>x.setAttribute("aria-pressed",x===b));toast("字體已調成「"+FS[b.dataset.fs]+"」")};
   $("#sNp").onclick=e=>{const b=e.target.closest("[data-np]");if(!b)return;try{localStorage.setItem(KEY+":np:"+U.id,b.dataset.np)}catch(_){}session=null;
