@@ -803,6 +803,77 @@ html.fs-l .mfront.zh{font-size:clamp(15px,4.4vw,19px)}html.fs-xl .mfront.zh{font
 .lvc.mine .lvn,.lvc.mine .lvn small{position:relative;color:#141c3a}
 .lvc .ruler{height:10px}
 @media (min-width:900px){.cat.done .ruler{margin-right:46px}}
+/* ================= v20 小遊戲：猜字方格（方格紙＋螢光筆＝位置對、原子筆圈＝有但位置不對、鉛筆劃掉＝沒有） ================= */
+.gentry.gg::before{background:repeating-linear-gradient(180deg,var(--good) 0 6px,transparent 6px 10px)}
+.ggico{display:grid;grid-template-columns:repeat(2,17px);gap:3px;align-content:center;justify-content:center;transform:rotate(-5deg)}
+.ggico.gico i{position:static;transform:none;background-image:none;width:17px;height:17px;box-sizing:border-box;border:1.5px solid var(--edge);border-radius:3px;background:var(--surface)}
+.ggico.gico i:nth-child(1){background:var(--hl)}
+.ggico.gico i:nth-child(2){border-radius:50%;border-color:var(--accent);border-width:2.5px}
+.ggico.gico i:nth-child(3){grid-column:span 2;width:37px;background:linear-gradient(160deg,transparent 46%,var(--muted) 46% 56%,transparent 56%),var(--surface)}
+.gclue{background:var(--note);color:var(--note-ink);border:1.5px solid var(--edge);box-shadow:3px 3px 0 var(--edge);border-radius:4px 4px 14px 4px;padding:14px 16px 12px;position:relative;transform:rotate(-.6deg);display:flex;flex-direction:column;gap:8px}
+.gclue::before{content:"";position:absolute;top:-9px;left:22px;width:64px;height:17px;background:color-mix(in srgb,var(--pink) 70%,transparent);transform:rotate(-4deg)}
+.gzh{font:700 clamp(19px,5.4vw,23px)/1.4 var(--f-body);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.gzh .pos{font:600 13px var(--f-phon);font-style:italic;opacity:.75;margin:0}
+.ghint{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px}
+.glock{opacity:.7;display:inline-flex;align-items:center;gap:5px}
+.glock::before{content:"";width:10px;height:8px;border:1.5px solid currentColor;border-radius:2px;box-shadow:inset 0 0 0 1px transparent;position:relative;top:1px;
+  background:linear-gradient(currentColor,currentColor) center/2px 3px no-repeat}
+.gsay{display:inline-flex;align-items:center;gap:6px;font:700 14px var(--f-body);color:var(--accent-ink);background:var(--accent);border:1.5px solid var(--edge);border-radius:999px;padding:6px 14px 6px 10px;min-height:36px;box-shadow:2px 2px 0 var(--edge);cursor:pointer}
+.gsay svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+.gsay:active{transform:translate(2px,2px);box-shadow:none}
+.gcz{font:16px/1.55 var(--f-phon);border-top:1.5px dashed color-mix(in srgb,var(--note-ink) 35%,transparent);padding-top:8px}
+.gcz .blank{display:inline-block;min-width:3em;border-bottom:2px solid currentColor;text-align:center;font-family:var(--f-body)}
+.ggrid{--n:5;--s:min(46px,calc((100vw - 60px)/var(--n) - 6px));display:grid;gap:6px;justify-content:center;padding:10px;border:1.5px solid var(--line);border-radius:10px;background-color:var(--surface);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:12px 12px;background-position:-1px -1px}
+.grow{display:grid;grid-template-columns:repeat(var(--n),var(--s));gap:6px}
+.gt{width:var(--s);height:var(--s);box-sizing:border-box;display:grid;place-items:center;border:1.5px dashed color-mix(in srgb,var(--ink) 28%,transparent);border-radius:5px;background:var(--surface);
+  font:700 calc(var(--s)*.52)/1 var(--f-display);text-transform:uppercase;color:var(--ink);position:relative}
+.grow.now .gt{border-style:solid;border-color:color-mix(in srgb,var(--ink) 40%,transparent)}
+.gt.fill{border:2px solid var(--edge);box-shadow:2px 2px 0 var(--edge)}
+.gt.pop{animation:gpop .14s ease-out}
+@keyframes gpop{50%{transform:scale(1.12)}}
+.gt.t-ok,.gt.t-in,.gt.t-no{border:2px solid var(--edge)}
+.gt.t-ok{background:var(--hl);color:#141c3a;box-shadow:2px 2px 0 var(--edge)}
+.gt.t-in{color:var(--accent)}
+.gt.t-in::after{content:"";position:absolute;inset:3px;border:2.5px solid var(--accent);border-radius:50%;transform:rotate(-8deg) scaleX(1.06)}
+.gt.t-no{background:var(--chip);color:var(--muted);border-color:color-mix(in srgb,var(--ink) 30%,transparent)}
+.gt.t-no::after{content:"";position:absolute;left:18%;right:18%;top:50%;height:2px;background:var(--muted);transform:rotate(-14deg);border-radius:2px}
+.grow.rev .gt{animation:gflip .5s ease both;animation-delay:calc(var(--d)*120ms)}
+@keyframes gflip{0%{transform:rotateX(0);background:var(--surface);color:var(--ink);border-color:var(--edge);box-shadow:none}49%{transform:rotateX(90deg);background:var(--surface);color:var(--ink);box-shadow:none}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.grow.rev .gt::after{animation:gmark .5s ease both;animation-delay:calc(var(--d)*120ms + 250ms)}
+@keyframes gmark{from{opacity:0}to{opacity:1}}
+.grow.rev.win .gt{animation:gflip .5s ease both,gjump .42s ease;animation-delay:calc(var(--d)*120ms),calc(var(--n)*120ms + 380ms + var(--d)*90ms)}
+@keyframes gjump{40%{transform:translateY(-12px)}}
+.grow.shake{animation:wbad .35s ease}
+.gkb{display:flex;flex-direction:column;gap:7px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.gkr{display:flex;gap:5px;justify-content:center}
+.gk{flex:1 1 0;max-width:44px;min-width:0;height:50px;border:1.5px solid var(--edge);border-radius:7px;background:var(--surface);color:var(--ink);box-shadow:0 3px 0 var(--edge);
+  font:700 17px var(--f-display);text-transform:uppercase;cursor:pointer;padding:0;position:relative;transition:transform .05s,box-shadow .05s}
+.gk:active{transform:translateY(3px);box-shadow:0 0 0 var(--edge)}
+.gk.wide{flex:1.55 1 0;max-width:68px;font:700 14px var(--f-body);text-transform:none}
+.gk[data-k="enter"]{background:var(--accent);color:var(--accent-ink)}
+.gk.t-ok{background:var(--hl);color:#141c3a}
+.gk.t-in{color:var(--accent);box-shadow:0 3px 0 var(--edge),inset 0 0 0 2.5px var(--accent)}
+.gk.t-no{background:var(--chip);color:color-mix(in srgb,var(--muted) 70%,transparent);border-color:color-mix(in srgb,var(--edge) 40%,transparent);box-shadow:0 3px 0 color-mix(in srgb,var(--edge) 40%,transparent)}
+.gk:focus-visible,.gsay:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.gleg{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 6px;margin:0;font-size:12px}
+.gleg .gt.mini{--s:22px;font-size:12px;box-shadow:none;margin-left:6px}
+.gleg .gt.mini::after{inset:1px;border-width:1.5px}
+.mwstamp.gok{border-color:var(--good);color:var(--good)}
+.gres p{padding-right:84px}
+.gsub>span{white-space:nowrap}
+.gword{background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid var(--line)}
+.gww{display:flex;align-items:center;gap:6px}
+.gww b{font:800 30px/1.1 var(--f-display);color:var(--accent);letter-spacing:.02em;margin-right:4px;background:linear-gradient(transparent 78%,color-mix(in srgb,var(--hl) 85%,transparent) 78% 97%,transparent 97%)}
+.gwi{font-size:14px;color:var(--muted)}.gwi .pos{margin-right:4px}
+.gword .ex{font-size:15px;line-height:1.55}
+.gdist{display:flex;flex-direction:column;gap:4px;font-variant-numeric:tabular-nums}
+.gdr{display:grid;grid-template-columns:16px 1fr;gap:8px;align-items:center;font:700 13px var(--f-display)}
+.gdr i{display:block;height:20px;position:relative;font-style:normal}
+.gdr i::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:max(6px,calc(var(--w)*.88));background:color-mix(in srgb,var(--accent) 22%,var(--surface));border:1.5px solid var(--edge);border-radius:3px;transition:width .5s}
+.gdr.me i::before{background:var(--hl)}
+.gdr em{position:relative;font-style:normal;padding-left:calc(max(6px,calc(var(--w)*.88)) + 6px);font-size:12px;line-height:20px;color:var(--muted)}
+@media (min-width:900px){.gwrap>.gclue,.gwrap>.ggrid,.gwrap>.gkb,.gwrap>.gres{max-width:560px;width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -4121,6 +4192,7 @@ function renderQuiz(){
   closeSheet();
   if(game)return renderMatch();
   if(whack)return renderWhack();
+  if(guess)return renderGuess();
   if(!quiz||quiz.src!==quizSrc||quiz.mode!==qmode)startQuiz();
   const Q=quiz,head=`${topbar("測驗")}${srcChips(quizSrc,"srcQ")}
     <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?gentryHtml():""}`;
@@ -4178,6 +4250,7 @@ function renderQuiz(){
   $("#srcQ").onclick=e=>{const b=e.target.closest("[data-src]");if(b){quizSrc=b.dataset.src;quiz=null;renderQuiz()}};
   $("#modeQ").onclick=e=>{const b=e.target.closest("[data-m]");if(b){qmode=b.dataset.m;quiz=null;renderQuiz()}};
   {const gm=$("#gMatch");if(gm)gm.onclick=()=>{game=null;startMatch();renderMatch();window.scrollTo(0,0)}}
+  {const gg=$("#gGuess");if(gg)gg.onclick=()=>{whack=null;game=null;guess=null;startGuess();renderGuess();const c=$(".gclue");window.scrollTo(0,c&&innerWidth<900?Math.max(0,c.getBoundingClientRect().top+scrollY-22):0)}}
   {const gw=$("#gWhack");if(gw)gw.onclick=()=>{whack=null;game=null;startWhack();renderWhack();window.scrollTo(0,0)}}
   if(Q.empty)return;
   if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
@@ -4228,7 +4301,7 @@ function startMatch(){
 function mclock(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
 function melapsed(){const G=game;if(!G||!G.t0)return 0;return ((G.t1||Date.now())-G.t0)/1000}
 function gentryHtml(){const r=gameRec().match;
-  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`+wentryHtml()}
+  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`+wentryHtml()+gentry3Html()}
 function wentryHtml(){const r=gameRec().whack;
   return `<button class="gentry gw" id="gWhack"><span class="gico wico" aria-hidden="true"><i></i><b></b></span><span class="gtx"><b>小遊戲：口袋快打</b><span>${WDUR} 秒點出正確中文${r&&r.best?`　最高 ${r.best} 分`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
 function renderMatch(){
@@ -4367,6 +4440,88 @@ function renderWhack(){
     W.holes.forEach((h,i)=>{if(h&&!h.hit){const el=view.querySelector(`.whole[data-h="${i}"]`);el.querySelector(".wcard span").textContent=h.zh;el.classList.add("up");el.disabled=false;el.setAttribute("aria-label",h.zh)}});
     whackT=setInterval(wtick,100)}
 }
+
+/* ================= 小遊戲：猜字方格（Wordle 風格；紀錄同存 KEY+":game:"+使用者 的 guess 欄位，不動使用者資料） ================= */
+let guess=null;
+const GTRY=6,GKB=["qwertyuiop","asdfghjkl","+zxcvbnm-"];
+function startGuess(){
+  const ok=l=>l.filter(x=>x.w&&/^[a-z]{4,7}$/i.test(x.w));
+  let pool=ok(srcWords(quizSrc));
+  if(!pool.length)pool=ok(wordsOf(defaultSrc()));
+  const last=guess&&guess.x?guess.x.w:"";
+  let x=null;if(pool.length){const p=pool.filter(y=>y.w!==last);x=(p.length?p:pool)[Math.floor(Math.random()*(p.length?p:pool).length)]}
+  guess={src:quizSrc,x,ans:x?x.w.toLowerCase():"",rows:[],cur:"",over:false,won:false,reveal:-1,keys:{}};
+}
+function gscore(g,a){const r=Array(a.length).fill("no"),left={};
+  for(let i=0;i<a.length;i++){if(g[i]===a[i])r[i]="ok";else left[a[i]]=(left[a[i]]||0)+1}
+  for(let i=0;i<a.length;i++){if(r[i]!=="ok"&&left[g[i]]){r[i]="in";left[g[i]]--}}return r}
+function gentry3Html(){const r=gameRec().guess;
+  return `<button class="gentry gg" id="gGuess"><span class="gico ggico" aria-hidden="true"><i></i><i></i><i></i></span><span class="gtx"><b>小遊戲：猜字方格</b><span>看中文猜拼字，${GTRY} 次機會${r&&r.plays?`　猜中 ${r.wins||0}/${r.plays}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
+const GST={ok:"位置正確",in:"有這個字母，位置不對",no:"沒有這個字母"};
+function gtileRow(ri){const G=guess,n=G.ans.length,row=G.rows[ri];
+  if(row)return `<div class="grow${ri===G.reveal?" rev":""}${G.won&&ri===G.rows.length-1?" win":""}" role="row" aria-label="第 ${ri+1} 次：${row.g.toUpperCase()}">${[...row.g].map((c,i)=>`<span class="gt t-${row.r[i]}" style="--d:${i}" role="cell" aria-label="${c.toUpperCase()}，${GST[row.r[i]]}">${c}</span>`).join("")}</div>`;
+  const now=ri===G.rows.length&&!G.over;
+  return `<div class="grow${now?" now":""}" role="row" ${now?'id="gNow"':""}>${Array.from({length:n},(_,i)=>{const c=now?G.cur[i]||"":"";return `<span class="gt${c?" fill":""}" role="cell">${c}</span>`}).join("")}</div>`}
+function gkbHtml(){const K=guess.keys;
+  return `<div class="gkb" id="gKb" aria-label="字母鍵盤">${GKB.map(r=>`<div class="gkr">${[...r].map(k=>k==="+"?`<button class="gk wide" data-k="enter">確認</button>`:k==="-"?`<button class="gk wide" data-k="back" aria-label="刪除">⌫</button>`:`<button class="gk${K[k]?" t-"+K[k]:""}" data-k="${k}" aria-label="${k.toUpperCase()}${K[k]?"，"+GST[K[k]]:""}">${k}</button>`).join("")}</div>`).join("")}</div>`}
+function renderGuess(){
+  closeSheet();
+  if(!guess||guess.src!==quizSrc)startGuess();
+  const G=guess,x=G.x,rec=gameRec().guess||{};
+  let body;
+  if(!x)body=`<div class="empty"><h2>這組沒有適合猜的字</h2><p>猜字方格用 4–7 個字母的單字，換一個分類試試。</p></div>`;
+  else{
+    const tries=G.rows.length,cz=clozeOf(x);
+    const hints=`<div class="gclue">
+      <div class="gzh"><span class="pos">${esc(x.pos)}</span>${esc(x.zh)}</div>
+      <div class="ghint">${G.over||tries>=2?`<button class="gsay" id="gSay">${ICON.spk}聽發音</button>`:`<span class="glock">猜 2 次後可以聽發音</span>`}
+        ${cz?(G.over||tries>=4?"":`<span class="glock">猜 4 次後給例句</span>`):""}</div>
+      ${cz&&!G.over&&tries>=4?`<div class="gcz">${cz}</div>`:""}</div>`;
+    const grid=`<div class="ggrid" id="gGrid" role="grid" aria-label="猜字方格，${G.ans.length} 個字母" style="--n:${G.ans.length}">${Array.from({length:GTRY},(_,i)=>gtileRow(i)).join("")}</div>`;
+    let end="";
+    if(G.over){const d=rec.dist||[],mx=Math.max(1,...d.map(v=>v||0));
+      end=`<div class="mwin gres"><div class="mwstamp${G.won?" gok":""}">${G.won?["神準","厲害","漂亮","猜中","猜中","好險"][G.rows.length-1]:"答案"}</div>
+        <p>${G.won?`<b>${G.rows.length}</b> 次就猜中。`:"六次沒猜到，這個字記一下："}<br><span class="wsub gsub"><span>已玩 ${rec.plays||0} 次</span>・<span>猜中 ${rec.wins||0} 次</span>・<span>連勝 ${rec.streak||0}（最佳 ${rec.bestStreak||0}）</span></span></p>
+        <div class="gword"><div class="gww"><b>${esc(x.w)}</b><button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button>${starBtn(x.id)}</div>
+          <div class="gwi">${esc(x.ipa||"")} <span class="pos">${esc(x.pos)}</span>${esc(x.zh)}</div>
+          ${x.ex?`<div class="ex">${exHtml(x.ex,x.w,x.forms)}</div>${x.exzh?`<div class="exzh" style="margin:0">${esc(x.exzh)}</div>`:""}`:""}</div>
+        <div class="gdist" aria-label="猜中次數分布">${Array.from({length:GTRY},(_,i)=>`<div class="gdr${G.won&&G.rows.length===i+1?" me":""}"><span>${i+1}</span><i style="--w:${((d[i]||0)/mx*100).toFixed(1)}%"><em>${d[i]||0}</em></i></div>`).join("")}</div></div>`}
+    body=hints+grid+(G.over?end:gkbHtml())+`<p class="note gleg"><span class="gt t-ok mini">a</span>位置對<span class="gt t-in mini">b</span>有但位置不對<span class="gt t-no mini">c</span>沒有</p>`;
+  }
+  view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px" class="gwrap">${topbar("猜字方格",`來源：${esc(srcName(quizSrc))}`)}
+    <div class="row2 mbar"><button class="btn ghost small" id="gBack">回到測驗</button><button class="btn${G.over?"":" ghost"} small" id="gNext">${G.over?"下一個字":"換一個字"}</button></div>${body}</div>`;
+  bindTop();
+  $("#gBack").onclick=()=>{guess=null;renderQuiz()};
+  $("#gNext").onclick=()=>{if(!G.over&&G.rows.length){const R=gameRec();if(R.guess&&R.guess.streak){R.guess.streak=0;gameRecSet(R)}}startGuess();renderGuess()};
+  view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
+  view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderGuess();window.scrollTo(0,y)});
+  {const s=$("#gSay");if(s)s.onclick=()=>say(x.w)}
+  {const kb=$("#gKb");if(kb)kb.addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(b)gkey(b.dataset.k)})}
+  if(G.won&&G.reveal>=0)setTimeout(party,G.ans.length*120+250);
+  G.reveal=-1;
+}
+function gkey(k){const G=guess;if(!G||G.over||!G.x)return;const n=G.ans.length;
+  if(k==="back")G.cur=G.cur.slice(0,-1);
+  else if(k==="enter"){
+    if(G.cur.length<n){const r=$("#gNow");if(r){r.classList.remove("shake");void r.offsetWidth;r.classList.add("shake")}toast(`要拼滿 ${n} 個字母`);return}
+    const g=G.cur,r=gscore(g,G.ans);G.rows.push({g,r});G.cur="";G.reveal=G.rows.length-1;activity();
+    const pr={no:1,in:2,ok:3};[...g].forEach((c,i)=>{if((pr[r[i]]||0)>(pr[G.keys[c]]||0))G.keys[c]=r[i]});
+    G.won=g===G.ans;
+    if(G.won||G.rows.length>=GTRY){G.over=true;const R=gameRec(),m=R.guess||{},d=(m.dist||[]).slice();
+      if(G.won)d[G.rows.length-1]=(d[G.rows.length-1]||0)+1;const st=G.won?(m.streak||0)+1:0;
+      R.guess={plays:(m.plays||0)+1,wins:(m.wins||0)+(G.won?1:0),streak:st,bestStreak:Math.max(m.bestStreak||0,st),dist:d};gameRecSet(R);
+      setTimeout(()=>say(G.x.w),G.ans.length*120+200)}
+    const y=window.scrollY;renderGuess();window.scrollTo(0,y);return}
+  else if(/^[a-z]$/.test(k)&&G.cur.length<n)G.cur+=k;
+  else return;
+  const r=$("#gNow");if(!r)return;
+  r.querySelectorAll(".gt").forEach((t,i)=>{const c=G.cur[i]||"";if(t.textContent!==c){t.textContent=c;t.classList.toggle("fill",!!c);if(c){t.classList.remove("pop");void t.offsetWidth;t.classList.add("pop")}}});
+}
+document.addEventListener("keydown",e=>{if(!U||tab!=="quiz"||!guess||guess.over||!document.getElementById("gGrid"))return;
+  if(e.ctrlKey||e.metaKey||e.altKey)return;const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;
+  if(e.key==="Enter"){if(t&&t.tagName==="BUTTON"&&!t.closest("#gKb"))return;e.preventDefault();gkey("enter")}
+  else if(e.key==="Backspace"){e.preventDefault();gkey("back")}
+  else if(/^[a-zA-Z]$/.test(e.key)){e.preventDefault();gkey(e.key.toLowerCase())}});
 
 /* ================= 筆記本 ================= */
 /* 筆記本排序：只是畫面上的排列方式，不寫進使用者資料 */
