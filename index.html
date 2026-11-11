@@ -138,6 +138,17 @@ details.set[open] summary{margin-bottom:12px}
 .flabel{font-size:12px;color:var(--muted);margin-right:2px}
 .colloc{display:flex;flex-direction:column;gap:2px;margin-top:4px;font-size:14px;line-height:1.5}
 .colloc span:not(.flabel){font-family:var(--f-phon);font-size:16px}
+.colloc .flabel small{font-weight:400;opacity:.7;margin-left:2px}
+.cphr{all:unset;box-sizing:border-box;display:block;cursor:pointer;font-family:var(--f-phon);font-size:16px;line-height:1.45;padding:5px 8px 5px 26px;margin:0 -8px;min-height:36px;border-radius:8px;position:relative;color:inherit;-webkit-tap-highlight-color:transparent}
+.cphr::before{content:"";position:absolute;left:8px;top:13px;width:0;height:0;border-left:9px solid var(--accent);border-top:5.5px solid transparent;border-bottom:5.5px solid transparent;opacity:.75}
+.cphr:hover{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--hl) 55%,transparent) 62%)}
+.cphr:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cphr.said{animation:cphrHl .9s ease-out}
+@keyframes cphrHl{0%,40%{background:linear-gradient(transparent 58%,var(--hl) 58%)}100%{background:linear-gradient(transparent 58%,transparent 58%)}}
+@media (prefers-reduced-motion:reduce){.cphr.said{animation:none}}
+html.fs-l .cphr{font-size:17px}html.fs-xl .cphr{font-size:19px}
+.exbtns{display:flex;flex-direction:column;gap:6px;flex:none}
+.exrow .icon.slowb{width:28px;font-size:12px}
 .fchip{font:15px var(--f-phon);background:var(--chip);border-radius:6px;padding:1px 8px;line-height:1.6}
 .daily{background:var(--ink);color:var(--bg);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:10px}
 .daily .meta{color:inherit;opacity:.75}
@@ -2991,7 +3002,7 @@ const COLLOC={"ambiguous":"an ambiguous answer 模稜兩可的回答｜ambiguous
 "recession":"economic recession 經濟衰退｜go into recession 陷入衰退",
 "consumer":"consumer demand 消費需求｜consumer protection 消費者保護"};
 /* ===== WORD-SHARDS START（額外的單字資料檔：每個檔案是 {"分類":[[7 個欄位],...], "COLLOC":{...}}，放在 words/ 資料夾，新增檔案時把檔名加進這個清單） ===== */
-const SHARDS=["words/b000.json","words/b001.json","words/b002.json","words/b003.json","words/b005.json","words/b006.json","words/b007.json","words/b008.json","words/b009.json","words/b010.json","words/b011.json","words/b012.json","words/b013.json","words/b014.json","words/b015.json","words/b016.json","words/b017.json","words/b018.json","words/b019.json"];
+const SHARDS=["words/b000.json","words/b001.json","words/b002.json","words/b003.json","words/b005.json","words/b006.json","words/b007.json","words/b008.json","words/b009.json","words/b010.json","words/b011.json","words/b012.json","words/b013.json","words/b014.json","words/b015.json","words/b016.json","words/b017.json","words/b018.json","words/b019.json","words/b020.json"];
 /* ===== WORD-SHARDS END ===== */
 /* ===== DAILY-SENTENCE START (每日一句：排程每天只更新這一段) ===== */
 const DAILY={
@@ -3866,7 +3877,7 @@ try{if(window.speechSynthesis){pickVoice();speechSynthesis.addEventListener?.("v
 function say(t,slowOne){try{if(!window.speechSynthesis){toast("這個瀏覽器不支援發音");return}
   if(!enVoice)pickVoice();
   speechSynthesis.cancel();
-  const rate=slowOne?.55:(typeof U!=="undefined"&&U&&U.opt&&U.opt.slow)?.68:.9;
+  const rate=typeof slowOne==="number"?slowOne:slowOne?.55:(typeof U!=="undefined"&&U&&U.opt&&U.opt.slow)?.68:.9;
   const parts=String(t).length>160?(String(t).match(/[^.!?]+(?:[.!?]+["”']?|$)\s*/g)||[String(t)]):[String(t)];
   setTimeout(()=>{parts.forEach(p=>{const u=new SpeechSynthesisUtterance(p.trim());u.lang="en-US";if(enVoice)u.voice=enVoice;u.rate=rate;speechSynthesis.speak(u)});try{speechSynthesis.resume()}catch(e){}},60)
 }catch(e){}}
@@ -3900,7 +3911,10 @@ const ICON={
   star:'<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>'
 };
 function dots(b){let h="";for(let i=1;i<=MAXBOX;i++)h+=`<i class="${i<=b?"on":""}"></i>`;return `<span class="box-dots" title="熟練度 ${b}/${MAXBOX}">${h}</span>`}
-function collocHtml(c){if(!c)return "";return `<div class="colloc"><span class="flabel">常見搭配</span>${c.split("｜").map(p=>`<span>${esc(p.trim())}</span>`).join("")}</div>`}
+/* 常見搭配：每一條都可以點，念出英文部分（中文說明不念） */
+function collocEn(p){return String(p).replace(/[\u2E80-\u9FFF\uFF00-\uFFEF（].*$/,"").replace(/[\s(]+$/,"").replace(/\bsb\b/g,"somebody").replace(/\bsth\b/g,"something").trim()}
+function collocHtml(c){if(!c)return "";return `<div class="colloc"><span class="flabel">常見搭配<small>（點一下聽發音）</small></span>${c.split("｜").map(p=>{const t=p.trim(),en=collocEn(t);return en?`<button type="button" class="cphr" data-csay="${esc(en)}" aria-label="念出 ${esc(en)}">${esc(t)}</button>`:`<span>${esc(t)}</span>`}).join("")}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-csay]");if(!b)return;e.stopPropagation();say(b.dataset.csay);b.classList.remove("said");void b.offsetWidth;b.classList.add("said")});
 function formsHtml(f){if(!f)return "";return `<div class="forms"><span class="flabel">型態變化</span>${f.split("｜").map(p=>`<span class="fchip">${esc(p.trim())}</span>`).join("")}</div>`}
 function detailHtml(x){if(openWord!==x.id)return "";
   return `<div class="detail">${x.ex?`<div class="exrow"><div class="ex">${exHtml(x.ex,x.w,x.forms)}</div><button class="icon" data-exsay="${esc(x.id)}" aria-label="朗讀例句">${ICON.spk}</button></div>`:""}${x.exzh?`<div class="exzh" style="margin:0">${esc(x.exzh)}</div>`:""}${formsHtml(x.forms)}${collocHtml(x.colloc)}${!x.ex&&!x.forms&&!x.colloc?`<div class="note">這個字還沒有例句和補充資料。</div>`:""}</div>`}
@@ -4429,7 +4443,7 @@ function renderStudy(){
       :`<div class="word">${esc(x.w)}</div>
       <div class="phon"><span>${esc(x.ipa)}</span><button class="icon" id="spk" aria-label="發音">${ICON.spk}</button><button class="icon slowb" id="spkS" aria-label="慢速發音" title="慢慢念一次">慢</button>
         <button class="icon ${inNb(x.id)?"on":""}" id="star" aria-label="加入筆記本">${ICON.star}</button></div>`}
-      ${s.flipped?`<div class="back"><div class="zh"><span class="pos">${esc(x.pos)}</span>${esc(x.zh)}</div>${x.ex?`<div class="exrow"><div class="ex">${exh}</div><button class="icon" id="exSay" aria-label="朗讀例句">${ICON.spk}</button></div>`:""}${x.exzh?`<div class="exzh">${esc(x.exzh)}</div>`:""}${/class="tw"/.test(exh)&&tapTipShow()?`<p class="tapnote">小提示：例句裡有虛線的字可以點，看意思、聽發音。</p>`:""}${formsHtml(x.forms)}${collocHtml(x.colloc)}</div>`:`<div class="hint">${rev?"先想想英文怎麼說，再點卡片看答案":"點卡片看中文意思"}</div>`}
+      ${s.flipped?`<div class="back"><div class="zh"><span class="pos">${esc(x.pos)}</span>${esc(x.zh)}</div>${x.ex?`<div class="exrow"><div class="ex">${exh}</div><span class="exbtns"><button class="icon" id="exSay" aria-label="朗讀例句">${ICON.spk}</button><button class="icon slowb" id="exSayS" aria-label="慢速朗讀例句" title="慢慢念例句">慢</button></span></div>`:""}${x.exzh?`<div class="exzh">${esc(x.exzh)}</div>`:""}${/class="tw"/.test(exh)&&tapTipShow()?`<p class="tapnote">小提示：例句裡有虛線的字可以點，看意思、聽發音。</p>`:""}${formsHtml(x.forms)}${collocHtml(x.colloc)}</div>`:`<div class="hint">${rev?"先想想英文怎麼說，再點卡片看答案":"點卡片看中文意思"}</div>`}
     </div></div>
     ${s.flipped?`<div class="rate">
       <button class="r0" data-r="0">不熟<small>等一下再看</small></button>
@@ -4469,16 +4483,17 @@ function renderStudy(){
   const flyOut=(r,how)=>{if(busy)return;busy=true;stg.classList.remove("dragging");card.classList.remove("drag","springback");
     card.style.transform=how;card.classList.add("fly");stg.style.setProperty("--k",1);
     let rm=false;try{rm=matchMedia("(prefers-reduced-motion:reduce)").matches}catch(_){}setTimeout(()=>rate(r),rm?0:200)};
-  card.onpointerdown=e=>{if(!s.flipped||busy||e.target.closest(".icon,.tw"))return;x0=e.clientX;dx=0;moved=false;
+  card.onpointerdown=e=>{if(!s.flipped||busy||e.target.closest(".icon,.tw,.cphr"))return;x0=e.clientX;dx=0;moved=false;
     const rc=card.getBoundingClientRect();gs=e.clientY-rc.top<rc.height/2?1:-1;card.classList.remove("springback");card.classList.add("drag");stg.classList.add("dragging")};
   card.onpointermove=e=>{if(x0===null)return;dx=e.clientX-x0;if(Math.abs(dx)>8){moved=true;try{card.setPointerCapture(e.pointerId)}catch(_){}}pose(dx)};
   const end=()=>{if(x0===null)return;x0=null;card.classList.remove("drag");stg.classList.remove("dragging");
     if(Math.abs(dx)>90){const g=dx>0?1:-1;flyOut(dx>0?2:0,`translate(${g*620}px,${Math.abs(dx)/14+40}px) rotate(${g*gs*26}deg)`)}
     else{card.classList.add("springback");card.style.transform="";stg.style.setProperty("--k",0);tl.style.setProperty("--o",0);tr.style.setProperty("--o",0)}};
   card.onpointerup=end;card.onpointercancel=end;
-  card.onclick=e=>{if(e.target.closest(".icon,.tw")||moved){moved=false;return}flip()};
+  card.onclick=e=>{if(e.target.closest(".icon,.tw,.cphr")||moved){moved=false;return}flip()};
   bindTw(renderStudy);
   const es=$("#exSay");if(es)es.onclick=()=>say(x.ex);
+  const ess=$("#exSayS");if(ess)ess.onclick=()=>say(x.ex,.65);
   card.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
   const sp=$("#spk");if(sp)sp.onclick=()=>say(x.w);
   const sps=$("#spkS");if(sps)sps.onclick=()=>say(x.w,true);
