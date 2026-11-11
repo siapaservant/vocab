@@ -773,6 +773,36 @@ html.fs-l .mfront.zh{font-size:clamp(15px,4.4vw,19px)}html.fs-xl .mfront.zh{font
 .wres p{line-height:1.7}.wsub{font-size:13px;color:var(--muted)}
 .item .w .wmk{font-style:normal;flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;margin-right:6px;font:800 11px var(--f-body);border:1.5px solid currentColor;vertical-align:2px}
 .item .w .wmk.ok{color:var(--good)}.item .w .wmk.no{color:var(--bad)}.item .w .wmk.na{color:var(--muted)}
+/* ================= v19 首頁分類卡＋學測分級卡：小圖示、尺規刻度進度、印章圈 ================= */
+.cat{position:relative;overflow:hidden}
+.cat .chead{display:flex;align-items:center;gap:10px;min-width:0;font-size:inherit;color:inherit}
+.cat .chead b{min-width:0}
+.cico{flex:none;width:36px;height:36px;display:grid;place-items:center;background:var(--note);color:var(--note-ink);border:1.5px solid var(--ink);border-radius:8px;box-shadow:2px 2px 0 var(--edge);transform:rotate(-4deg)}
+.cat:nth-child(even) .cico{transform:rotate(3deg)}
+.cico svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cat.mine .cico{background:var(--hl);color:#141c3a}
+.ruler{position:relative;display:block;height:12px;border:1.5px solid var(--ink);border-radius:3px;background:var(--surface);overflow:hidden}
+.ruler i{position:absolute;left:0;top:0;bottom:0;display:block;transition:width .4s ease}
+.ruler .rs{background:var(--hl)}
+.ruler .rl{background:var(--accent)}
+.ruler::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),color-mix(in srgb,var(--ink) 55%,transparent) calc(10% - 1px) 10%) bottom/100% 45% no-repeat,
+  repeating-linear-gradient(90deg,transparent 0 calc(5% - 1px),color-mix(in srgb,var(--ink) 35%,transparent) calc(5% - 1px) 5%) bottom/100% 25% no-repeat}
+.cat .num span{white-space:nowrap;font-size:inherit}
+.cat.done .num{padding-right:40px}
+.cdone{position:absolute;right:8px;bottom:8px;font:700 12px "Noto Serif TC",serif;font-style:normal;color:var(--good);border:2.5px double var(--good);border-radius:50%;width:38px;height:38px;display:grid;place-items:center;transform:rotate(-14deg);opacity:.85}
+.lvc{gap:7px;position:relative}
+.lvseal{position:relative;width:52px;height:52px;display:grid;place-items:center;align-self:flex-start}
+.lvseal svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.lvseal circle{fill:none;stroke-width:3.2}
+.lvseal .t{stroke:color-mix(in srgb,var(--ink) 25%,transparent);stroke-dasharray:2 3}
+.lvseal .p{stroke:var(--accent);stroke-linecap:round;transition:stroke-dasharray .5s ease}
+.lvc .lvn{font:800 22px/1 var(--f-display);color:var(--accent);display:flex;align-items:baseline;gap:1px}
+.lvc .lvn small{font:700 11px var(--f-display);color:var(--muted)}
+.lvc.mine .lvseal::before{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--hl)}
+.lvc.mine .lvn,.lvc.mine .lvn small{position:relative;color:#141c3a}
+.lvc .ruler{height:10px}
+@media (min-width:900px){.cat.done .ruler{margin-right:46px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -790,6 +820,17 @@ html.fs-l .mfront.zh{font-size:clamp(15px,4.4vw,19px)}html.fs-xl .mfront.zh{font
 
 <script>
 /* ================= 單字資料 ================= */
+/* v18 首頁分類卡：線稿小圖示＋尺規刻度進度（學過＝螢光黃、熟記＝原子筆藍） */
+const CAT_ICO={
+  ielts:'<path d="M3 9l9-4 9 4-9 4z"/><path d="M7 11v4c0 1.5 2.2 3 5 3s5-1.5 5-3v-4M21 9v5"/>',
+  gsat:'<path d="M15 4l5 5L9 20H4v-5z"/><path d="M13 6l5 5"/>',
+  daily:'<path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16M9 3c-1 1 1 2 0 4M12.5 3c-1 1 1 2 0 4"/>',
+  work:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3M3 13h18"/>',
+  mine:'<path d="M12 4l2.4 5 5.3.6-4 3.6 1.1 5.3L12 15.8 7.2 18.5l1.1-5.3-4-3.6 5.3-.6z"/>'
+};
+function catIco(k){return `<svg viewBox="0 0 24 24">${CAT_ICO[k]||'<rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 14h5"/>'}</svg>`}
+function rulerHtml(ps,pl){return `<span class="ruler" aria-hidden="true"><i class="rs" style="width:${ps.toFixed(1)}%"></i><i class="rl" style="width:${pl.toFixed(1)}%"></i></span>`}
+
 const CATS={
   ielts:{name:"雅思托福",note:"學術閱讀與寫作常見字"},
   gsat:{name:"學測高頻",note:"高中 4–6 級常考字"},
@@ -3839,14 +3880,16 @@ function renderHome(){
     <section style="display:flex;flex-direction:column;gap:10px">
       <h2>單字分類</h2>
       <div class="cats">${order.map(k=>{const ws=wordsOf(k),l=ws.filter(x=>P(x.id).b>=4).length,s=ws.filter(x=>P(x.id).b>0).length;
-        return `<button class="cat ${mine.includes(k)?"mine":""}" data-cat="${k}"><b>${esc(CATS[k].name)}</b><span>${esc(CATS[k].note)}</span>
-        <div class="bar"><i style="width:${ws.length?l/ws.length*100:0}%"></i></div><span class="num">熟記 ${l} · 學過 ${s} · 共 ${ws.length}</span></button>`}).join("")}</div>
+        const pl=ws.length?l/ws.length*100:0,ps=ws.length?s/ws.length*100:0;
+        return `<button class="cat ${mine.includes(k)?"mine":""}${ws.length&&l===ws.length?" done":""}" data-cat="${k}"><span class="chead"><span class="cico" aria-hidden="true">${catIco(k)}</span><b>${esc(CATS[k].name)}</b></span><span>${esc(CATS[k].note)}</span>
+        ${rulerHtml(ps,pl)}<span class="num"><span>熟記 ${l}</span> · <span>學過 ${s}</span> · <span>共 ${ws.length}</span></span>${ws.length&&l===ws.length?`<i class="cdone" aria-hidden="true">全熟</i>`:""}</button>`}).join("")}</div>
     </section>
     <section style="display:flex;flex-direction:column;gap:10px">
       <div class="sheader"><h2>學測 7000 分級</h2><span>大考中心詞彙表 Lv1–6</span></div>
       <div class="lvgrid">${lvs.map(k=>{const ws=wordsOf(k),l=ws.filter(x=>P(x.id).b>=4).length,s=ws.filter(x=>P(x.id).b>0).length;
-        return `<button class="lvc ${mine.includes(k)?"mine":""}" data-cat="${k}"><span class="lvn">Lv${CATS[k].lv}</span><span class="lvt">${esc(CATS[k].note)}</span>
-        <div class="bar"><i style="width:${ws.length?l/ws.length*100:0}%"></i></div><span class="num">${s}/${ws.length}</span></button>`}).join("")}</div>
+        const pl=ws.length?l/ws.length*100:0,ps=ws.length?s/ws.length*100:0;
+        return `<button class="lvc ${mine.includes(k)?"mine":""}" data-cat="${k}" aria-label="${esc(CATS[k].name)}，${esc(CATS[k].note)}，學過 ${s}／${ws.length}，熟記 ${l}"><span class="lvseal" aria-hidden="true"><svg viewBox="0 0 48 48"><circle class="t" cx="24" cy="24" r="20"/><circle class="p" cx="24" cy="24" r="20" style="stroke-dasharray:${(pl/100*125.7).toFixed(1)} 126"/></svg><span class="lvn"><small>Lv</small>${CATS[k].lv}</span></span><span class="lvt">${esc(CATS[k].note)}</span>
+        ${rulerHtml(ps,pl)}<span class="num">${s}/${ws.length}</span></button>`}).join("")}</div>
     </section>
     <details class="panel set"><summary>設定</summary><div class="setgrid">
       <label class="field">名字<input id="sName" value="${esc(U.name)}" maxlength="12"></label>
