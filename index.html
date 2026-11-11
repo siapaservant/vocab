@@ -718,6 +718,61 @@ nav.tabs button[aria-current="page"]{background:var(--hl);color:#141c3a}
 @keyframes mstampin{from{transform:rotate(-10deg) scale(2.2);opacity:0}}
 .mlist{background:var(--bg)}
 html.fs-l .mfront.zh{font-size:clamp(15px,4.4vw,19px)}html.fs-xl .mfront.zh{font-size:clamp(16px,4.6vw,20px)}
+/* ================= v18 小遊戲：口袋快打（卡片從紙口袋冒出來＋鉛筆計時條） ================= */
+.gentry.gw::before{background:repeating-linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 10px)}
+.wico i{position:absolute;left:6px;top:2px;width:30px;height:26px;border:1.5px solid var(--edge);border-radius:4px;background:var(--surface);transform:rotate(-6deg);
+  background-image:linear-gradient(transparent 8px,var(--accent) 8px 10px,transparent 10px)}
+.wico b{position:absolute;left:2px;right:2px;bottom:2px;height:20px;border:1.5px solid var(--edge);border-radius:3px 3px 8px 8px;background:var(--pink);
+  background-image:linear-gradient(90deg,transparent 3px,color-mix(in srgb,#fff 55%,transparent) 3px 4px,transparent 4px);background-size:7px 100%}
+.wtop{display:flex;flex-direction:column;gap:8px}
+.wpencil{--p:1;position:relative;height:22px;display:flex;align-items:center}
+.wpencil .wbody{display:block;height:20px;width:calc(var(--p)*(100% - 26px));min-width:14px;box-sizing:border-box;border:1.5px solid var(--edge);border-right:0;border-radius:5px 0 0 5px;
+  background:linear-gradient(90deg,var(--pink) 0 12px,#c9ccd6 12px 18px,transparent 18px),linear-gradient(180deg,#ffd43b 0 33%,#f5b800 33% 66%,#ffd43b 66%);transition:width .1s linear}
+.wpencil .wtip{display:block;width:26px;height:20px;flex:none;background:linear-gradient(90deg,#f1d3a6 0 62%,var(--ink) 62%);clip-path:polygon(0 0,100% 50%,0 100%)}
+.wpencil::after{content:"";position:absolute;inset:auto 0 -3px 0;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 2px,transparent 2px 10%)}
+.wpencil.low .wbody{animation:wlow .6s ease-in-out infinite alternate}
+@keyframes wlow{to{filter:saturate(1.6) brightness(.92)}}
+.wnums{display:flex;align-items:baseline;gap:16px;font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
+.wnums b{font:700 24px var(--f-display);color:var(--ink);margin-right:2px}
+.wnums em{margin-left:auto;font:700 15px var(--f-display);font-style:normal;color:var(--note-ink);background:var(--hl);padding:0 8px;border-radius:4px;transform:rotate(-3deg)}
+.wnums em:empty{display:none}
+.wnums em.pop{animation:wpop .3s cubic-bezier(.2,1.8,.4,1)}
+@keyframes wpop{from{transform:rotate(-3deg) scale(1.5)}}
+.wprompt{background:var(--surface);border:2px solid var(--edge);box-shadow:4px 4px 0 var(--edge);border-radius:6px;padding:14px 16px 12px 26px;position:relative;min-height:78px;box-sizing:border-box;
+  display:flex;flex-direction:column;justify-content:center;gap:4px;
+  background-image:linear-gradient(90deg,transparent 14px,color-mix(in srgb,var(--pink) 55%,transparent) 14px 15.5px,transparent 15.5px),repeating-linear-gradient(transparent 0 23px,color-mix(in srgb,var(--accent) 14%,transparent) 23px 24px)}
+.wprompt::before{content:"";position:absolute;top:-8px;left:50%;width:70px;height:16px;transform:translateX(-50%) rotate(-2deg);background:color-mix(in srgb,var(--hl) 78%,transparent)}
+.wprompt.swap{animation:wswap .32s cubic-bezier(.2,1.4,.4,1)}
+@keyframes wswap{from{transform:translateY(-6px) rotate(-1.5deg);opacity:.2}}
+.wpw{display:flex;align-items:center;gap:8px}
+.wpw b{font:700 clamp(26px,8vw,34px)/1.1 var(--f-display);color:var(--accent);background:linear-gradient(transparent 80%,color-mix(in srgb,var(--hl) 85%,transparent) 80% 98%,transparent 98%);padding:0 2px;overflow-wrap:anywhere}
+.wpi{font:16px var(--f-phon);color:var(--muted)}
+.wpi.wrule{font:14px/1.6 var(--f-body);color:var(--ink)}
+.wgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 10px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+@media (min-width:900px){.wgrid,.wtop,.wprompt{max-width:600px;width:100%;margin-left:auto;margin-right:auto}}
+.whole{position:relative;height:104px;border:0;padding:0;background:none;clip-path:inset(-40px -14px 0 -14px);cursor:pointer;color:var(--ink);font:inherit;-webkit-tap-highlight-color:transparent;border-radius:0 0 12px 12px}
+.whole:disabled{cursor:default}
+.whole:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wcard{position:absolute;left:8%;right:8%;top:8px;height:74px;box-sizing:border-box;background:var(--surface);border:2px solid var(--edge);border-radius:8px 8px 4px 4px;
+  display:flex;justify-content:center;padding:8px 4px 0;transform:translateY(110%);visibility:hidden;transition:transform .2s ease-in,visibility 0s .2s;
+  background-image:linear-gradient(transparent 6px,color-mix(in srgb,var(--pink) 50%,transparent) 6px 7.5px,transparent 7.5px)}
+.wcard span{font:700 clamp(14px,4.2vw,17px)/1.25 var(--f-body);text-align:center;padding-top:6px;overflow-wrap:anywhere}
+.whole.up .wcard{transform:translateY(0);visibility:visible;transition:transform .22s cubic-bezier(.3,1.5,.5,1),visibility 0s}
+.whole.hit .wcard{background-color:var(--note);color:var(--note-ink);transform:translateY(-4px) rotate(-3deg)}
+.whole.hit .wcard::after{content:"✓";position:absolute;right:-9px;top:-10px;background:var(--surface);width:22px;height:22px;border-radius:50%;border:2px solid var(--good);color:var(--good);display:grid;place-items:center;font:800 12px var(--f-body);transform:rotate(-14deg)}
+.whole.bad .wcard{border-color:var(--bad);animation:wbad .35s ease}
+@keyframes wbad{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.wpocket{position:absolute;left:0;right:0;bottom:0;height:44px;background:var(--accent);border:2px solid var(--edge);border-radius:4px 4px 12px 12px;box-sizing:border-box;box-shadow:inset 0 3px 0 color-mix(in srgb,#000 18%,transparent);
+  background-image:radial-gradient(circle,color-mix(in srgb,#fff 30%,transparent) 1.1px,transparent 1.5px);background-size:9px 9px}
+.wpocket::after{content:"";position:absolute;inset:7px 8px 6px;border:1.5px dashed color-mix(in srgb,#fff 60%,transparent);border-top:0;border-radius:0 0 8px 8px}
+.whole:nth-child(3n+2) .wpocket{background-color:var(--pink)}
+.whole:nth-child(3n) .wpocket{background-color:#ffcf3a}
+.wpts{position:absolute;left:50%;top:-4px;text-shadow:0 0 3px var(--surface),0 0 3px var(--surface);font:800 18px var(--f-display);font-style:normal;color:var(--good);pointer-events:none;animation:wfly .8s ease-out forwards;z-index:2}
+@keyframes wfly{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,-30px);opacity:0}}
+.wgo{align-self:center;min-width:220px}
+.wres p{line-height:1.7}.wsub{font-size:13px;color:var(--muted)}
+.item .w .wmk{font-style:normal;flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;margin-right:6px;font:800 11px var(--f-body);border:1.5px solid currentColor;vertical-align:2px}
+.item .w .wmk.ok{color:var(--good)}.item .w .wmk.no{color:var(--bad)}.item .w .wmk.na{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -4022,6 +4077,7 @@ function startQuiz(){
 function renderQuiz(){
   closeSheet();
   if(game)return renderMatch();
+  if(whack)return renderWhack();
   if(!quiz||quiz.src!==quizSrc||quiz.mode!==qmode)startQuiz();
   const Q=quiz,head=`${topbar("測驗")}${srcChips(quizSrc,"srcQ")}
     <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?gentryHtml():""}`;
@@ -4079,6 +4135,7 @@ function renderQuiz(){
   $("#srcQ").onclick=e=>{const b=e.target.closest("[data-src]");if(b){quizSrc=b.dataset.src;quiz=null;renderQuiz()}};
   $("#modeQ").onclick=e=>{const b=e.target.closest("[data-m]");if(b){qmode=b.dataset.m;quiz=null;renderQuiz()}};
   {const gm=$("#gMatch");if(gm)gm.onclick=()=>{game=null;startMatch();renderMatch();window.scrollTo(0,0)}}
+  {const gw=$("#gWhack");if(gw)gw.onclick=()=>{whack=null;game=null;startWhack();renderWhack();window.scrollTo(0,0)}}
   if(Q.empty)return;
   if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
   const q=Q.qs[Q.i];
@@ -4128,7 +4185,9 @@ function startMatch(){
 function mclock(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
 function melapsed(){const G=game;if(!G||!G.t0)return 0;return ((G.t1||Date.now())-G.t0)/1000}
 function gentryHtml(){const r=gameRec().match;
-  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
+  return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`+wentryHtml()}
+function wentryHtml(){const r=gameRec().whack;
+  return `<button class="gentry gw" id="gWhack"><span class="gico wico" aria-hidden="true"><i></i><b></b></span><span class="gtx"><b>小遊戲：口袋快打</b><span>${WDUR} 秒點出正確中文${r&&r.best?`　最高 ${r.best} 分`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`}
 function renderMatch(){
   closeSheet();clearInterval(gameT);
   if(!game||game.src!==quizSrc)startMatch();
@@ -4173,6 +4232,97 @@ function mflip(i){const G=game;if(!G||G.lock)return;const c=G.cards[i];if(G.done
   }
   const y=window.scrollY;renderMatch();window.scrollTo(0,y);
   const f=view.querySelector(`.mcard[data-i="${i}"]`);if(f)f.focus({preventScroll:true});
+}
+
+/* ================= 小遊戲：口袋快打（打地鼠；紀錄同存 KEY+":game:"+使用者 的 whack 欄位，不動使用者資料） ================= */
+let whack=null,whackT=0;
+const WDUR=45,WHOLES=9;
+function startWhack(){
+  const ok=l=>l.filter(x=>x.w&&x.w.length<=16&&mzh(x).length&&mzh(x).length<=8);
+  let pool=ok(srcWords(quizSrc));
+  if(pool.length<4)pool=ok(wordsOf(defaultSrc()));
+  let dis=ok(allWords());if(dis.length>600)dis=gshuf(dis).slice(0,600);
+  whack={src:quizSrc,pool:gshuf(pool),dis,qi:0,cur:null,holes:Array.from({length:WHOLES},()=>null),score:0,combo:0,maxCombo:0,hits:0,miss:0,
+    seen:[],t0:0,pausedAt:0,over:false,nextSpawn:0,lastOk:0,newBest:false};
+}
+function wleft(){const W=whack;if(!W||!W.t0)return WDUR;return Math.max(0,WDUR-((W.pausedAt||Date.now())-W.t0)/1000)}
+function wnext(){const W=whack;if(!W.pool.length)return;
+  if(W.qi>=W.pool.length){W.pool=gshuf(W.pool);W.qi=0}
+  W.cur=W.pool[W.qi++];W.cur.zz=mzh(W.cur);W.seen.push({x:W.cur,ok:null});W.lastOk=Date.now()-700;
+  W.holes=W.holes.map(()=>null);W.nextSpawn=Date.now()+260;
+  const pc=$("#wPrompt");if(pc){pc.innerHTML=wpromptHtml();pc.classList.remove("swap");void pc.offsetWidth;pc.classList.add("swap");const s=$("#wSay");if(s)s.onclick=()=>say(W.cur.w)}
+  view.querySelectorAll(".whole").forEach(h=>{h.classList.remove("up","hit","bad");h.setAttribute("aria-label","空的口袋");h.disabled=true});
+  say(W.cur.w);
+}
+function wpromptHtml(){const x=whack.cur;if(!x)return "";
+  return `<div class="wpw"><b>${esc(x.w)}</b><button class="icon" id="wSay" aria-label="再聽一次">${ICON.spk}</button></div><span class="wpi">${esc(x.ipa||"")}${x.pos?` · ${esc(x.pos)}`:""}</span>`}
+function wspawn(now){const W=whack;
+  const empty=W.holes.map((h,i)=>h?-1:i).filter(i=>i>=0);if(!empty.length)return;
+  const up=W.holes.filter(Boolean);if(up.length>=3)return;
+  const hasOk=up.some(h=>h.ok);
+  const prog=1-wleft()/WDUR,life=2100-800*prog;
+  let card;
+  if(!hasOk&&(now-W.lastOk>900||Math.random()<.4)){card={zh:W.cur.zz,ok:true};W.lastOk=now}
+  else{const used=new Set(up.map(h=>h.zh).concat(W.cur.zz));let d=null;
+    for(let k=0;k<12;k++){const c=W.dis[Math.floor(Math.random()*W.dis.length)];const z=c&&mzh(c);if(z&&!used.has(z)){d=z;break}}
+    if(!d)return;card={zh:d,ok:false}}
+  const i=empty[Math.floor(Math.random()*empty.length)];card.until=now+life;W.holes[i]=card;
+  const el=view.querySelector(`.whole[data-h="${i}"]`);if(el){el.querySelector(".wcard span").textContent=card.zh;el.classList.remove("hit","bad");el.classList.add("up");el.disabled=false;el.setAttribute("aria-label",card.zh)}
+}
+function wtick(){const W=whack;
+  if(!W||W.over||tab!=="quiz"||!document.getElementById("wGrid")){clearInterval(whackT);if(W&&!W.over&&W.t0&&!W.pausedAt)W.pausedAt=Date.now();return}
+  const now=Date.now(),left=wleft();
+  const tm=$("#wTime");if(tm)tm.textContent=Math.ceil(left);
+  const pen=$("#wPencil");if(pen){pen.style.setProperty("--p",(left/WDUR).toFixed(4));pen.classList.toggle("low",left<=10)}
+  if(left<=0)return wend();
+  W.holes.forEach((h,i)=>{if(h&&!h.hit&&now>h.until){W.holes[i]=null;const el=view.querySelector(`.whole[data-h="${i}"]`);if(el){el.classList.remove("up","bad");el.disabled=true;el.setAttribute("aria-label","空的口袋")}}});
+  if(now>=W.nextSpawn){wspawn(now);W.nextSpawn=now+260+Math.random()*380}
+}
+function wtap(i){const W=whack;if(!W||W.over||!W.t0)return;const h=W.holes[i];if(!h||h.hit)return;
+  const el=view.querySelector(`.whole[data-h="${i}"]`);activity();
+  if(h.ok){h.hit=true;W.combo++;W.maxCombo=Math.max(W.maxCombo,W.combo);W.hits++;const g=10+Math.min(W.combo-1,5)*2;W.score+=g;
+    const s=W.seen[W.seen.length-1];if(s.ok===null)s.ok=true;
+    if(el){el.classList.add("hit");const f=document.createElement("i");f.className="wpts";f.textContent="+"+g;el.appendChild(f);setTimeout(()=>f.remove(),800)}
+    wstats();setTimeout(()=>{if(whack===W&&!W.over)wnext()},420)}
+  else{W.combo=0;W.miss++;const s=W.seen[W.seen.length-1];s.ok=false;
+    if(el){el.classList.remove("bad");void el.offsetWidth;el.classList.add("bad")}
+    h.until=Math.min(h.until,Date.now()+380);wstats()}
+}
+function wstats(){const W=whack;const a=$("#wScore");if(a)a.textContent=W.score;const c=$("#wCombo");if(c){c.textContent=W.combo>1?`連擊 ×${W.combo}`:"";c.classList.remove("pop");void c.offsetWidth;if(W.combo>1)c.classList.add("pop")}}
+function wend(){const W=whack;clearInterval(whackT);W.over=true;
+  const r=gameRec(),m=r.whack||{};W.newBest=W.score>0&&(!m.best||W.score>m.best);
+  r.whack={best:W.newBest?W.score:(m.best||0),combo:Math.max(m.combo||0,W.maxCombo),plays:(m.plays||0)+1};gameRecSet(r);
+  if(W.newBest)setTimeout(party,350);renderWhack()}
+function renderWhack(){
+  closeSheet();clearInterval(whackT);
+  if(!whack||whack.src!==quizSrc)startWhack();
+  const W=whack,rec=gameRec().whack||{};
+  if(W.pausedAt&&W.t0&&!W.over){W.t0+=Date.now()-W.pausedAt;W.pausedAt=0}
+  let body;
+  if(W.pool.length<4)body=`<div class="empty"><h2>單字不夠玩快打</h2><p>換一個分類試試，或先去翻卡學幾個字。</p></div>`;
+  else if(W.over){const seen=W.seen;
+    body=`<div class="mwin wres"><div class="mwstamp">${W.newBest?"新紀錄":"時間到"}</div>
+      <p><b>${W.score}</b> 分　打中 ${W.hits} 個、按錯 ${W.miss} 次，最高連擊 ×${W.maxCombo}。<br><span class="wsub">${rec.best?`最高分 ${rec.best}・已玩 ${rec.plays} 次`:""}</span></p>
+      ${seen.length?`<div class="list mlist">${seen.map(s=>{const x=s.x;return `<div class="item"><div class="w"><i class="wmk ${s.ok?"ok":s.ok===false?"no":"na"}" aria-label="${s.ok?"答對":s.ok===false?"按錯過":"沒打到"}">${s.ok?"✓":s.ok===false?"✗":"–"}</i>${esc(x.w)}<span>${esc(x.ipa)}</span></div><div class="z">${esc(x.pos)} ${esc(x.zh)}</div><div class="r"><button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button>${starBtn(x.id)}</div></div>`}).join("")}</div>`:""}</div>`}
+  else body=`<div class="wtop"><div class="wpencil" id="wPencil" style="--p:${(wleft()/WDUR).toFixed(4)}" aria-hidden="true"><i class="wbody"></i><i class="wtip"></i></div>
+      <div class="wnums" role="status"><span><b id="wTime">${Math.ceil(wleft())}</b> 秒</span><span><b id="wScore">${W.score}</b> 分</span><em id="wCombo"></em></div></div>
+    <div class="wprompt" id="wPrompt" aria-live="polite">${W.t0?wpromptHtml():`<div class="wpw"><b>口袋快打</b></div><span class="wpi wrule">上面出現英文，從口袋冒出來的卡片裡點出正確的中文。${WDUR} 秒，連續答對分數加倍。</span>`}</div>
+    <div class="wgrid" id="wGrid">${W.holes.map((h,i)=>`<button class="whole" data-h="${i}" disabled aria-label="空的口袋"><span class="wcard"><span></span></span><span class="wpocket" aria-hidden="true"></span></button>`).join("")}</div>
+    ${W.t0?"":`<button class="btn wgo" id="wGo">開始（${WDUR} 秒）</button>`}`;
+  view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${topbar("口袋快打",`來源：${esc(srcName(quizSrc))}`)}
+    <div class="row2 mbar"><button class="btn ghost small" id="wBack">回到測驗</button>${W.t0||W.pool.length<4?`<button class="btn${W.over?"":" ghost"} small" id="wNew">${W.over?"再玩一次":"重新開始"}</button>`:""}</div>${body}</div>`;
+  bindTop();
+  $("#wBack").onclick=()=>{clearInterval(whackT);whack=null;renderQuiz()};
+  {const n=$("#wNew");if(n)n.onclick=()=>{clearInterval(whackT);whack=null;renderWhack()}}
+  view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
+  view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderWhack();window.scrollTo(0,y)});
+  view.querySelectorAll(".whole").forEach(b=>b.addEventListener("pointerdown",e=>{e.preventDefault();wtap(+b.dataset.h)}));
+  view.querySelectorAll(".whole").forEach(b=>b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();wtap(+b.dataset.h)}}));
+  {const g=$("#wGo");if(g)g.onclick=()=>{W.t0=Date.now();renderWhack();wnext()}}
+  {const s=$("#wSay");if(s)s.onclick=()=>say(W.cur.w)}
+  if(W.t0&&!W.over&&W.pool.length>=4){
+    W.holes.forEach((h,i)=>{if(h&&!h.hit){const el=view.querySelector(`.whole[data-h="${i}"]`);el.querySelector(".wcard span").textContent=h.zh;el.classList.add("up");el.disabled=false;el.setAttribute("aria-label",h.zh)}});
+    whackT=setInterval(wtick,100)}
 }
 
 /* ================= 筆記本 ================= */
