@@ -540,6 +540,30 @@ nav.tabs button[aria-current="page"]{background:var(--hl);color:#141c3a}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ink);box-shadow:3px 3px 0 var(--hl)}
 .heat i.l4{background:var(--accent)}.legend i.l4{background:var(--accent)}
 .week b{background:var(--accent)}
+/* ================= v14 登入封面 + 翻面 + 完成彩帶 ================= */
+.cover{position:relative;height:210px;margin:6px 0 2px}
+.cover .cc{position:absolute;left:50%;top:14px;width:min(78%,300px);height:168px;margin-left:calc(min(78%,300px)/-2);background:var(--surface);border:2px solid var(--edge);border-radius:14px;
+  background-image:radial-gradient(circle,color-mix(in srgb,var(--accent) 22%,transparent) 1px,transparent 1.3px);background-size:16px 16px}
+.cover .c1{transform:rotate(-9deg) translate(-26px,10px);background-color:var(--note)}
+.cover .c2{transform:rotate(6deg) translate(24px,6px)}
+.cover .c3{box-shadow:6px 6px 0 var(--edge);display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 22px;animation:coverIn .7s cubic-bezier(.2,.8,.2,1) both}
+.cover .c3::before{content:"";position:absolute;left:0;right:0;top:34px;height:2px;background:var(--pink)}
+.cover .c3::after{content:"";position:absolute;top:-12px;left:50%;width:78px;height:22px;transform:translateX(-50%) rotate(-2deg);background:color-mix(in srgb,var(--hl) 80%,transparent);border-radius:3px}
+.cover .cw{font:800 34px/1.1 var(--f-display);align-self:flex-start;margin-top:22px;background:linear-gradient(transparent 60%,var(--hl) 60% 92%,transparent 92%);padding:0 6px;margin-left:-6px;color:var(--ink)}
+.cover .ci{font:15px var(--f-phon);color:var(--muted)}
+.cover .cz{font-weight:700;font-size:17px;color:var(--ink)}
+.cover .cw,.cover .ci,.cover .cz{transition:opacity .35s ease}
+.cover.sw .cw,.cover.sw .ci,.cover.sw .cz{opacity:0}
+@keyframes coverIn{from{transform:translateY(26px) rotate(4deg);opacity:0}to{transform:none;opacity:1}}
+.stage{perspective:900px}
+.card.flipping{animation:flipY .46s cubic-bezier(.3,.9,.3,1);transform-origin:50% 50%;backface-visibility:hidden}
+@keyframes flipY{0%{transform:rotateY(88deg) scale(.95);opacity:.2}55%{transform:rotateY(-9deg) scale(1.01);opacity:1}100%{transform:none}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.confetti i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;animation:confFall var(--d) cubic-bezier(.2,.6,.4,1) var(--dl) forwards}
+@keyframes confFall{0%{transform:translate3d(0,0,0) rotate(0)}100%{transform:translate3d(var(--x),105vh,0) rotate(var(--r));opacity:.9}}
+.score{font-size:72px;align-self:flex-start;background:linear-gradient(transparent 62%,var(--hl) 62% 92%,transparent 92%);padding:0 8px;margin-left:-8px}
+.empty{border:2px dashed var(--line)}
+.hw-empty>*:not(.sheader){display:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -3303,11 +3327,13 @@ function srcChips(cur,id,withNb=true){
 }
 
 /* ================= 登入 ================= */
-let pick=null,loginErr="";
+let pick=null,loginErr="",coverT=0;
 function renderLogin(){
   const reg=pick==="new",locals=DB.users.filter(u=>u.prog&&Object.keys(u.prog).length);
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:20px">
-    <div><h1>單字卡片盒</h1><p class="sub">${reg?"建立自己的帳號，進度會存在雲端，換手機也能接著背。":"用你的帳號和密碼登入。"}</p></div>
+    <div><h1>單字卡片盒</h1><p class="sub">${reg?"建立自己的帳號，進度會存在雲端，換手機也能接著背。":"每天翻幾張，單字就留在腦袋裡。"}</p></div>
+    <div class="cover" id="cover" aria-hidden="true"><div class="cc c1"></div><div class="cc c2"></div>
+      <div class="cc c3"><span class="cw" id="cvW">resilient</span><span class="ci" id="cvI">/rɪˈzɪliənt/</span><span class="cz" id="cvZ">adj. 有韌性的</span></div></div>
     <div class="chips" role="tablist"><button data-lt="in" aria-pressed="${!reg}">登入</button><button data-lt="new" aria-pressed="${reg}">註冊新帳號</button></div>
     <form class="panel" id="authF">
       ${reg?`<label class="field">你的名字（顯示用）<input id="aName" maxlength="12" autocomplete="nickname" placeholder="例如：小美"></label>`:""}
@@ -3320,7 +3346,10 @@ function renderLogin(){
     </form>
     <p class="note">${reg?"帳號註冊後不能改，密碼之後可以在「設定」修改。請記好帳號密碼，忘記的話要請家人幫你重設。":"還沒有帳號就按「註冊新帳號」。"}</p>
   </div>`;
-  const enter=u=>{U=u;pick=null;loginErr="";tab="home";render()};
+  const enter=u=>{U=u;pick=null;loginErr="";tab="home";clearInterval(coverT);render()};
+  clearInterval(coverT);{const pool=[...(B.gsat||[]),...(B.ielts||[]),...(B.daily||[])].filter(w=>w[0].length<=11&&!w[0].includes(" "));let i=0;
+    coverT=setInterval(()=>{const c=$("#cover");if(!c||!pool.length){clearInterval(coverT);return}c.classList.add("sw");
+      setTimeout(()=>{const w=pool[Math.floor(Math.random()*pool.length)];if(!$("#cvW"))return;$("#cvW").textContent=w[0];$("#cvI").textContent=w[1];$("#cvZ").textContent=w[2]+" "+w[3].split("；")[0];c.classList.remove("sw")},380)},2600)}
   view.querySelectorAll("[data-lt]").forEach(b=>b.onclick=()=>{pick=b.dataset.lt==="new"?"new":null;loginErr="";renderLogin();setTimeout(()=>$(reg?"#aUser":"#aName")?.focus(),0)});
   $("#authF").onsubmit=async e=>{e.preventDefault();const err=m=>{$("#aErr").textContent=m};
     const user=$("#aUser").value.trim().toLowerCase(),pass=$("#aPass").value;
@@ -3344,6 +3373,11 @@ function renderLogin(){
 
 /* ================= 每日一句 ================= */
 let dailyZh=false,showArch=false,dailyOpen=false;
+function party(){try{if(matchMedia("(prefers-reduced-motion:reduce)").matches)return}catch(e){}
+  const old=document.querySelector(".confetti");if(old)old.remove();const d=document.createElement("div");d.className="confetti";
+  const cs=["var(--hl)","var(--pink)","var(--accent)","var(--good)","var(--ink)"];let h="";
+  for(let i=0;i<70;i++)h+=`<i style="left:${Math.random()*100}%;background:${cs[i%cs.length]};--x:${(Math.random()*160-80).toFixed(0)}px;--r:${(Math.random()*1400-700).toFixed(0)}deg;--d:${(1.6+Math.random()*1.6).toFixed(2)}s;--dl:${(Math.random()*.5).toFixed(2)}s;${i%3===0?"border-radius:50%;height:9px":""}"></i>`;
+  d.innerHTML=h;document.body.appendChild(d);setTimeout(()=>d.remove(),4200)}
 const AKEY=KEY+":daily-archive";
 function archive(){let a={};try{a=JSON.parse(localStorage.getItem(AKEY))||{}}catch(e){}return a}
 (function keepDaily(){try{if(typeof DAILY==="undefined"||!DAILY.en)return;const a=archive();a[DAILY.date]=DAILY;localStorage.setItem(AKEY,JSON.stringify(a))}catch(e){}})();
@@ -3395,7 +3429,7 @@ function statsHtml(){
   const W="日一二三四五六",last=[];for(let d=t-6;d<=t;d++)last.push(d);
   const mx=Math.max(1,...last.map(d=>h[d]||0)),sum7=last.reduce((a,d)=>a+(h[d]||0),0);
   const total=Object.values(h).reduce((a,b)=>a+b,0),days=Object.keys(h).length;
-  return `<section class="panel heatwrap"><div class="sheader"><h2>學習紀錄</h2><span>近 7 天 ${sum7} 張 · 累計 ${total} 張 · ${days} 天</span></div>
+  return `<section class="panel heatwrap ${total?"":"hw-empty"}"><div class="sheader"><h2>學習紀錄</h2><span>${total?`近 7 天 ${sum7} 張 · 累計 ${total} 張 · ${days} 天`:"背完第一張，這裡就會開始記錄"}</span></div>
     <div class="week">${last.map(d=>`<div class="${h[d]?"":"zero"}"><span>${h[d]||""}</span><b style="height:${(h[d]||0)/mx*62}px"></b><span>${d===t?"今":W[((d+4)%7+7)%7]}</span></div>`).join("")}</div>
     <div class="heat" aria-label="近 18 週學習熱力圖">${cells}</div>
     <div class="legend">少 <i style="background:var(--chip)"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> 多</div></section>`;
@@ -3675,6 +3709,7 @@ function renderStudy(){
   const s=session;
   let body;
   if(!s.q.length){
+    if(s.total&&s.done&&!s.partied){s.partied=true;party()}
     const nb=s.src==="nb"&&!s.total,wk=s.src==="weak"&&!s.total;
     body=`${sessionSummary(s)}<div class="empty"><h2>${nb?"筆記本是空的":wk?"目前沒有常錯的字":s.total?"這組今天完成了":"今天沒有要複習的卡片"}</h2>
       <p>${nb?"翻卡時按星號、或測驗答錯的字，會自動收進筆記本。":wk?"翻卡按「不熟」或測驗答錯的字，會依錯的次數排在這裡，方便集中練習。":"明天到期的卡片會自動出現。可以換一組，或去做測驗。"}</p>
@@ -3835,6 +3870,7 @@ function renderQuiz(){
   if(Q.empty&&Q.mode==="confuse"){body=`<div class="empty"><h2>${Q.loading?"易混字題庫載入中…":"題庫暫時讀不到"}</h2><p>稍等一下，或重新整理頁面。</p></div>`}
   else if(Q.empty){body=`<div class="empty"><h2>這裡還沒有單字</h2><p>${qmode==="cloze"?"這組單字沒有例句可以出填空題，換一個分類或題型試試。":quizSrc==="nb"?"把不會的字加進筆記本，就能專門測它們。":quizSrc==="weak"?"還沒有答錯或標「不熟」的字，先去翻卡或測驗吧。":"換一個分類試試。"}</p></div>`}
   else if(Q.i>=Q.qs.length){
+    if(!Q.partied&&Q.qs.length&&Q.score/Q.qs.length>=.8){Q.partied=true;party()}
     body=`<div class="qcard">
       <div class="meta"><span>測驗結果 · ${esc(QMODES[Q.mode])}${Q.retry?` <span class="qretry">重測答錯</span>`:""}</span><span>${esc(srcName(Q.src))}</span></div>
       <div class="score">${Q.score}<span style="font-size:24px;color:var(--muted)"> / ${Q.qs.length}</span></div>
