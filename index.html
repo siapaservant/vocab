@@ -8,7 +8,7 @@
 <title>單字卡片盒</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Gentium+Book+Plus:ital@0;1&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Gentium+Book+Plus:ital@0;1&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@900&display=swap">
 <style>
 /* Layout: one narrow column like a card file drawer; the ruled index card is the hero, tabs pinned to the bottom for thumbs */
 :root{
@@ -437,6 +437,109 @@ html.fs-l .tapnote{font-size:14px}html.fs-xl .tapnote{font-size:15px}
 .icon.slowb{font:700 13px var(--f-body);width:34px}
 .nbclean{align-self:flex-start}
 html.fs-l .icon.slowb{font-size:14px}html.fs-xl .icon.slowb{font-size:15px}
+/* ================= v13 新視覺：原子筆藍 + 螢光筆黃的「文具」風格（只改外觀） ================= */
+:root{--bg:#eceef2;--surface:#fffefb;--ink:#141c3a;--muted:#59617c;--line:#cfd4e2;--chip:#e4e7f0;
+  --accent:#2440d8;--accent2:#2440d8;--accent-ink:#fff;--hl:#ffe24a;--pink:#ff7aa8;--note:#fff2a8;--note-ink:#141c3a;
+  --edge:#141c3a;--hard:4px 4px 0 var(--edge);--shadow:0 1px 0 color-mix(in srgb,var(--edge) 10%,transparent);--r:16px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f121c;--surface:#191e2e;--ink:#eef0f8;--muted:#a0a8c2;--line:#2c3350;--chip:#252c44;
+  --accent:#92a4ff;--accent2:#92a4ff;--accent-ink:#0f121c;--hl:#e9c62f;--pink:#ff8fb4;--note:#3d3712;--note-ink:#fdf5c4;--edge:#05070d;
+  --shadow:0 1px 0 rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--bg:#0f121c;--surface:#191e2e;--ink:#eef0f8;--muted:#a0a8c2;--line:#2c3350;--chip:#252c44;
+  --accent:#92a4ff;--accent2:#92a4ff;--accent-ink:#0f121c;--hl:#e9c62f;--pink:#ff8fb4;--note:#3d3712;--note-ink:#fdf5c4;--edge:#05070d;--shadow:0 1px 0 rgba(0,0,0,.5)}
+body{background:radial-gradient(circle,color-mix(in srgb,var(--ink) 13%,transparent) 1px,transparent 1.3px) 0 0/22px 22px,var(--bg);background-attachment:fixed}
+.wrap{padding-block:22px 148px}
+h1{font-family:var(--f-display),"Noto Serif TC",serif;background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--ink);font-size:32px;letter-spacing:-.02em;
+  display:inline;background-image:linear-gradient(transparent 64%,var(--hl) 64% 94%,transparent 94%);padding:0 4px;margin-left:-4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) h1{background-image:linear-gradient(transparent 86%,var(--hl) 86% 96%,transparent 96%)}}
+:root[data-theme="dark"] h1{background-image:linear-gradient(transparent 86%,var(--hl) 86% 96%,transparent 96%)}
+header.top .sub{margin-top:6px}
+h2{font-size:19px;letter-spacing:-.01em}
+.panel,.qcard,.list,.empty,.art,.arch .aitem{border:1.5px solid var(--line);box-shadow:none;border-radius:var(--r)}
+.cat,.ucard,.lvc,.ncard{border:1.5px solid var(--line);box-shadow:none;border-radius:14px;transition:transform .12s ease,border-color .12s,box-shadow .12s}
+.cat:hover,.lvc:hover,.ncard:hover{border-color:var(--ink)}
+.cat:active,.lvc:active,.ncard:active,.ucard:active{transform:translate(2px,2px) scale(1)}
+.cat.mine,.lvc.mine{border-color:var(--ink);box-shadow:3px 3px 0 var(--hl)}
+.lvn{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--accent);font-size:22px}
+.who{border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--edge)}
+/* 按鈕：實心原子筆藍 + 硬陰影，按下去會「壓」下去 */
+.btn{background:var(--accent);color:var(--accent-ink);border:2px solid var(--edge);border-radius:14px;box-shadow:var(--hard);transition:transform .08s ease,box-shadow .08s ease;filter:none}
+.btn:hover{filter:none}
+.btn:active{transform:translate(4px,4px) scale(1);box-shadow:0 0 0 var(--edge)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--edge)}
+.btn.ghost:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--edge)}
+.btn.small{border-radius:12px}
+.chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);padding-right:24px}
+.chips button{border:1.5px solid var(--line);background:var(--surface)}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips.small{-webkit-mask-image:none;mask-image:none;padding-right:0}
+.icon{width:40px;height:40px;border:1.5px solid var(--line)}
+.icon svg{width:17px;height:17px}
+.icon.on{background:var(--hl);color:var(--note-ink);border-color:var(--edge)}
+.icon.slowb{width:40px}
+/* 今日進度：放在最上面的主角 */
+.today{border:2px solid var(--edge);box-shadow:6px 6px 0 var(--edge);border-radius:20px;padding:20px;position:relative;overflow:visible}
+.today::before{content:"";position:absolute;top:-11px;left:50%;width:74px;height:22px;transform:translateX(-50%) rotate(-2deg);background:color-mix(in srgb,var(--hl) 78%,transparent);border-radius:3px}
+.ring{background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--chip) 0)}
+.ring>div{background:var(--surface)}
+.facts div b{font-size:24px}
+.bar{height:6px}.bar i{background:var(--accent)}
+.progress i{background:var(--accent)}
+/* 每日一句：一張貼在牆上的便利貼 */
+.daily{background:var(--note);color:var(--note-ink);border:1.5px solid color-mix(in srgb,var(--note-ink) 22%,transparent);border-radius:6px 6px 22px 6px;box-shadow:5px 6px 0 color-mix(in srgb,var(--edge) 16%,transparent);transform:rotate(-.6deg);padding:20px 20px 18px}
+.daily::after{content:"";right:0;bottom:0;top:auto;width:26px;height:26px;background:linear-gradient(135deg,color-mix(in srgb,var(--note-ink) 14%,var(--note)) 50%,var(--bg) 50%);border-radius:0 0 20px 0;font-size:0}
+.daily .meta{font-weight:700;opacity:.8}
+.daily .den{font-size:21px;line-height:1.5}
+.daily .den mark{color:inherit;text-decoration:none;background:linear-gradient(transparent 55%,color-mix(in srgb,var(--pink) 55%,transparent) 55% 92%,transparent 92%)}
+.daily .icon{border-color:color-mix(in srgb,var(--note-ink) 45%,transparent);color:var(--note-ink);background:transparent}
+.daily a,.daily .linkbtn{color:var(--note-ink)}
+.dword{background:color-mix(in srgb,var(--note-ink) 7%,transparent);border-radius:10px}
+.dword button{border-color:color-mix(in srgb,var(--note-ink) 45%,transparent);color:var(--note-ink)}
+.dword button.done{background:color-mix(in srgb,var(--note-ink) 14%,transparent)}
+.dmore summary{cursor:pointer;font-weight:700;font-size:14px;list-style:none;display:inline-flex;align-items:center;gap:6px;text-decoration:underline;text-underline-offset:4px}
+.dmore summary::-webkit-details-marker{display:none}
+.dmore summary::after{content:"＋"}.dmore[open] summary::after{content:"－"}
+.dmore[open] summary{margin-bottom:10px}
+.dmore>div{display:flex;flex-direction:column;gap:10px}
+/* 單字卡：真的索引卡，點點方格紙，不再有橫線切過字 */
+.card{border:2px solid var(--edge);border-radius:14px;box-shadow:6px 6px 0 var(--edge);
+  background-image:radial-gradient(circle,color-mix(in srgb,var(--accent) 22%,transparent) 1px,transparent 1.3px);background-size:16px 16px;background-position:8px 70px;background-color:var(--surface);padding:20px 22px 24px}
+.card::before{top:60px;height:2px;background:var(--pink);opacity:1}
+.card::after{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;transform:translateX(-50%) rotate(1.5deg);background:color-mix(in srgb,var(--hl) 78%,transparent);border-radius:3px}
+.word{align-self:flex-start;background-image:linear-gradient(transparent 60%,var(--hl) 60% 92%,transparent 92%);padding:0 8px;margin-left:-8px;letter-spacing:-.02em}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .word{background-image:linear-gradient(transparent 88%,var(--hl) 88% 96%,transparent 96%)}}
+:root[data-theme="dark"] .word{background-image:linear-gradient(transparent 88%,var(--hl) 88% 96%,transparent 96%)}
+.zh,.ex{line-height:1.5}
+.pos{color:var(--pink);font-weight:700}
+.ex mark,.cloze mark{color:var(--accent)}
+.fchip{background:var(--chip);border-radius:8px}
+.box-dots i{width:9px;height:9px;border:1.5px solid var(--ink);background:transparent}
+.box-dots i.on{background:var(--accent);border-color:var(--accent)}
+.rate button{border:2px solid var(--edge);border-radius:14px;box-shadow:3px 3px 0 var(--edge);transition:transform .08s,box-shadow .08s}
+.rate button:active{transform:translate(3px,3px) scale(1);box-shadow:0 0 0 var(--edge)}
+.swipehint{margin-top:2px}
+/* 測驗選項 */
+.qcard{border:2px solid var(--edge);box-shadow:6px 6px 0 var(--edge)}
+.opts button{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;transition:transform .08s,border-color .1s,box-shadow .1s}
+.opts button:not(:disabled):hover{border-color:var(--ink);box-shadow:3px 3px 0 var(--hl)}
+.opts button:not(:disabled):active{transform:translate(2px,2px);box-shadow:none}
+.right{box-shadow:3px 3px 0 var(--good)!important}.wrong{box-shadow:3px 3px 0 var(--bad)!important}
+/* 新聞 */
+.ncard.lead{background:var(--surface);border:2px solid var(--edge);box-shadow:6px 6px 0 var(--edge)}
+.ntopic{background:var(--hl);color:#141c3a;border:1.5px solid #141c3a}
+.nwords i{border-radius:6px}
+.kw{background:linear-gradient(transparent 55%,color-mix(in srgb,var(--hl) 80%,transparent) 55% 94%,transparent 94%);color:inherit;border-radius:0;padding:0 1px}
+.kwdemo{color:inherit;background:linear-gradient(transparent 55%,var(--hl) 55% 94%,transparent 94%)}
+.art{border:2px solid var(--edge);box-shadow:6px 6px 0 var(--edge)}
+.wsheet{border:2px solid var(--edge);box-shadow:4px 4px 0 var(--edge)}
+/* 底部導覽：一條有墨線的膠囊，選中的那格用螢光筆塗滿 */
+nav.tabs{border:2px solid var(--edge);border-radius:20px;box-shadow:4px 4px 0 var(--edge);background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+nav.tabs button{font-size:12px;border-radius:13px;color:var(--muted)}
+nav.tabs button[aria-current="page"]{background:var(--hl);color:#141c3a}
+.toast{background:var(--ink);color:var(--bg);border-radius:10px;box-shadow:3px 3px 0 var(--hl)}
+.field input,.field select,.field textarea,.input{border:1.5px solid var(--line);border-radius:10px;background:var(--surface)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ink);box-shadow:3px 3px 0 var(--hl)}
+.heat i.l4{background:var(--accent)}.legend i.l4{background:var(--accent)}
+.week b{background:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -3240,7 +3343,7 @@ function renderLogin(){
 }
 
 /* ================= 每日一句 ================= */
-let dailyZh=false,showArch=false;
+let dailyZh=false,showArch=false,dailyOpen=false;
 const AKEY=KEY+":daily-archive";
 function archive(){let a={};try{a=JSON.parse(localStorage.getItem(AKEY))||{}}catch(e){}return a}
 (function keepDaily(){try{if(typeof DAILY==="undefined"||!DAILY.en)return;const a=archive();a[DAILY.date]=DAILY;localStorage.setItem(AKEY,JSON.stringify(a))}catch(e){}})();
@@ -3261,16 +3364,19 @@ function dailyHtml(){
     <div class="meta"><span>每日一句 · ${+m}/${+d}</span><button class="icon" id="dSay" aria-label="朗讀句子">${ICON.spk}</button></div>
     <div class="den">${en}</div>
     ${dailyZh?`<div class="dzh">${esc(DAILY.zh)}</div>`:`<button class="linkbtn" id="dZh">看中文翻譯</button>`}
+    <details class="dmore" id="dMore" ${dailyOpen?"open":""}><summary>重點單字和小知識</summary><div>
     <div class="dwords">${DAILY.words.map((w,i)=>`<div class="dword"><div><b>${esc(w[0])}</b> <span>${esc(w[1])} ${esc(w[2])} ${esc(w[3])}</span></div>
       <button data-dw="${i}" class="${inNb("mine:"+w[0])?"done":""}">${inNb("mine:"+w[0])?"✓ 已加入":"加入筆記本"}</button></div>`).join("")}</div>
     ${DAILY.note?`<div class="dzh">${esc(DAILY.note)}</div>`:""}
     <div class="dactions">${DAILY.source?`<a href="${esc(DAILY.source.url)}" target="_blank" rel="noopener">來源：${esc(DAILY.source.title)}</a>`:""}
       <button class="linkbtn" id="dArch">${showArch?"收起往期":"往期每日一句"}</button></div>
+    </div></details>
   </section>`;
 }
 function bindDaily(){
   const s=$("#dSay");if(!s)return;
   s.onclick=()=>say(DAILY.en);
+  const dm=$("#dMore");if(dm)dm.ontoggle=()=>{dailyOpen=dm.open};
   const z=$("#dZh");if(z)z.onclick=()=>{dailyZh=true;renderHome()};
   const ar=$("#dArch");if(ar)ar.onclick=()=>{showArch=!showArch;renderHome()};
   view.querySelectorAll("[data-asay]").forEach(b=>b.onclick=()=>{const x=archive()[b.dataset.asay];if(x)say(x.en)});
@@ -3470,10 +3576,6 @@ function renderHome(){
   const lvs=Object.keys(CATS).filter(k=>CATS[k].lv);
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:18px">
     ${topbar("嗨，"+esc(U.name),"目標："+esc(GOALS[U.goal]))}
-    ${dailyHtml()}
-    ${showArch?archHtml():""}
-    ${newsTeaser()}
-    ${bkHtml()}
     <section class="panel today">
       <div class="ring" style="--p:${pct}"><div><b>${doneN}</b><small>/ ${goal} 張</small></div></div>
       <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
@@ -3481,6 +3583,10 @@ function renderHome(){
         <button class="btn" id="startNow">${dueN?`開始今天的 ${dueN} 張`:"今天的複習完成了，去測驗"}</button>
       </div>
     </section>
+    ${dailyHtml()}
+    ${showArch?archHtml():""}
+    ${newsTeaser()}
+    ${bkHtml()}
     ${statsHtml()}
     ${todayHtml()}
     <section style="display:flex;flex-direction:column;gap:10px">
