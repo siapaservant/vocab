@@ -1003,6 +1003,18 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .empty .eart+h2,.empty .eart+p{margin-top:0}
 .libnone{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px 20px;text-align:center}
 .libnone .z{color:var(--muted)}
+/* v24 首頁進場發牌 */
+@property --p{syntax:"<number>";inherits:true;initial-value:0}
+.hintro>*{animation:hDeal .62s cubic-bezier(.2,.85,.25,1.05) both;animation-delay:calc(var(--i,0)*75ms + 40ms - var(--t0,0ms))}
+.hintro>.top{animation-name:hTop}
+.hintro .today .ring{animation:hRing .9s cubic-bezier(.3,.7,.2,1) both;animation-delay:calc(380ms - var(--t0,0ms))}
+.hintro .today .ring b{animation:hPop .4s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(1050ms - var(--t0,0ms))}
+.hintro #startNow{animation:hPress .32s ease-out both;animation-delay:calc(1150ms - var(--t0,0ms))}
+@keyframes hDeal{0%{opacity:0;transform:translateY(34px) rotate(var(--hr,0deg)) scale(.985)}60%{opacity:1}}
+@keyframes hTop{from{opacity:0;transform:translateY(-10px)}}
+@keyframes hRing{from{--p:0}}
+@keyframes hPop{from{transform:scale(.6);opacity:.3}}
+@keyframes hPress{45%{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--edge)}}
 @media (prefers-reduced-motion:no-preference){
 .eart .draw{stroke-dasharray:80;stroke-dashoffset:80;animation:eartDraw .55s .2s cubic-bezier(.6,.1,.3,1) forwards}
 .eart .wig{transform-box:fill-box;transform-origin:50% 100%;animation:eartWig .9s .15s ease-out both}
@@ -4074,6 +4086,17 @@ function todayHtml(){const ids=tdGet();if(!ids.length)return "";
     <p class="note" style="margin:0 0 10px">睡前再聽一遍，記得更牢。按喇叭聽發音，按星星加入筆記本。</p>
     <div class="list">${ws.map(x=>`<div class="item"><div class="w">${esc(x.w)}<span>${esc(x.ipa)}</span></div><div class="z">${esc(x.pos)} ${esc(x.zh)}</div><div class="r"><button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button>${starBtn(x.id)}</div></div>`).join("")}</div>
     <div class="row2" style="margin-top:10px"><button class="btn ghost small" id="tdAll">全部依序念一遍</button></div></details>`}
+/* v24 首頁進場：每次開啟 App 只發一次牌（卡片由下往上疊進桌面），重繪時接續同一段時間軸 */
+let homeIntroAt=null;
+function homeIntro(){try{
+  const box=view.firstElementChild;if(!box)return;
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){homeIntroAt=-1e9;return}
+  const now=performance.now();if(homeIntroAt===null)homeIntroAt=now;
+  const t=now-homeIntroAt;if(t>1600)return;
+  box.classList.add("hintro");box.style.setProperty("--t0",Math.round(t)+"ms");
+  [...box.children].forEach((c,i)=>{c.style.setProperty("--i",Math.min(i,7));c.style.setProperty("--hr",(i%2?1:-1)*(i?1.4:0)+"deg")});
+  setTimeout(()=>{if(box.isConnected){box.classList.remove("hintro");[...box.children].forEach(c=>{c.style.removeProperty("--i");c.style.removeProperty("--hr")})}},1700-t);
+}catch(e){}}
 function renderHome(){
   touchDay();
   const goal=U.daily,doneN=U.day.n,pct=Math.min(100,Math.round(doneN/goal*100));
@@ -4144,7 +4167,7 @@ function renderHome(){
       </div></section>
     </div></details>
   </div>`;
-  bindTop();bindDaily();
+  bindTop();bindDaily();homeIntro();
   view.querySelectorAll("[data-hn]").forEach(b=>b.onclick=()=>{newsSel=b.dataset.hn;newsZhAll=false;newsZhOpen={};go("news")});
   /* 今天學過的字 */
   const tdd=$("#tdD");if(tdd)tdd.ontoggle=()=>{tdOpen=tdd.open};
