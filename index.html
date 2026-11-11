@@ -1069,6 +1069,40 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
   .ncard.lead .nstamp{animation:nstamp .45s cubic-bezier(.3,1.6,.5,1) .15s both}
   @keyframes nstamp{from{transform:rotate(-9deg) scale(1.8);opacity:0}}
 }
+
+/* ===== v26 往期每日一句：便利貼牆 ===== */
+.arch.wall{gap:6px}
+.wall .sheader{align-items:center}
+.wnav{display:flex;align-items:center;gap:8px}
+.wnav b{font-family:var(--f-display);font-size:14px;font-variant-numeric:tabular-nums;color:var(--muted);min-width:4.2em;text-align:right}
+.wnav .icon{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--edge);background:var(--surface);color:var(--ink);box-shadow:3px 3px 0 var(--edge);display:grid;place-items:center;transition:transform .12s,box-shadow .12s}
+.wnav .icon:active:not(:disabled){transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+.wnav .icon:disabled{opacity:.35;box-shadow:none}
+.wtrack{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding:22px 8px 18px;margin:0 -8px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 28px),transparent)}
+.wtrack::-webkit-scrollbar{display:none}
+.wtrack:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:10px}
+.arch .aitem.wn{flex:0 0 min(80%,340px);scroll-snap-align:start;position:relative;border:1.5px solid color-mix(in srgb,var(--edge) 55%,transparent);
+  border-radius:4px 4px 20px 4px;padding:18px 16px 16px;gap:8px;transform:rotate(var(--tilt));transition:transform .25s cubic-bezier(.3,1.4,.5,1);
+  box-shadow:4px 5px 0 color-mix(in srgb,var(--edge) 18%,transparent);background:var(--wbg);color:var(--wink,var(--ink))}
+.arch .aitem.wn:hover,.arch .aitem.wn:focus-within{transform:rotate(0) translateY(-3px)}
+.wn0{--wbg:var(--note);--wink:var(--note-ink);--wtape:color-mix(in srgb,var(--pink) 55%,transparent)}
+.wn1{--wbg:color-mix(in srgb,var(--pink) 22%,var(--surface));--wtape:color-mix(in srgb,var(--accent) 35%,transparent)}
+.wn2{--wbg:color-mix(in srgb,var(--accent) 13%,var(--surface));--wtape:color-mix(in srgb,var(--hl) 70%,transparent)}
+.wn3{--wbg:color-mix(in srgb,var(--good,#2fa36b) 16%,var(--surface));--wtape:color-mix(in srgb,var(--pink) 45%,transparent)}
+.wtape{position:absolute;top:-11px;left:50%;width:74px;height:22px;margin-left:-37px;background:var(--wtape);transform:rotate(calc(var(--tilt) * -2));
+  clip-path:polygon(2% 0,98% 6%,100% 30%,97% 55%,100% 80%,98% 100%,3% 94%,0 70%,3% 45%,0 20%)}
+.wn .meta{color:inherit}
+.wdate{display:flex;align-items:baseline;gap:6px}
+.wdate b{font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:-.01em;background:linear-gradient(transparent 62%,color-mix(in srgb,var(--hl) 80%,transparent) 62% 92%,transparent 92%);padding:0 2px}
+.wn0 .wdate b{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--pink) 45%,transparent) 62% 92%,transparent 92%)}
+.wdate small{font-size:12px;opacity:.7}
+.wn .icon{background:transparent;color:inherit;border-color:color-mix(in srgb,currentColor 30%,transparent)}
+.wn .aen{font-size:17px;line-height:1.5}
+.wn .azh{color:inherit;opacity:.78;font-size:13.5px;line-height:1.55;padding-top:8px;border-top:1.5px dashed color-mix(in srgb,currentColor 22%,transparent)}
+.wn .fchip{background:color-mix(in srgb,var(--surface) 60%,transparent);border:1px solid color-mix(in srgb,currentColor 18%,transparent);color:inherit}
+@media (min-width:900px){.arch .aitem.wn{flex-basis:300px}}
+@media (prefers-reduced-motion:reduce){.arch .aitem.wn{transition:none}}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -3914,13 +3948,30 @@ const AKEY=KEY+":daily-archive";
 function archive(){let a={};try{a=JSON.parse(localStorage.getItem(AKEY))||{}}catch(e){}return a}
 (function keepDaily(){try{if(typeof DAILY==="undefined"||!DAILY.en)return;const a=archive();a[DAILY.date]=DAILY;localStorage.setItem(AKEY,JSON.stringify(a))}catch(e){}})();
 function archHtml(){
-  const a=archive(),days=Object.keys(a).filter(d=>d!==DAILY.date).sort().reverse();
-  return `<section class="arch" aria-label="往期每日一句"><div class="sheader"><h2>往期每日一句</h2><span>${days.length} 句</span></div>
-  ${days.length?days.map(d=>{const x=a[d],[,m,dd]=d.split("-");return `<div class="aitem"><div class="meta"><span>${+m}/${+dd}</span><button class="icon" data-asay="${esc(d)}" aria-label="朗讀">${ICON.spk}</button></div>
+  const a=archive(),days=Object.keys(a).filter(d=>d!==DAILY.date).sort().reverse(),WD="日一二三四五六";
+  if(!days.length)return `<section class="arch" aria-label="往期每日一句"><div class="sheader"><h2>往期每日一句</h2><span>0 句</span></div>
+  <div class="empty">${emptyArt("daily")}<p>從今天開始，每天的句子都會自動收進這裡（存在這支手機上）。明天再來看看。</p></div></section>`;
+  return `<section class="arch wall" aria-label="往期每日一句"><div class="sheader"><h2>往期每日一句</h2>
+    <span class="wnav"><b id="wPos" aria-live="polite">1 / ${days.length}</b>
+    <button class="icon" id="wPrev" aria-label="較新的一句" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="icon" id="wNext" aria-label="較舊的一句" ${days.length<2?"disabled":""}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></span></div>
+  <div class="wtrack" id="wTrack" tabindex="0" role="group" aria-label="左右滑動看更多往期句子">
+  ${days.map((d,i)=>{const x=a[d],[y,m,dd]=d.split("-"),wd=WD[new Date(+y,m-1,+dd).getDay()];return `<article class="aitem wn wn${i%4}" style="--tilt:${[-1.6,1.1,-.5,1.7][i%4]}deg">
+    <i class="wtape" aria-hidden="true"></i>
+    <div class="meta"><span class="wdate"><b>${+m}/${+dd}</b><small>週${wd}</small></span><button class="icon" data-asay="${esc(d)}" aria-label="朗讀 ${+m}/${+dd} 的句子">${ICON.spk}</button></div>
     <div class="aen">${esc(x.en)}</div><div class="azh">${esc(x.zh)}</div>
-    <div class="forms">${(x.words||[]).map(w=>`<span class="fchip">${esc(w[0])} · ${esc(w[3])}</span>`).join("")}</div></div>`}).join("")
-  :`<div class="empty">${emptyArt("daily")}<p>從今天開始，每天的句子都會自動收進這裡（存在這支手機上）。明天再來看看。</p></div>`}</section>`;
+    <div class="forms">${(x.words||[]).map(w=>`<span class="fchip">${esc(w[0])} · ${esc(w[3])}</span>`).join("")}</div></article>`}).join("")}
+  </div></section>`;
 }
+function wallBind(){const t=document.getElementById("wTrack");if(!t)return;
+  const cards=[...t.children],pos=document.getElementById("wPos"),pv=document.getElementById("wPrev"),nx=document.getElementById("wNext");
+  const cur=()=>{const l=t.getBoundingClientRect().left;let b=0,bd=1e9;cards.forEach((c,i)=>{const dd=Math.abs(c.getBoundingClientRect().left-l-parseFloat(getComputedStyle(t).paddingLeft||0));if(dd<bd){bd=dd;b=i}});return b};
+  const upd=()=>{const i=t.scrollLeft+t.clientWidth>=t.scrollWidth-4?cards.length-1:cur();pos.textContent=(i+1)+" / "+cards.length;pv.disabled=i<=0&&t.scrollLeft<4;nx.disabled=i>=cards.length-1};
+  const goTo=i=>{const c=cards[Math.max(0,Math.min(cards.length-1,i))];let sm="smooth";try{if(matchMedia("(prefers-reduced-motion:reduce)").matches)sm="auto"}catch(e){}
+    t.scrollTo({left:c.offsetLeft-t.offsetLeft-parseFloat(getComputedStyle(t).paddingLeft||0),behavior:sm})};
+  pv.onclick=()=>goTo(cur()-1);nx.onclick=()=>goTo(cur()+1);
+  t.onkeydown=e=>{if(e.key==="ArrowRight"){e.preventDefault();goTo(cur()+1)}else if(e.key==="ArrowLeft"){e.preventDefault();goTo(cur()-1)}};
+  let raf=0;t.addEventListener("scroll",()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(upd)},{passive:true});upd()}
 function dailyHtml(){
   if(typeof DAILY==="undefined"||!DAILY.en)return "";
   const [,m,d]=DAILY.date.split("-");
@@ -3945,7 +3996,7 @@ function bindDaily(){
   const dm=$("#dMore");if(dm)dm.ontoggle=()=>{dailyOpen=dm.open};
   const z=$("#dZh");if(z)z.onclick=()=>{dailyZh=true;renderHome()};
   const ar=$("#dArch");if(ar)ar.onclick=()=>{showArch=!showArch;renderHome()};
-  view.querySelectorAll("[data-asay]").forEach(b=>b.onclick=()=>{const x=archive()[b.dataset.asay];if(x)say(x.en)});
+  view.querySelectorAll("[data-asay]").forEach(b=>b.onclick=()=>{const x=archive()[b.dataset.asay];if(x)say(x.en)});wallBind();
   view.querySelectorAll("[data-dw]").forEach(b=>b.onclick=()=>{
     const w=DAILY.words[+b.dataset.dw],id="mine:"+w[0];
     if(!U.custom.some(x=>x.w.toLowerCase()===w[0].toLowerCase()))U.custom.push({w:w[0],ipa:w[1],pos:w[2],zh:w[3],forms:w[4]||"",ex:DAILY.en,exzh:DAILY.zh});
