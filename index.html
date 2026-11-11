@@ -1196,6 +1196,17 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 :root[data-theme="dark"] .kw{color:var(--ink)}
 :root[data-theme="dark"] .snote b{background:var(--hl);color:#141c3a;border-radius:3px}
 :root[data-theme="dark"] .oline.ok .ochip{color:#141c3a}
+/* ===== v30 無障礙：鍵盤焦點（墨藍框＋螢光黃光暈）、觸控範圍至少 44px（用透明擴大點擊區，外觀不變） ===== */
+:where(button,a[href],summary,select,input,textarea,[role=button],[tabindex]):focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+:where(button,a[href],summary,[role=button]):focus-visible{box-shadow:0 0 0 6px color-mix(in srgb,var(--hl) 75%,transparent)}
+.icon,.linkbtn,.dword button,.chips button,.who,.dmore>summary,.ssub>summary{position:relative}
+.icon::before,.linkbtn::before,.dword button::before,.chips button::before,.who::before{content:"";position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.chips{padding-top:7px;padding-bottom:7px;margin-top:-7px;margin-bottom:-7px}
+.nrow,.btn.small{min-height:44px}
+.field input,.field select{min-height:44px}
+.dmore>summary{padding-block:10px;margin-block:-10px}
+.pos{color:color-mix(in srgb,var(--pink) 66%,var(--ink))}
+@media (prefers-reduced-motion:reduce){:focus-visible{transition:none}}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -5075,8 +5086,8 @@ function renderLib(){
     base.sort((a,b)=>rk(a)-rk(b)||String(a.w).length-String(b.w).length)}
   const ws=base.filter(x=>stOk(x,libSt));
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${topbar("單字庫",`共 ${allWords().length} 個單字`)}
-    <div class="chips small" id="libC">${cats.map(k=>`<button data-c="${k}" aria-pressed="${k===libCat}">${k==="all"?"全部":esc(CATS[k].name)} <span style="opacity:.6;font-variant-numeric:tabular-nums">${k==="all"?allWords().length:wordsOf(k).length}</span></button>`).join("")}</div>
-    <div class="chips small" id="libS" role="group" aria-label="依學習進度篩選">${Object.entries(LST).map(([k,v])=>`<button data-st="${k}" aria-pressed="${k===libSt}">${v} <span style="opacity:.6;font-variant-numeric:tabular-nums">${base.filter(x=>stOk(x,k)).length}</span></button>`).join("")}</div>
+    <div class="chips small" id="libC">${cats.map(k=>`<button data-c="${k}" aria-pressed="${k===libCat}">${k==="all"?"全部":esc(CATS[k].name)} <span style="opacity:.72;font-variant-numeric:tabular-nums">${k==="all"?allWords().length:wordsOf(k).length}</span></button>`).join("")}</div>
+    <div class="chips small" id="libS" role="group" aria-label="依學習進度篩選">${Object.entries(LST).map(([k,v])=>`<button data-st="${k}" aria-pressed="${k===libSt}">${v} <span style="opacity:.72;font-variant-numeric:tabular-nums">${base.filter(x=>stOk(x,k)).length}</span></button>`).join("")}</div>
     ${libCat!=="all"&&wordsOf(libCat).length?`<div class="row2"><button class="btn small" id="libStudy">翻卡練習這一組</button><button class="btn ghost small" id="libQuiz">測驗這一組</button></div>`:""}
     <input class="input" id="libQ" placeholder="搜尋英文、中文或變化形（如 caught）" value="${esc(libQ)}" aria-label="搜尋單字">
     ${ws.length>0?`<p class="note" style="margin:0">${libQ?`找到 ${ws.length} 個`:`共 ${ws.length} 個`}${ws.length>libLimit?`，先顯示前 ${libLimit} 個`:""}</p>`:""}
