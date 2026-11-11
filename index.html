@@ -7,6 +7,25 @@
 <body>
 <title>單字卡片盒</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="每天翻幾張，單字就留在腦袋裡。翻卡、測驗、讀新聞學英文單字。">
+<meta name="theme-color" content="#eceef2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f121c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="單字卡片盒">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:type" content="website">
+<meta property="og:title" content="單字卡片盒">
+<meta property="og:description" content="每天翻幾張，單字就留在腦袋裡。翻卡、測驗、讀新聞學英文單字。">
+<meta property="og:url" content="https://siapaservant.github.io/vocab/">
+<meta property="og:image" content="https://siapaservant.github.io/vocab/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Gentium+Book+Plus:ital@0;1&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap">
 <style>
@@ -601,6 +620,50 @@ nav.tabs button[aria-current="page"]{background:var(--hl);color:#141c3a}
 .snote b{color:var(--ink);background:linear-gradient(transparent 55%,var(--hl) 55%);display:inline-block;padding:0 3px;margin-bottom:4px}
 .nq .opts button{font-size:15px}
 .nscore b{color:var(--ink);background:linear-gradient(transparent 60%,var(--hl) 60%);padding:0 4px}
+/* 閱讀進度條：寬度 0 時不要留下左上角的小墨點 */
+#readbar{border:0;height:6px;box-shadow:inset 0 -1.5px 0 var(--edge),inset -1.5px 0 0 var(--edge)}
+/* ================= v16 寬螢幕（≥900px）：左側直式導覽＋較寬內容，手機版不變 ================= */
+@media (min-width:900px){
+  body{padding-left:0;padding-right:0}
+  .wrap:not(.nonav){max-width:none;margin:0 0 0 252px;padding:34px 40px 64px;align-items:center}
+  .wrap:not(.nonav)>#view{width:100%;max-width:900px}
+  nav.tabs{left:24px;right:auto;top:24px;bottom:24px;width:204px;padding:20px 12px 14px;border-radius:18px;
+    display:flex;flex-direction:column;
+    background:var(--surface) radial-gradient(circle,color-mix(in srgb,var(--ink) 9%,transparent) 1px,transparent 1.3px) 0 0/16px 16px}
+  nav.tabs .in{max-width:none;margin:0;display:flex;flex-direction:column;gap:4px;flex:1}
+  nav.tabs .in::before{content:"單字卡片盒";font:700 22px/1.2 "Noto Serif TC",serif;color:var(--ink);letter-spacing:.02em;
+    padding:0 6px 4px;margin:0 6px 18px;align-self:flex-start;
+    background:linear-gradient(transparent 84%,var(--hl) 84% 96%,transparent 96%)}
+  nav.tabs .in::after{content:"每天翻幾張，單字就留在腦袋裡。";margin:auto 6px 0;padding:12px 6px 2px;border-top:2px dashed color-mix(in srgb,var(--edge) 30%,transparent);
+    font:400 12px/1.6 var(--f-body);color:var(--muted)}
+  html nav.tabs button{display:flex;align-items:center;justify-items:start;gap:12px;padding:10px 14px;font:500 15px var(--f-body);
+    border:2px solid transparent;border-radius:12px;text-align:left;transition:background .15s,color .15s,transform .12s,box-shadow .12s}
+  nav.tabs button svg{width:22px;height:22px;flex:none}
+  nav.tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--hl) 28%,transparent)}
+  nav.tabs button[aria-current="page"]{background:var(--hl);color:#141c3a;border-color:var(--edge);box-shadow:3px 3px 0 var(--edge);transform:translate(-1px,-1px);font-weight:700}
+  nav.tabs button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .toast{bottom:28px;left:calc(50% + 126px)}
+  .wsheet{left:252px;right:24px;bottom:28px}
+  .lvgrid{grid-template-columns:repeat(6,1fr)}
+  /* 翻卡、測驗：置中、加大，保持專注 */
+  #view>div:has(>.stage),#view>div:has(>.qcard){max-width:720px;margin:0 auto}
+  #knew{align-self:center}
+  .stage .card{min-height:380px}
+  /* 寬螢幕的選項籤直接換行，不用橫向捲動 */
+  #view .chips{flex-wrap:wrap;overflow:visible;-webkit-mask-image:none;mask-image:none;padding-right:0}
+  /* 新聞文章：限制行長，好讀 */
+  #view>div:has(article.art){max-width:760px;margin:0 auto}
+  /* 新聞列表兩欄，頭條橫跨 */
+  .nlist{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .nlist>.lead,.nlist>:not(.ncard){grid-column:1/-1}
+}
+@media (min-width:1100px){
+  /* 首頁：今天任務橫跨，每日一句與今日新聞並排 */
+  #view>div:has(>.today){display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px!important;align-items:start}
+  #view>div:has(>.today)>*{grid-column:1/-1}
+  #view>div:has(>.today)>.daily{grid-column:1}
+  #view>div:has(>.today)>.nteasep{grid-column:2}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
