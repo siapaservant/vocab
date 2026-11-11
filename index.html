@@ -989,6 +989,28 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .sacts .btn{min-height:44px}
 .btn.ghost.sdel{color:var(--bad);border-color:var(--bad)}
 @media (prefers-reduced-motion:reduce){.sgear,.schev,.sgrp .sw input,.sgrp .sw input::after,.sgrp .sw input::before{transition:none}}
+/* ===== v23 空狀態插圖：手繪線稿（便利貼、鉛筆、索引卡） ===== */
+.eart{width:136px;height:auto;display:block;margin:-6px auto 0;overflow:visible;filter:drop-shadow(3px 3px 0 color-mix(in srgb,var(--edge,#141c3a) 20%,transparent))}
+.eart *{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.eart .w{fill:var(--surface)}.eart .n{fill:var(--note)}.eart .h{fill:var(--hl)}.eart .p{fill:var(--pink)}.eart .bg{fill:var(--bg)}
+.eart .a{stroke:var(--accent)}.eart .pk{stroke:var(--pink)}.eart .ns{stroke:none}
+.eart .t{stroke:color-mix(in srgb,var(--ink) 38%,transparent);stroke-width:1.6}
+.eart .k{fill:color-mix(in srgb,var(--ink) 10%,var(--note))}
+.eart .tape{fill:color-mix(in srgb,var(--hl) 75%,transparent);stroke:none}
+.eart .tape2{fill:color-mix(in srgb,var(--accent) 30%,transparent);stroke:none}
+.eart .ink{fill:var(--ink);stroke:none}
+.eart.sm{width:92px;margin:4px auto 2px}
+.empty .eart+h2,.empty .eart+p{margin-top:0}
+.libnone{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px 20px;text-align:center}
+.libnone .z{color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){
+.eart .draw{stroke-dasharray:80;stroke-dashoffset:80;animation:eartDraw .55s .2s cubic-bezier(.6,.1,.3,1) forwards}
+.eart .wig{transform-box:fill-box;transform-origin:50% 100%;animation:eartWig .9s .15s ease-out both}
+.eart .pop{transform-box:fill-box;transform-origin:center;animation:eartPop .5s .6s both}
+}
+@keyframes eartDraw{to{stroke-dashoffset:0}}
+@keyframes eartWig{0%{transform:rotate(-8deg)}45%{transform:rotate(4deg)}75%{transform:rotate(-2deg)}100%{transform:rotate(0)}}
+@keyframes eartPop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.25);opacity:1}100%{transform:scale(1)}}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -3697,6 +3719,8 @@ function bindTw(rerender){view.querySelectorAll(".ex .tw[data-tw]").forEach(b=>b
   view.querySelectorAll(".tw.sel").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");
   const ex=b.closest(".ex");wordSheet(EXIT,b.dataset.tw,ex?ex.textContent:"",()=>{const y=window.scrollY;rerender();window.scrollTo(0,y)})})}
 function toast(m){document.querySelectorAll(".toast").forEach(e=>e.remove());const e=document.createElement("div");e.className="toast";e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),1800)}
+const EMPTY_ART={notebook:`<g transform="rotate(-5 66 55)"><rect class="w" x="30" y="16" width="64" height="76" rx="4"/><path class="pk" d="M44 18v72"/><path class="t" d="M50 36h36M50 48h36M50 60h36M50 72h24"/><circle class="bg" cx="30" cy="28" r="3.6"/><circle class="bg" cx="30" cy="42" r="3.6"/><circle class="bg" cx="30" cy="56" r="3.6"/><circle class="bg" cx="30" cy="70" r="3.6"/><circle class="bg" cx="30" cy="84" r="3.6"/></g><g class="wig"><g transform="rotate(32 104 58)"><rect class="p" x="98" y="12" width="12" height="8" rx="2"/><path class="w" d="M98 20h12v5H98z"/><path class="h" d="M98 25h12v48H98z"/><path class="t" d="M104 27v44"/><path class="w" d="M98 73h12l-6 13z"/><path class="ink" d="M102.2 82.3h3.6L104 86z"/></g></g><path class="pop" d="M16 78v12M10 84h12"/><path class="pop" d="M122 16v12M116 22h12"/>`,done:`<path class="n" d="M40 18h62v52l-15 15H40z"/><path class="k" d="M102 70H87v15z"/><rect class="tape" x="56" y="10" width="30" height="12" transform="rotate(-6 71 16)"/><path class="a draw" style="stroke-width:6" d="M52 46l12 12 24-26"/><path class="pop" d="M22 28v12M16 34h12"/><path class="pop" d="M120 48v12M114 54h12"/><circle class="h pop" cx="26" cy="72" r="4"/>`,rest:`<path class="n" d="M40 18h62v52l-15 15H40z"/><path class="k" d="M102 70H87v15z"/><rect class="tape2" x="54" y="10" width="32" height="12" transform="rotate(5 70 16)"/><path class="h" d="M80 30a17 17 0 1 0 8 30a13 13 0 1 1-8-30z"/><path d="M50 34h8l-8 9h8M58 22h5l-5 6h5"/><path class="t" d="M50 72h22"/><path class="pop" d="M124 28v12M118 34h12"/>`,weak:`<g transform="rotate(3 70 52)"><rect class="w" x="24" y="20" width="92" height="62" rx="3"/><path class="pk" d="M24 34h92"/><path class="t" d="M24 48h92M24 62h92M24 76h92"/></g><path class="h wig" d="M70 36l5.5 11.2 12.3 1.8-8.9 8.7 2.1 12.3L70 64.2 59 70l2.1-12.3-8.9-8.7 12.3-1.8z"/><path class="pop" d="M18 20v12M12 26h12"/><path class="pop" d="M124 74v12M118 80h12"/>`,news:`<rect class="tape" x="40" y="10" width="26" height="11" transform="rotate(-8 53 15)"/><path class="w" d="M106 32h8v46a8 8 0 0 1-8 8"/><path class="w" d="M26 18h80v60a8 8 0 0 0 8 8H34a8 8 0 0 1-8-8z"/><rect class="h ns" x="34" y="28" width="46" height="9" rx="1"/><path d="M34 32.5h44"/><rect x="34" y="46" width="26" height="22"/><path class="t" d="M34 68l10-10 6 6 4-4 6 6M68 48h30M68 56h30M68 64h22M34 76h64"/><circle class="ink" cx="52" cy="53" r="2.4"/><path class="pop" d="M124 16v12M118 22h12"/>`,search:`<g transform="rotate(-4 58 54)"><rect class="w" x="18" y="22" width="84" height="58" rx="3"/><path class="pk" d="M18 35h84"/><path class="t" d="M28 48h40M28 60h30M28 72h46"/></g><g class="wig"><path style="stroke-width:7" d="M98 70l16 16"/><circle class="bg" cx="86" cy="56" r="17" style="stroke-width:3"/><path class="a" style="stroke-width:2.6" d="M81 50.5a5 5 0 1 1 7.3 4.4c-1.6.9-2.3 1.8-2.3 3.6M86 64v.2"/></g><path class="pop" d="M22 10v12M16 16h12"/>`,daily:`<path class="p" style="opacity:.85" d="M28 26h52v52H28z" transform="rotate(-10 54 52)"/><path class="w" d="M56 20h52v52H56z" transform="rotate(9 82 46)"/><g transform="rotate(-2 70 56)"><path class="n" d="M42 30h56v46l-12 12H42z"/><path class="k" d="M98 76H86v12z"/><rect class="tape" x="56" y="22" width="28" height="11"/><path class="t" d="M50 48h38M50 58h38M50 68h24"/></g><path class="pop" d="M122 76v12M116 82h12"/>`};
+function emptyArt(k,sm){return `<svg class="eart${sm?" sm":""}" viewBox="0 0 140 100" aria-hidden="true" focusable="false">${EMPTY_ART[k]||EMPTY_ART.search}</svg>`}
 const ICON={
   spk:'<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>',
   star:'<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>'
@@ -3837,7 +3861,7 @@ function archHtml(){
   ${days.length?days.map(d=>{const x=a[d],[,m,dd]=d.split("-");return `<div class="aitem"><div class="meta"><span>${+m}/${+dd}</span><button class="icon" data-asay="${esc(d)}" aria-label="朗讀">${ICON.spk}</button></div>
     <div class="aen">${esc(x.en)}</div><div class="azh">${esc(x.zh)}</div>
     <div class="forms">${(x.words||[]).map(w=>`<span class="fchip">${esc(w[0])} · ${esc(w[3])}</span>`).join("")}</div></div>`}).join("")
-  :`<div class="empty"><p>從今天開始，每天的句子都會自動收進這裡（存在這支手機上）。明天再來看看。</p></div>`}</section>`;
+  :`<div class="empty">${emptyArt("daily")}<p>從今天開始，每天的句子都會自動收進這裡（存在這支手機上）。明天再來看看。</p></div>`}</section>`;
 }
 function dailyHtml(){
   if(typeof DAILY==="undefined"||!DAILY.en)return "";
@@ -3956,7 +3980,7 @@ function renderNews(){
       <div class="nmeta"><span class="ntopic">${esc(it.topic)}</span><span>${esc(it.level)} · ${Math.max(1,Math.round(it.paras.map(p=>p[0]).join(" ").split(/\s+/).length/120))} 分鐘</span>${st.score!=null?`<span class="ndone">測驗 ${st.score}/${it.quiz.length}</span>`:st.open?`<span class="ndone">已讀</span>`:""}</div>
       <b class="nt">${esc(it.title)}</b><span class="ntz">${esc(it.titleZh)}</span>${i===0?`<span class="nteaser">${esc(it.teaser||"")}</span>`:""}
       <span class="nwords">${it.words.slice(0,4).map(w=>`<i>${esc(w[0])}</i>`).join("")}</span></button>`}).join("")}</div>`
-    :`<div class="empty"><h2>今天還沒有新聞</h2><p>新聞每天早上會自動更新。</p></div>`}
+    :`<div class="empty">${emptyArt("news")}<h2>今天還沒有新聞</h2><p>新聞每天早上會自動更新。</p></div>`}
     <p class="note">新聞內容為改寫的學習版本，每篇都附原始來源連結。可以點上方日期看前幾天的新聞。</p>
   </div>`;
   bindTop();
@@ -4170,7 +4194,7 @@ function renderStudy(){
   if(!s.q.length){
     if(s.total&&s.done&&!s.partied){s.partied=true;party()}
     const nb=s.src==="nb"&&!s.total,wk=s.src==="weak"&&!s.total;
-    body=`${sessionSummary(s)}<div class="empty"><h2>${nb?"筆記本是空的":wk?"目前沒有常錯的字":s.total?"這組今天完成了":"今天沒有要複習的卡片"}</h2>
+    body=`${sessionSummary(s)}<div class="empty">${emptyArt(nb?"notebook":wk?"weak":s.total?"done":"rest")}<h2>${nb?"筆記本是空的":wk?"目前沒有常錯的字":s.total?"這組今天完成了":"今天沒有要複習的卡片"}</h2>
       <p>${nb?"翻卡時按星號、或測驗答錯的字，會自動收進筆記本。":wk?"翻卡按「不熟」或測驗答錯的字，會依錯的次數排在這裡，方便集中練習。":"明天到期的卡片會自動出現。可以換一組，或去做測驗。"}</p>
       ${nb||s.src==="weak"?"":forecastHtml(s.src)}${moreNewHtml(s.src)}<button class="btn" id="toQuiz">去測驗</button>${s.undo?`<button class="linkbtn undo" id="undo">↶ 按錯了？復原上一張</button>`:""}</div>`;
   }else{
@@ -4330,8 +4354,8 @@ function renderQuiz(){
   const Q=quiz,head=`${topbar("測驗")}${srcChips(quizSrc,"srcQ")}
     <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?gentryHtml():""}`;
   let body;
-  if(Q.empty&&Q.mode==="confuse"){body=`<div class="empty"><h2>${Q.loading?"易混字題庫載入中…":"題庫暫時讀不到"}</h2><p>稍等一下，或重新整理頁面。</p></div>`}
-  else if(Q.empty){body=`<div class="empty"><h2>這裡還沒有單字</h2><p>${qmode==="cloze"?"這組單字沒有例句可以出填空題，換一個分類或題型試試。":quizSrc==="nb"?"把不會的字加進筆記本，就能專門測它們。":quizSrc==="weak"?"還沒有答錯或標「不熟」的字，先去翻卡或測驗吧。":"換一個分類試試。"}</p></div>`}
+  if(Q.empty&&Q.mode==="confuse"){body=`<div class="empty">${emptyArt("search")}<h2>${Q.loading?"易混字題庫載入中…":"題庫暫時讀不到"}</h2><p>稍等一下，或重新整理頁面。</p></div>`}
+  else if(Q.empty){body=`<div class="empty">${emptyArt(quizSrc==="nb"?"notebook":quizSrc==="weak"?"weak":"search")}<h2>這裡還沒有單字</h2><p>${qmode==="cloze"?"這組單字沒有例句可以出填空題，換一個分類或題型試試。":quizSrc==="nb"?"把不會的字加進筆記本，就能專門測它們。":quizSrc==="weak"?"還沒有答錯或標「不熟」的字，先去翻卡或測驗吧。":"換一個分類試試。"}</p></div>`}
   else if(Q.i>=Q.qs.length){
     if(!Q.partied&&Q.qs.length&&Q.score/Q.qs.length>=.8){Q.partied=true;party()}
     body=`<div class="qcard">
@@ -4443,7 +4467,7 @@ function renderMatch(){
   if(!game||game.src!==quizSrc)startMatch();
   const G=game,n=G.words.length,fin=n>0&&G.done.size===n,rec=gameRec().match||{};
   let body;
-  if(n<2)body=`<div class="empty"><h2>單字不夠玩配對</h2><p>換一個分類試試，或先去翻卡學幾個字。</p></div>`;
+  if(n<2)body=`<div class="empty">${emptyArt("search")}<h2>單字不夠玩配對</h2><p>換一個分類試試，或先去翻卡學幾個字。</p></div>`;
   else{
     const cards=G.cards.map((c,i)=>{const up=G.open.includes(i)||G.done.has(c.p),dn=G.done.has(c.p);
       const fi=(G.flipIn||[]).includes(i);return `<button class="mcard${up&&!fi?" up":""}${dn&&G.just===c.p?" got just":dn?" got":""}${G.bad.includes(i)?" bad":""}" data-i="${i}" ${dn?'aria-disabled="true"':""} aria-label="${up?esc((c.en?"英文 ":"中文 ")+c.t)+(dn?"，已配對":""):"第 "+(i+1)+" 張，蓋著"}">
@@ -4549,7 +4573,7 @@ function renderWhack(){
   const W=whack,rec=gameRec().whack||{};
   if(W.pausedAt&&W.t0&&!W.over){W.t0+=Date.now()-W.pausedAt;W.pausedAt=0}
   let body;
-  if(W.pool.length<4)body=`<div class="empty"><h2>單字不夠玩快打</h2><p>換一個分類試試，或先去翻卡學幾個字。</p></div>`;
+  if(W.pool.length<4)body=`<div class="empty">${emptyArt("search")}<h2>單字不夠玩快打</h2><p>換一個分類試試，或先去翻卡學幾個字。</p></div>`;
   else if(W.over){const seen=W.seen;
     body=`<div class="mwin wres"><div class="mwstamp">${W.newBest?"新紀錄":"時間到"}</div>
       <p><b>${W.score}</b> 分　打中 ${W.hits} 個、按錯 ${W.miss} 次，最高連擊 ×${W.maxCombo}。<br><span class="wsub">${rec.best?`最高分 ${rec.best}・已玩 ${rec.plays} 次`:""}</span></p>
@@ -4603,7 +4627,7 @@ function renderGuess(){
   if(!guess||guess.src!==quizSrc)startGuess();
   const G=guess,x=G.x,rec=gameRec().guess||{};
   let body;
-  if(!x)body=`<div class="empty"><h2>這組沒有適合猜的字</h2><p>猜字方格用 4–7 個字母的單字，換一個分類試試。</p></div>`;
+  if(!x)body=`<div class="empty">${emptyArt("search")}<h2>這組沒有適合猜的字</h2><p>猜字方格用 4–7 個字母的單字，換一個分類試試。</p></div>`;
   else{
     const tries=G.rows.length,cz=clozeOf(x);
     const hints=`<div class="gclue">
@@ -4682,7 +4706,7 @@ function renderOrder(){
   if(!order||order.src!==quizSrc)startOrder();
   const O=order,rec=gameRec().order||{};
   let body;
-  if(O.empty)body=`<div class="empty"><h2>這組沒有適合重組的例句</h2><p>句子重組用 4–12 個字的例句，換一個分類試試。</p></div>`;
+  if(O.empty)body=`<div class="empty">${emptyArt("search")}<h2>這組沒有適合重組的例句</h2><p>句子重組用 4–12 個字的例句，換一個分類試試。</p></div>`;
   else if(O.done){
     const pf=O.score===O.qs.length;
     body=`<div class="mwin ores"><div class="mwstamp${pf?" gok":""}">${pf?"全對":O.score>=3?"不錯":"再練"}</div>
@@ -4768,7 +4792,7 @@ function renderNb(){
       <div class="z">${esc(x.pos)} ${esc(x.zh)}${p.w?`<em>錯 ${p.w} 次</em>`:""}</div>
       <div class="r">${dots(p.b)}<button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button><button class="del" data-rm="${esc(x.id)}">移除</button></div>${detailHtml(x)}</div>`}).join("")}</div>
     <p class="note">熟練度點滿 4 格以上，就可以考慮把它移出筆記本。</p>${(()=>{const k=ws.filter(x=>P(x.id).b>=4).length;return k?`<button class="btn ghost small nbclean" id="nbClean">一次移出已熟記的 ${k} 個字</button>`:""})()}`
-    :`<div class="empty"><h2>筆記本是空的</h2><p>翻卡時按星號，或測驗答錯的字，會自動收進這裡。</p><button class="btn" id="nbGo">去翻卡</button></div>`}
+    :`<div class="empty">${emptyArt("notebook")}<h2>筆記本是空的</h2><p>翻卡時按星號，或測驗答錯的字，會自動收進這裡。</p><button class="btn" id="nbGo">去翻卡</button></div>`}
   </div>`;
   bindTop();
   const g=$("#nbGo");if(g)g.onclick=()=>go("study");
@@ -4809,7 +4833,7 @@ function renderLib(){
       <div class="z">${esc(x.pos)} ${esc(x.zh)}</div>
       <div class="r">${dots(p.b)}<button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button>
         <button class="icon ${inNb(x.id)?"on":""}" data-star="${esc(x.id)}" aria-label="筆記本">${ICON.star}</button>
-        ${x.cat==="mine"?`<button class="del" data-del="${esc(x.w)}">刪除</button>`:""}</div>${detailHtml(x)}</div>`}).join(""):`<div class="item"><div class="z">找不到符合的單字。</div></div>`}</div>
+        ${x.cat==="mine"?`<button class="del" data-del="${esc(x.w)}">刪除</button>`:""}</div>${detailHtml(x)}</div>`}).join(""):`<div class="item libnone">${emptyArt("search",1)}<div class="z">找不到符合的單字。</div></div>`}</div>
     ${ws.length>libLimit?`<button class="btn ghost" id="libMore">再顯示 ${Math.min(100,ws.length-libLimit)} 個</button>`:""}
     <details class="panel set" id="addD"><summary>新增自訂單字</summary><form class="setgrid" id="addF">
       <div class="row2"><label class="field">英文單字<input id="fw" required autocomplete="off" autocapitalize="off" placeholder="itinerary"></label>
