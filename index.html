@@ -1175,6 +1175,16 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .qfix .qact .icon{width:44px;height:44px}
 @media (min-width:700px){.qr-num b,.qr-num.two b{font-size:88px}.qstamp strong{font-size:34px}}
 @media (prefers-reduced-motion:reduce){.qstamp.go,.qres.thud{animation:none}.qmarks.go path{animation:none;stroke-dashoffset:0}}
+/* ===== v29 深色模式逐頁檢查：白字不再壓在整塊螢光黃上（改成細底線或深色字） ===== */
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]) .kw,:root:not([data-theme="light"]) .kwdemo,:root:not([data-theme="light"]) .score,:root:not([data-theme="light"]) .qr-num b,:root:not([data-theme="light"]) .nscore b,:root:not([data-theme="light"]) .cover .cw{background-image:linear-gradient(transparent 86%,var(--hl) 86% 97%,transparent 97%)}
+:root:not([data-theme="light"]) .kw{color:var(--ink)}
+:root:not([data-theme="light"]) .snote b{background:var(--hl);color:#141c3a;border-radius:3px}
+:root:not([data-theme="light"]) .oline.ok .ochip{color:#141c3a}}
+:root[data-theme="dark"] .kw,:root[data-theme="dark"] .kwdemo,:root[data-theme="dark"] .score,:root[data-theme="dark"] .qr-num b,:root[data-theme="dark"] .nscore b,:root[data-theme="dark"] .cover .cw{background-image:linear-gradient(transparent 86%,var(--hl) 86% 97%,transparent 97%)}
+:root[data-theme="dark"] .kw{color:var(--ink)}
+:root[data-theme="dark"] .snote b{background:var(--hl);color:#141c3a;border-radius:3px}
+:root[data-theme="dark"] .oline.ok .ochip{color:#141c3a}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -4199,7 +4209,7 @@ function renderArticle(it,date){
       ${it.paras.map((p,i)=>`<div class="apara" data-pi="${i}"><div class="aen">${newsPara(p[0],it.words,it)}</div>
         <div class="arow"><button class="icon" data-ps="${i}" aria-label="朗讀這段">${ICON.spk}</button><button class="linkbtn" data-pz="${i}">${newsZhAll||newsZhOpen[i]?"收起翻譯":"看這段翻譯"}</button></div>
         ${newsZhAll||newsZhOpen[i]?`<div class="azh2">${esc(p[1])}</div>`:""}</div>`).join("")}
-      <p class="note" style="margin:0">文中每個字都可以點，看意思、聽發音、加入筆記本；<span class="kwdemo">藍色的字</span>是這篇的重點字。</p>
+      <p class="note" style="margin:0">文中每個字都可以點，看意思、聽發音、加入筆記本；<span class="kwdemo">畫螢光筆的字</span>是這篇的重點字。</p>
     </article>
 
     <section class="panel"><div class="sheader"><h2>重點單字</h2><span>${it.words.length} 個</span></div>
