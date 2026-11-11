@@ -1128,6 +1128,53 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .swipe-tag.l{left:16px;color:var(--bad);background:color-mix(in srgb,var(--surface) 82%,transparent);transform:rotate(-12deg) scale(calc(1.5 - .5*var(--o,0)))}
 .swipe-tag.r{right:16px;color:var(--good);background:color-mix(in srgb,var(--surface) 82%,transparent);transform:rotate(12deg) scale(calc(1.5 - .5*var(--o,0)))}
 @media (prefers-reduced-motion:reduce){.stage .card.flip{animation:none}}
+/* ===== v28 測驗結果：考卷批改＋印章分數＋訂正區 ===== */
+.qres{position:relative;gap:16px;overflow:hidden}
+.qres.thud{animation:qthud .5s ease-out .42s}
+@keyframes qthud{0%,100%{transform:none}30%{transform:translate(1px,2px)}60%{transform:translate(-1px,-1px)}}
+.qr-top{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:118px}
+.qr-num{display:flex;align-items:baseline;gap:6px;font-family:var(--f-display);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.qr-num b{font-size:76px;color:var(--ink);background:linear-gradient(transparent 62%,var(--hl) 62% 92%,transparent 92%);padding:0 8px;margin-left:-8px}
+.qr-num span{font-size:26px;color:var(--muted);white-space:nowrap}
+.qr-num.two b{font-size:60px}
+.qr-cap{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.qstamp{--sc:var(--good);position:relative;color:var(--sc);border:3px solid var(--sc);border-radius:14px;padding:5px;margin-right:4px;
+  transform:rotate(-11deg);background:color-mix(in srgb,var(--surface) 75%,transparent);text-align:center;
+}
+.qstamp>div{border:1.5px solid var(--sc);border-radius:9px;padding:6px 14px 5px;min-width:84px}
+.qstamp strong{display:block;font:700 30px/1.15 "Noto Serif TC",serif;letter-spacing:.14em;margin-right:-.14em}
+.qstamp small{display:block;font:700 12px/1.3 var(--f-display);letter-spacing:.06em;border-top:1.5px dashed var(--sc);margin-top:4px;padding-top:3px;font-variant-numeric:tabular-nums}
+.qstamp.mid{--sc:var(--warn)}.qstamp.low{--sc:var(--bad)}
+.qstamp.go{animation:qstampin .46s cubic-bezier(.2,1.5,.4,1) .3s both}
+@keyframes qstampin{0%{transform:rotate(-24deg) scale(2.4);opacity:0}60%{opacity:1}100%{transform:rotate(-11deg) scale(1)}}
+.qmarks{display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:10px 0 2px;border-top:1.5px dashed var(--line);list-style:none}
+.qmarks li{width:30px;height:40px;display:grid;justify-items:center;align-content:start;gap:1px}
+.qmarks svg{width:26px;height:26px;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.qmarks .ok svg{stroke:var(--good)}.qmarks .no svg{stroke:var(--bad)}
+.qmarks small{font:600 11px/1 var(--f-display);color:var(--muted);font-variant-numeric:tabular-nums}
+.qmarks.go path{stroke-dasharray:40;stroke-dashoffset:40;animation:qdraw .22s ease-out forwards;animation-delay:calc(.75s + var(--i)*70ms)}
+@keyframes qdraw{to{stroke-dashoffset:0}}
+/* 訂正區：橫線筆記紙＋紅色邊線 */
+.qfix{position:relative;margin-top:8px;border:2px solid var(--edge);border-radius:10px;box-shadow:5px 5px 0 var(--edge);
+  background:var(--surface) linear-gradient(90deg,transparent 46px,color-mix(in srgb,var(--pink) 75%,transparent) 46px 48px,transparent 48px)}
+.qfix-h{position:absolute;top:-15px;left:58px;margin:0;padding:3px 14px 2px;font:700 14px/1.4 "Noto Serif TC",serif;color:#141c3a;
+  background:color-mix(in srgb,var(--pink) 72%,#fff);transform:rotate(-2deg);clip-path:polygon(0 8%,4% 0,96% 6%,100% 0,98% 92%,100% 100%,3% 94%,0 100%,2% 50%);z-index:1}
+.qfix ol{list-style:none;margin:0;padding:18px 0 4px}
+.qfix li{display:grid;grid-template-columns:48px 1fr auto;align-items:start;gap:0 12px;padding:12px 14px 12px 0;border-top:1.5px dashed var(--line)}
+.qfix li:first-child{border-top:0}
+.qfix .qn{justify-self:center;margin-top:3px;width:32px;height:32px;border-radius:50%;border:2px solid var(--bad);color:var(--bad);display:grid;place-items:center;
+  font:700 13px/1 var(--f-display);transform:rotate(-6deg);font-variant-numeric:tabular-nums}
+.qfix .qw{min-width:0;align-self:center}
+.qfix .qz{grid-column:2/4}
+.qfix .qn{grid-row:1/3}
+.qfix .qw b{font:700 21px/1.25 var(--f-display);color:var(--ink);overflow-wrap:anywhere;text-decoration:underline wavy color-mix(in srgb,var(--bad) 70%,transparent);text-decoration-thickness:1.5px;text-underline-offset:5px}
+.qfix .qw i{font:normal 15px var(--f-phon);color:var(--muted);margin-left:6px;white-space:nowrap}
+.qfix .qz{margin:4px 0 0;font-size:15px;line-height:1.55;color:var(--ink)}
+.qfix .qz em{font-style:normal;display:inline-block;border:1.5px solid var(--line);border-radius:5px;padding:0 6px;margin-right:6px;font:600 12px/1.6 var(--f-display);color:var(--muted);vertical-align:1px}
+.qfix .qact{display:flex;gap:6px;align-self:center}
+.qfix .qact .icon{width:44px;height:44px}
+@media (min-width:700px){.qr-num b,.qr-num.two b{font-size:88px}.qstamp strong{font-size:34px}}
+@media (prefers-reduced-motion:reduce){.qstamp.go,.qres.thud{animation:none}.qmarks.go path{animation:none;stroke-dashoffset:0}}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -4529,11 +4576,19 @@ function renderQuiz(){
   else if(Q.empty){body=`<div class="empty">${emptyArt(quizSrc==="nb"?"notebook":quizSrc==="weak"?"weak":"search")}<h2>這裡還沒有單字</h2><p>${qmode==="cloze"?"這組單字沒有例句可以出填空題，換一個分類或題型試試。":quizSrc==="nb"?"把不會的字加進筆記本，就能專門測它們。":quizSrc==="weak"?"還沒有答錯或標「不熟」的字，先去翻卡或測驗吧。":"換一個分類試試。"}</p></div>`}
   else if(Q.i>=Q.qs.length){
     if(!Q.partied&&Q.qs.length&&Q.score/Q.qs.length>=.8){Q.partied=true;party()}
-    body=`<div class="qcard">
+    const n=Q.qs.length,pct=n?Q.score/n:0,fresh=!Q.shown;Q.shown=true;
+    const gr=pct>=1?["滿分",""]:pct>=.8?["優秀",""]:pct>=.6?["及格","mid"]:["再練練","low"];
+    const dt=new Date(),dstr=`${dt.getMonth()+1}/${dt.getDate()}`;
+    const res=Q.res&&Q.res.length===n?Q.res:null,wq=res?res.map((r,i)=>r?0:i+1).filter(Boolean):[];
+    const mk=ok=>`<svg viewBox="0 0 26 26" aria-hidden="true">${ok?'<path d="M5 14l5 6L21 6"/>':'<path d="M6 6l14 14"/><path d="M20 6L6 20"/>'}</svg>`;
+    body=`<div class="qcard qres${fresh?" thud":""}">
       <div class="meta"><span>測驗結果 · ${esc(QMODES[Q.mode])}${Q.retry?` <span class="qretry">重測答錯</span>`:""}</span><span>${esc(srcName(Q.src))}</span></div>
-      <div class="score">${Q.score}<span style="font-size:24px;color:var(--muted)"> / ${Q.qs.length}</span></div>
+      <div class="qr-top"><div><div class="qr-num${String(Q.score).length>1?" two":""}" aria-label="答對 ${Q.score} 題，共 ${n} 題"><b>${Q.score}</b><span>/ ${n}</span></div>
+        <p class="qr-cap">${Q.wrong.length?`答錯 ${Q.wrong.length} 題`:"一題都沒錯"}</p></div>
+        <div class="qstamp ${gr[1]}${fresh?" go":""}" role="img" aria-label="評語：${gr[0]}"><div><strong>${gr[0]}</strong><small>${dstr}</small></div></div></div>
+      ${res?`<ol class="qmarks${fresh?" go":""}" aria-label="每題對錯">${res.map((r,i)=>`<li class="${r?"ok":"no"}" style="--i:${i}" aria-label="第 ${i+1} 題${r?"答對":"答錯"}">${mk(r)}<small>${i+1}</small></li>`).join("")}</ol>`:""}
       ${Q.wrong.length?`<p class="note" style="margin:0">${Q.mode==="confuse"?"答錯的字整理在下面，多比較幾次就不會搞混了。":"答錯的字已收進筆記本，明天也會排進複習。"}</p>
-        <div class="list" style="background:var(--bg)">${Q.wrong.map(x=>`<div class="item"><div class="w">${esc(x.w)}<span>${esc(x.ipa)}</span></div><div class="z">${esc(x.pos)} ${esc(x.zh)}</div><div class="r"><button class="icon" data-say="${esc(x.w)}" aria-label="發音">${ICON.spk}</button>${starBtn(x.id)}</div></div>`).join("")}</div>`:`<p style="margin:0">全對，這組掌握得很好。</p>`}
+        <div class="qfix"><h3 class="qfix-h">要訂正的 ${Q.wrong.length} 個字</h3><ol>${Q.wrong.map((x,k)=>`<li>${wq[k]?`<span class="qn" aria-label="第 ${wq[k]} 題">${wq[k]}</span>`:`<span class="qn" aria-hidden="true">✗</span>`}<div class="qw"><b lang="en">${esc(x.w)}</b>${x.ipa?`<i>${esc(x.ipa)}</i>`:""}</div><div class="qact"><button class="icon" data-say="${esc(x.w)}" aria-label="發音 ${esc(x.w)}">${ICON.spk}</button>${starBtn(x.id)}</div><p class="qz">${x.pos?`<em>${esc(x.pos)}</em>`:""}${esc(x.zh)}</p></li>`).join("")}</ol></div>`:`<p style="margin:0">全對，這組掌握得很好。</p>`}
       <div class="row2">${Q.wrong.length&&Q.mode!=="confuse"?`<button class="btn" id="retryW">重測錯的 ${new Set(Q.wrong.map(x=>x.id)).size} 個</button>`:""}<button class="btn${Q.wrong.length&&Q.mode!=="confuse"?" ghost":""}" id="again">${Q.retry?"換一組新題目":"再測一次"}</button>${Q.wrong.length&&Q.mode!=="confuse"?`<button class="btn ghost" id="toNb">翻卡複習答錯的字</button>`:""}</div></div>`;
   }else if(Q.mode==="confuse"){
     const q=Q.qs[Q.i],g=q.g,qq=q.q,answered=Q.picked!==null;
@@ -4587,7 +4642,7 @@ function renderQuiz(){
   if(Q.mode==="confuse"){
     view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
     view.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{if(Q.picked!==null)return;const k=+b.dataset.k;Q.picked=k;activity();
-      const a=q.q.a;if(k===a)Q.score++;else Q.wrong.push({w:q.g.g[a],ipa:"",pos:"",zh:q.g.m[a]||"",id:wordId(q.g.g[a])});save();say(q.q.s.replace("___",q.g.g[a]));renderQuiz()});
+      const a=q.q.a;(Q.res=Q.res||[]).push(k===a);if(k===a)Q.score++;else Q.wrong.push({w:q.g.g[a],ipa:"",pos:"",zh:q.g.m[a]||"",id:wordId(q.g.g[a])});save();say(q.q.s.replace("___",q.g.g[a]));renderQuiz()});
     const nx=$("#next");if(nx){nx.onclick=()=>{Q.i++;Q.picked=null;renderQuiz()};nx.focus()}
     return}
   const qs=$("#qs");if(qs)qs.onclick=()=>say(q.x.w);
@@ -4598,6 +4653,7 @@ function renderQuiz(){
   const finish=ok=>{
     activity();tdAdd(q.x.id);
     const p={b:0,d:0,w:0,...P(q.x.id)};
+    (Q.res=Q.res||[]).push(!!ok);
     if(ok){Q.score++}else{Q.wrong.push(q.x);p.b=Math.max(1,Math.min(p.b,1));p.d=today()+1;p.w=(p.w||0)+1;U.nb[q.x.id]=U.nb[q.x.id]||Date.now()}
     U.prog[q.x.id]=p;save();
     if(Q.mode==="zh"||Q.mode==="cloze"||ok===false&&Q.mode!=="en")say(q.x.w);
