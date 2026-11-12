@@ -1207,6 +1207,13 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .dmore>summary{padding-block:10px;margin-block:-10px}
 .pos{color:color-mix(in srgb,var(--pink) 66%,var(--ink))}
 @media (prefers-reduced-motion:reduce){:focus-visible{transition:none}}
+/* ================= 猜字方格：隱藏中文（Wordle）模式 ================= */
+.gmode{display:flex;border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;align-self:flex-start;box-shadow:2px 2px 0 var(--ink);margin-bottom:10px;width:max-content;max-width:100%}
+.gmb{border:0;background:var(--surface);color:var(--ink);font:600 14px inherit;font-family:inherit;padding:9px 14px;min-height:40px;cursor:pointer}
+.gmb+.gmb{border-left:1.5px solid var(--ink)}
+.gmb[aria-pressed="true"]{background:var(--hl);color:#141c3a}
+.gzhh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:15px!important;font-weight:500}
+.gzhh .gq{font-weight:800;font-size:20px;background:linear-gradient(transparent 60%,var(--hl) 60%);padding:0 4px}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -4710,12 +4717,12 @@ function startWhack(){
   if(pool.length<4)pool=ok(wordsOf(defaultSrc()));
   let dis=ok(allWords());if(dis.length>600)dis=gshuf(dis).slice(0,600);
   whack={src:quizSrc,pool:gshuf(pool),dis,qi:0,cur:null,holes:Array.from({length:WHOLES},()=>null),score:0,combo:0,maxCombo:0,hits:0,miss:0,
-    seen:[],t0:0,pausedAt:0,over:false,nextSpawn:0,lastOk:0,newBest:false};
+    seen:[],t0:0,pausedAt:0,over:false,nextSpawn:0,lastOk:0,okAt:0,newBest:false};
 }
 function wleft(){const W=whack;if(!W||!W.t0)return WDUR;return Math.max(0,WDUR-((W.pausedAt||Date.now())-W.t0)/1000)}
 function wnext(){const W=whack;if(!W.pool.length)return;
   if(W.qi>=W.pool.length){W.pool=gshuf(W.pool);W.qi=0}
-  W.cur=W.pool[W.qi++];W.cur.zz=mzh(W.cur);W.seen.push({x:W.cur,ok:null});W.lastOk=Date.now()-700;
+  W.cur=W.pool[W.qi++];W.cur.zz=mzh(W.cur);W.seen.push({x:W.cur,ok:null});W.okAt=Date.now()+Math.random()*1800;
   W.holes=W.holes.map(()=>null);W.nextSpawn=Date.now()+260;
   const pc=$("#wPrompt");if(pc){pc.innerHTML=wpromptHtml();pc.classList.remove("swap");void pc.offsetWidth;pc.classList.add("swap");const s=$("#wSay");if(s)s.onclick=()=>say(W.cur.w)}
   view.querySelectorAll(".whole").forEach(h=>{h.classList.remove("up","hit","bad");h.setAttribute("aria-label","空的口袋");h.disabled=true});
@@ -4729,7 +4736,7 @@ function wspawn(now){const W=whack;
   const hasOk=up.some(h=>h.ok);
   const prog=1-wleft()/WDUR,life=2100-800*prog;
   let card;
-  if(!hasOk&&(now-W.lastOk>900||Math.random()<.4)){card={zh:W.cur.zz,ok:true};W.lastOk=now}
+  if(!hasOk&&now>=W.okAt&&(up.length>=1||Math.random()<.55)){card={zh:W.cur.zz,ok:true};W.lastOk=now}
   else{const used=new Set(up.map(h=>h.zh).concat(W.cur.zz));let d=null;
     for(let k=0;k<12;k++){const c=W.dis[Math.floor(Math.random()*W.dis.length)];const z=c&&mzh(c);if(z&&!used.has(z)){d=z;break}}
     if(!d)return;card={zh:d,ok:false}}
@@ -4742,7 +4749,7 @@ function wtick(){const W=whack;
   const tm=$("#wTime");if(tm)tm.textContent=Math.ceil(left);
   const pen=$("#wPencil");if(pen){pen.style.setProperty("--p",(left/WDUR).toFixed(4));pen.classList.toggle("low",left<=10)}
   if(left<=0)return wend();
-  W.holes.forEach((h,i)=>{if(h&&!h.hit&&now>h.until){W.holes[i]=null;const el=view.querySelector(`.whole[data-h="${i}"]`);if(el){el.classList.remove("up","bad");el.disabled=true;el.setAttribute("aria-label","空的口袋")}}});
+  W.holes.forEach((h,i)=>{if(h&&!h.hit&&now>h.until){if(h.ok)W.okAt=now+350+Math.random()*1200;W.holes[i]=null;const el=view.querySelector(`.whole[data-h="${i}"]`);if(el){el.classList.remove("up","bad");el.disabled=true;el.setAttribute("aria-label","空的口袋")}}});
   if(now>=W.nextSpawn){wspawn(now);W.nextSpawn=now+260+Math.random()*380}
 }
 function wtap(i){const W=whack;if(!W||W.over||!W.t0)return;const h=W.holes[i];if(!h||h.hit)return;
@@ -4794,6 +4801,8 @@ function renderWhack(){
 
 /* ================= 小遊戲：猜字方格（Wordle 風格；紀錄同存 KEY+":game:"+使用者 的 guess 欄位，不動使用者資料） ================= */
 let guess=null;
+function gzhHidden(){try{return localStorage.getItem(KEY+":gzh:"+(U?U.id:""))==="1"}catch(e){return false}}
+function gzhSet(v){try{localStorage.setItem(KEY+":gzh:"+(U?U.id:""),v?"1":"0")}catch(e){}}
 const GTRY=6,GKB=["qwertyuiop","asdfghjkl","+zxcvbnm-"];
 function startGuess(){
   const ok=l=>l.filter(x=>x.w&&/^[a-z]{4,7}$/i.test(x.w));
@@ -4801,7 +4810,7 @@ function startGuess(){
   if(!pool.length)pool=ok(wordsOf(defaultSrc()));
   const last=guess&&guess.x?guess.x.w:"";
   let x=null;if(pool.length){const p=pool.filter(y=>y.w!==last);x=(p.length?p:pool)[Math.floor(Math.random()*(p.length?p:pool).length)]}
-  guess={src:quizSrc,x,ans:x?x.w.toLowerCase():"",rows:[],cur:"",over:false,won:false,reveal:-1,keys:{}};
+  guess={src:quizSrc,x,ans:x?x.w.toLowerCase():"",rows:[],cur:"",over:false,won:false,reveal:-1,keys:{},peek:false};
 }
 function gscore(g,a){const r=Array(a.length).fill("no"),left={};
   for(let i=0;i<a.length;i++){if(g[i]===a[i])r[i]="ok";else left[a[i]]=(left[a[i]]||0)+1}
@@ -4823,11 +4832,14 @@ function renderGuess(){
   if(!x)body=`<div class="empty">${emptyArt("search")}<h2>這組沒有適合猜的字</h2><p>猜字方格用 4–7 個字母的單字，換一個分類試試。</p></div>`;
   else{
     const tries=G.rows.length,cz=clozeOf(x);
-    const hints=`<div class="gclue">
-      <div class="gzh"><span class="pos">${esc(x.pos)}</span>${esc(x.zh)}</div>
-      <div class="ghint">${G.over||tries>=2?`<button class="gsay" id="gSay">${ICON.spk}聽發音</button>`:`<span class="glock">猜 2 次後可以聽發音</span>`}
+    const hid=gzhHidden()&&!G.over&&!G.peek;
+    const hints=`<div class="gmode" role="group" aria-label="提示模式"><button class="gmb" data-gm="0" aria-pressed="${!gzhHidden()}">看中文猜</button><button class="gmb" data-gm="1" aria-pressed="${gzhHidden()}">隱藏中文（Wordle）</button></div>
+      <div class="gclue${hid?" ghid":""}">
+      ${hid?`<div class="gzh gzhh"><span class="gq">？</span>${G.ans.length} 個字母的英文單字，只靠顏色提示來猜${tries>=4?`<button class="linkbtn" id="gPeek">偷看中文</button>`:""}</div>`
+        :`<div class="gzh"><span class="pos">${esc(x.pos)}</span>${esc(x.zh)}</div>`}
+      ${hid?"":`<div class="ghint">${G.over||tries>=2?`<button class="gsay" id="gSay">${ICON.spk}聽發音</button>`:`<span class="glock">猜 2 次後可以聽發音</span>`}
         ${cz?(G.over||tries>=4?"":`<span class="glock">猜 4 次後給例句</span>`):""}</div>
-      ${cz&&!G.over&&tries>=4?`<div class="gcz">${cz}</div>`:""}</div>`;
+      ${cz&&!G.over&&tries>=4?`<div class="gcz">${cz}</div>`:""}`}</div>`;
     const grid=`<div class="ggrid" id="gGrid" role="grid" aria-label="猜字方格，${G.ans.length} 個字母" style="--n:${G.ans.length}">${Array.from({length:GTRY},(_,i)=>gtileRow(i)).join("")}</div>`;
     let end="";
     if(G.over){const d=rec.dist||[],mx=Math.max(1,...d.map(v=>v||0));
@@ -4847,6 +4859,8 @@ function renderGuess(){
   view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderGuess();window.scrollTo(0,y)});
   {const s=$("#gSay");if(s)s.onclick=()=>say(x.w)}
+  view.querySelectorAll("[data-gm]").forEach(b=>b.onclick=()=>{const v=b.dataset.gm==="1";if(v===gzhHidden())return;gzhSet(v);renderGuess()});
+  {const pk=$("#gPeek");if(pk)pk.onclick=()=>{G.peek=true;renderGuess()}}
   {const kb=$("#gKb");if(kb)kb.addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(b)gkey(b.dataset.k)})}
   if(G.won&&G.reveal>=0)setTimeout(party,G.ans.length*120+250);
   G.reveal=-1;
