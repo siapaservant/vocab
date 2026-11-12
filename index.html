@@ -315,7 +315,7 @@ nav.tabs button[aria-current="page"]{background:color-mix(in srgb,var(--accent) 
 .sheader span{font-size:12px;color:var(--muted)}
 
 /* ================= v4 新聞專區 + 分級 ================= */
-nav.tabs .in{grid-template-columns:repeat(6,1fr)}
+nav.tabs .in{grid-template-columns:repeat(7,1fr)}
 nav.tabs button{font-size:11px;padding:6px 0}
 .lvgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .lvc{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:5px;box-shadow:var(--shadow);min-width:0}
@@ -1214,6 +1214,36 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .gmb[aria-pressed="true"]{background:var(--hl);color:#141c3a}
 .gzhh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:15px!important;font-weight:500}
 .gzhh .gq{font-weight:800;font-size:20px;background:linear-gradient(transparent 60%,var(--hl) 60%);padding:0 4px}
+/* ================= 遊戲頁（小遊戲大廳） ================= */
+.gsrc{display:flex;flex-direction:column;gap:6px}
+.gsrc-l{font-size:13px;font-weight:600;color:var(--muted)}
+.ghub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.gtile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:0 0 14px;margin:0;
+  border:1.5px solid var(--edge);border-radius:14px;background:var(--surface);box-shadow:4px 4px 0 var(--edge);cursor:pointer;font:inherit;color:var(--ink);overflow:hidden;transition:transform .08s,box-shadow .08s}
+.gtile:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--edge)}
+@media (hover:hover){.gtile:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--edge)}}
+.gart{align-self:stretch;height:104px;display:grid;place-items:center;border-bottom:1.5px solid var(--edge);
+  background-image:radial-gradient(circle,color-mix(in srgb,var(--ink) 16%,transparent) 1px,transparent 1.5px);background-size:12px 12px}
+.t-match .gart{background-color:color-mix(in srgb,var(--pink) 26%,var(--surface))}
+.t-whack .gart{background-color:color-mix(in srgb,var(--accent) 18%,var(--surface))}
+.t-guess .gart{background-color:color-mix(in srgb,var(--good) 22%,var(--surface))}
+.t-order .gart{background-color:color-mix(in srgb,var(--hl) 55%,var(--surface))}
+.gart .gico{transform:scale(1.75)}
+.gart .gico.ggico{transform:scale(1.75) rotate(-5deg)}
+.gart .gico.oico{transform:scale(1.45)}
+.gtn{font:700 17px var(--f-body);padding:10px 14px 0;line-height:1.3}
+.gtd{font-size:13px;color:var(--muted);padding:0 14px;line-height:1.5;flex:1}
+.gts{margin:8px 14px 0;font-size:12px;font-weight:700;background:var(--note);color:var(--note-ink);border:1px solid color-mix(in srgb,var(--note-ink) 25%,transparent);border-radius:999px;padding:3px 10px;font-variant-numeric:tabular-nums}
+.gts.new{background:transparent;color:var(--muted);border-style:dashed;font-weight:600}
+.gtile .gplay{position:absolute;bottom:11px;right:11px;width:36px;height:36px;font-size:14px;box-shadow:2px 2px 0 var(--edge)}
+.gts{max-width:calc(100% - 76px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gcount{text-align:center;margin:0}
+.gjump{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;font:inherit;color:var(--ink);background:transparent;
+  border:1.5px dashed color-mix(in srgb,var(--edge) 45%,transparent);border-radius:12px;padding:10px 12px;min-height:44px}
+.gjump span{flex:1;font-size:13px;color:var(--muted);line-height:1.45}
+.gjump b{flex:none;font-size:14px;color:var(--accent);border-bottom:2px solid var(--hl)}
+@media (max-width:340px){.ghub{grid-template-columns:1fr}}
+@media (min-width:900px){.gart{height:128px}.gart .gico{transform:scale(2.1)}.gart .gico.ggico{transform:scale(2.1) rotate(-5deg)}.gart .gico.oico{transform:scale(1.75)}}
 </style>
 
 <div id="readbar" aria-hidden="true"></div>
@@ -1224,6 +1254,7 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
   <button data-tab="news"><svg viewBox="0 0 24 24"><path d="M5 4h11a1 1 0 0 1 1 1v14a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2V5a1 1 0 0 1 1-1z"/><path d="M17 9h3v10a2 2 0 0 1-2 2M8 8h5M8 12h5M8 16h3"/></svg>新聞</button>
   <button data-tab="study"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="15" height="12" rx="2"/><path d="M7 4h12a2 2 0 0 1 2 2v10"/></svg>翻卡</button>
   <button data-tab="quiz"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg>測驗</button>
+  <button data-tab="games"><svg viewBox="0 0 24 24"><path d="M7 8h10a4 4 0 0 1 4 4v2.5a2.5 2.5 0 0 1-4.6 1.4L15 14H9l-1.4 1.9A2.5 2.5 0 0 1 3 14.5V12a4 4 0 0 1 4-4z"/><path d="M7.5 10.5v3M6 12h3M15.5 11h.01M17.5 13h.01"/></svg>遊戲</button>
   <button data-tab="nb"><svg viewBox="0 0 24 24"><path d="M6 3h11a2 2 0 0 1 2 2v16l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>筆記本</button>
   <button data-tab="lib"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>單字庫</button>
 </div></nav>
@@ -3883,7 +3914,7 @@ function weakWords(){const all=allWords();return all.filter(x=>{const p=P(x.id);
 function srcWords(src){if(src==="weak")return weakWords();if(src==="all"){const l=allWords().filter(x=>P(x.id).b>0);return l.length>=4?l:wordsOf(defaultSrc())}if(src==="nb"){const all=allWords();return Object.keys(U.nb).sort((a,b)=>U.nb[b]-U.nb[a]).map(id=>all.find(x=>x.id===id)).filter(Boolean)}return wordsOf(src)}
 const WEAKMAX=40;
 function weakCount(){let n=0;for(const k in U.prog){const p=U.prog[k];if(p&&(p.w||0)>0&&(p.b||0)<5)n++}return Math.min(n,WEAKMAX)}
-function srcName(src){return src==="weak"?"常錯的字":src==="nb"?"我的筆記本":src==="all"?(tab==="quiz"?"學過的字":"全部到期"):CATS[src].name}
+function srcName(src){return src==="weak"?"常錯的字":src==="nb"?"我的筆記本":src==="all"?(tab==="quiz"||tab==="games"?"學過的字":"全部到期"):CATS[src].name}
 function P(id){return U.prog[id]||{b:0,d:0,w:0}}
 function touchDay(){if(U.day.d!==today())U.day={d:today(),n:0,nw:0}}
 function activity(){touchDay();U.day.n++;const t=today();U.hist=U.hist||{};U.hist[t]=(U.hist[t]||0)+1;if(U.streak.last!==t){U.streak.n=(U.streak.last===t-1)?U.streak.n+1:1;U.streak.last=t}}
@@ -3920,7 +3951,7 @@ function render(){
   nav.hidden=false;$("#wrap").classList.remove("nonav");
   nav.querySelectorAll("button").forEach(b=>{if(b.dataset.tab===tab)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
   if(!studySrc)studySrc="all";if(!quizSrc)quizSrc=defaultSrc();
-  ({home:renderHome,news:renderNews,study:renderStudy,quiz:renderQuiz,nb:renderNb,lib:renderLib})[tab]();
+  ({home:renderHome,news:renderNews,study:renderStudy,quiz:renderQuiz,games:renderGames,nb:renderNb,lib:renderLib})[tab]();
 }
 function topbar(title,sub){return `<header class="top"><div><h1>${title}</h1>${sub?`<p class="sub">${sub}</p>`:""}</div>
   <button class="who" id="switch" aria-label="切換用戶">${avatar(U)}${esc(U.name)}</button></header>`}
@@ -4537,13 +4568,9 @@ function startQuiz(){
 }
 function renderQuiz(){
   closeSheet();
-  if(game)return renderMatch();
-  if(whack)return renderWhack();
-  if(guess)return renderGuess();
-  if(order)return renderOrder();
   if(!quiz||quiz.src!==quizSrc||quiz.mode!==qmode)startQuiz();
   const Q=quiz,head=`${topbar("測驗")}${srcChips(quizSrc,"srcQ")}
-    <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?gentryHtml():""}`;
+    <div class="chips small" id="modeQ" role="group">${Object.entries(QMODES).map(([k,v])=>`<button data-m="${k}" aria-pressed="${k===qmode}">${v}</button>`).join("")}</div>${Q.empty||(Q.i===0&&Q.picked===null)||Q.i>=Q.qs.length?`<button class="gjump" id="toGames"><span>想換換口味？配對翻牌、口袋快打、猜字方格、句子重組都在「遊戲」頁</span><b>去玩</b></button>`:""}`;
   let body;
   if(Q.empty&&Q.mode==="confuse"){body=`<div class="empty">${emptyArt("search")}<h2>${Q.loading?"易混字題庫載入中…":"題庫暫時讀不到"}</h2><p>稍等一下，或重新整理頁面。</p></div>`}
   else if(Q.empty){body=`<div class="empty">${emptyArt(quizSrc==="nb"?"notebook":quizSrc==="weak"?"weak":"search")}<h2>這裡還沒有單字</h2><p>${qmode==="cloze"?"這組單字沒有例句可以出填空題，換一個分類或題型試試。":quizSrc==="nb"?"把不會的字加進筆記本，就能專門測它們。":quizSrc==="weak"?"還沒有答錯或標「不熟」的字，先去翻卡或測驗吧。":"換一個分類試試。"}</p></div>`}
@@ -4605,10 +4632,7 @@ function renderQuiz(){
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderQuiz();window.scrollTo(0,y)});
   $("#srcQ").onclick=e=>{const b=e.target.closest("[data-src]");if(b){quizSrc=b.dataset.src;quiz=null;renderQuiz()}};
   $("#modeQ").onclick=e=>{const b=e.target.closest("[data-m]");if(b){qmode=b.dataset.m;quiz=null;renderQuiz()}};
-  {const gm=$("#gMatch");if(gm)gm.onclick=()=>{game=null;startMatch();renderMatch();window.scrollTo(0,0)}}
-  {const gg=$("#gGuess");if(gg)gg.onclick=()=>{whack=null;game=null;guess=null;startGuess();renderGuess();const c=$(".gclue");window.scrollTo(0,c&&innerWidth<900?Math.max(0,c.getBoundingClientRect().top+scrollY-22):0)}}
-  {const go=$("#gOrder");if(go)go.onclick=()=>{whack=null;game=null;guess=null;order=null;startOrder();renderOrder();window.scrollTo(0,0)}}
-  {const gw=$("#gWhack");if(gw)gw.onclick=()=>{whack=null;game=null;startWhack();renderWhack();window.scrollTo(0,0)}}
+  {const tg=$("#toGames");if(tg)tg.onclick=()=>go("games")}
   if(Q.empty)return;
   if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
   const q=Q.qs[Q.i];
@@ -4658,6 +4682,40 @@ function startMatch(){
 }
 function mclock(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
 function melapsed(){const G=game;if(!G||!G.t0)return 0;return ((G.t1||Date.now())-G.t0)/1000}
+/* ================= 遊戲頁（小遊戲大廳） ================= */
+function renderGames(){
+  closeSheet();
+  if(game)return renderMatch();
+  if(whack)return renderWhack();
+  if(guess)return renderGuess();
+  if(order)return renderOrder();
+  const R=gameRec(),m=R.match||{},w=R.whack||{},g=R.guess||{},o=R.order||{};
+  const plays=(m.plays||0)+(w.plays||0)+(g.plays||0)+(o.plays||0);
+  const T=[
+    {id:"gMatch",k:"match",ico:`<span class="gico"><i></i><i></i></span>`,n:"配對翻牌",d:`翻開兩張卡，把英文和中文配成一對`,
+      st:m.best?`最快 ${mclock(m.best)}`:""},
+    {id:"gWhack",k:"whack",ico:`<span class="gico wico"><i></i><b></b></span>`,n:"口袋快打",d:`${WDUR} 秒內點出正確的中文，連擊加分`,
+      st:w.best?`最高 ${w.best} 分`:""},
+    {id:"gGuess",k:"guess",ico:`<span class="gico ggico"><i></i><i></i><i></i></span>`,n:"猜字方格",d:`${GTRY} 次機會拼出單字，可以隱藏中文玩 Wordle`,
+      st:g.plays?(g.streak>1?`連勝 ${g.streak} 題`:`猜中 ${g.wins||0}/${g.plays}`):""},
+    {id:"gOrder",k:"order",ico:`<span class="gico oico"><i>I</i><i>like</i><i>tea</i></span>`,n:"句子重組",d:`把例句字條排回正確順序`,
+      st:o.plays?`全對 ${o.perfect||0} 輪`:""}];
+  view.innerHTML=`<div style="display:flex;flex-direction:column;gap:16px">${topbar("遊戲","用你在背的字玩，玩完就是複習")}
+    <div class="gsrc"><span class="gsrc-l">題目來源</span>${srcChips(quizSrc,"srcG")}</div>
+    <div class="ghub">${T.map(t=>`<button class="gtile t-${t.k}" id="${t.id}">
+      <span class="gart" aria-hidden="true">${t.ico}</span>
+      <span class="gtn">${t.n}</span><span class="gtd">${t.d}</span>
+      <span class="gts${t.st?"":" new"}">${t.st||"還沒玩過"}</span>
+      <span class="gplay" aria-hidden="true">玩</span></button>`).join("")}</div>
+    ${plays?`<p class="note gcount">這台裝置上一共玩了 ${plays} 場</p>`:""}
+  </div>`;
+  bindTop();
+  $("#srcG").onclick=e=>{const b=e.target.closest("[data-src]");if(b){quizSrc=b.dataset.src;quiz=null;renderGames()}};
+  $("#gMatch").onclick=()=>{whack=null;guess=null;order=null;game=null;startMatch();renderMatch();window.scrollTo(0,0)};
+  $("#gWhack").onclick=()=>{game=null;guess=null;order=null;whack=null;startWhack();renderWhack();window.scrollTo(0,0)};
+  $("#gGuess").onclick=()=>{whack=null;game=null;order=null;guess=null;startGuess();renderGuess();const c=$(".gclue");window.scrollTo(0,c&&innerWidth<900?Math.max(0,c.getBoundingClientRect().top+scrollY-22):0)};
+  $("#gOrder").onclick=()=>{whack=null;game=null;guess=null;order=null;startOrder();renderOrder();window.scrollTo(0,0)};
+}
 function gentryHtml(){const r=gameRec().match;
   return `<button class="gentry" id="gMatch"><span class="gico" aria-hidden="true"><i></i><i></i></span><span class="gtx"><b>小遊戲：配對翻牌</b><span>翻開兩張，英文配中文${r&&r.best?`　最快 ${mclock(r.best)}`:""}</span></span><span class="gplay" aria-hidden="true">玩</span></button>`+wentryHtml()+gentry3Html()+oentryHtml()}
 function wentryHtml(){const r=gameRec().whack;
@@ -4680,13 +4738,13 @@ function renderMatch(){
       ${fin?"":`<div class="mgrid">${cards}</div>`}`;
   }
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${topbar("配對翻牌",`來源：${esc(srcName(quizSrc))}`)}
-    <div class="row2 mbar"><button class="btn ghost small" id="mBack">回到測驗</button><button class="btn${fin?"":" ghost"} small" id="mNew">${fin?"再玩一次":"重新洗牌"}</button></div>${body}</div>`;
+    <div class="row2 mbar"><button class="btn ghost small" id="mBack">回到遊戲</button><button class="btn${fin?"":" ghost"} small" id="mNew">${fin?"再玩一次":"重新洗牌"}</button></div>${body}</div>`;
   bindTop();
-  $("#mBack").onclick=()=>{clearInterval(gameT);game=null;renderQuiz()};
+  $("#mBack").onclick=()=>{clearInterval(gameT);game=null;renderGames();window.scrollTo(0,0)};
   $("#mNew").onclick=()=>{clearInterval(gameT);game=null;renderMatch()};
   view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderMatch();window.scrollTo(0,y)});
-  if(G.t0&&!fin)gameT=setInterval(()=>{const el=document.getElementById("mTime");if(!el||game!==G||tab!=="quiz"){clearInterval(gameT);return}el.textContent=mclock(melapsed())},500);
+  if(G.t0&&!fin)gameT=setInterval(()=>{const el=document.getElementById("mTime");if(!el||game!==G||tab!=="games"){clearInterval(gameT);return}el.textContent=mclock(melapsed())},500);
   view.querySelectorAll(".mcard").forEach(b=>b.onclick=()=>mflip(+b.dataset.i));
   if(G.flipIn&&G.flipIn.length){const ids=G.flipIn;G.flipIn=[];requestAnimationFrame(()=>requestAnimationFrame(()=>ids.forEach(k=>{const el=view.querySelector(`.mcard[data-i="${k}"]`);if(el)el.classList.add("up")})))}
   G.just=null;
@@ -4702,7 +4760,7 @@ function mflip(i){const G=game;if(!G||G.lock)return;const c=G.cards[i];if(G.done
         G.newBest=!m.best||s<m.best;r.match={best:G.newBest?s:m.best,bestMoves:Math.min(m.bestMoves||999,G.moves),plays:(m.plays||0)+1};gameRecSet(r);setTimeout(party,350)}
     }else{G.lock=true;G.bad=G.open.slice();const y=window.scrollY;renderMatch();window.scrollTo(0,y);
       setTimeout(()=>{if(game!==G)return;view.querySelectorAll(".mcard.bad").forEach(el=>el.classList.remove("up","bad"))},1000);
-      setTimeout(()=>{if(game!==G)return;G.open=[];G.bad=[];G.lock=false;if(tab==="quiz"){const y2=window.scrollY;renderMatch();window.scrollTo(0,y2)}},1450);return}
+      setTimeout(()=>{if(game!==G)return;G.open=[];G.bad=[];G.lock=false;if(tab==="games"){const y2=window.scrollY;renderMatch();window.scrollTo(0,y2)}},1450);return}
   }
   const y=window.scrollY;renderMatch();window.scrollTo(0,y);
   const f=view.querySelector(`.mcard[data-i="${i}"]`);if(f)f.focus({preventScroll:true});
@@ -4744,7 +4802,7 @@ function wspawn(now){const W=whack;
   const el=view.querySelector(`.whole[data-h="${i}"]`);if(el){el.querySelector(".wcard span").textContent=card.zh;el.classList.remove("hit","bad");el.classList.add("up");el.disabled=false;el.setAttribute("aria-label",card.zh)}
 }
 function wtick(){const W=whack;
-  if(!W||W.over||tab!=="quiz"||!document.getElementById("wGrid")){clearInterval(whackT);if(W&&!W.over&&W.t0&&!W.pausedAt)W.pausedAt=Date.now();return}
+  if(!W||W.over||tab!=="games"||!document.getElementById("wGrid")){clearInterval(whackT);if(W&&!W.over&&W.t0&&!W.pausedAt)W.pausedAt=Date.now();return}
   const now=Date.now(),left=wleft();
   const tm=$("#wTime");if(tm)tm.textContent=Math.ceil(left);
   const pen=$("#wPencil");if(pen){pen.style.setProperty("--p",(left/WDUR).toFixed(4));pen.classList.toggle("low",left<=10)}
@@ -4784,9 +4842,9 @@ function renderWhack(){
     <div class="wgrid" id="wGrid">${W.holes.map((h,i)=>`<button class="whole" data-h="${i}" disabled aria-label="空的口袋"><span class="wcard"><span></span></span><span class="wpocket" aria-hidden="true"></span></button>`).join("")}</div>
     ${W.t0?"":`<button class="btn wgo" id="wGo">開始（${WDUR} 秒）</button>`}`;
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">${topbar("口袋快打",`來源：${esc(srcName(quizSrc))}`)}
-    <div class="row2 mbar"><button class="btn ghost small" id="wBack">回到測驗</button>${W.t0||W.pool.length<4?`<button class="btn${W.over?"":" ghost"} small" id="wNew">${W.over?"再玩一次":"重新開始"}</button>`:""}</div>${body}</div>`;
+    <div class="row2 mbar"><button class="btn ghost small" id="wBack">回到遊戲</button>${W.t0||W.pool.length<4?`<button class="btn${W.over?"":" ghost"} small" id="wNew">${W.over?"再玩一次":"重新開始"}</button>`:""}</div>${body}</div>`;
   bindTop();
-  $("#wBack").onclick=()=>{clearInterval(whackT);whack=null;renderQuiz()};
+  $("#wBack").onclick=()=>{clearInterval(whackT);whack=null;renderGames();window.scrollTo(0,0)};
   {const n=$("#wNew");if(n)n.onclick=()=>{clearInterval(whackT);whack=null;renderWhack()}}
   view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderWhack();window.scrollTo(0,y)});
@@ -4852,9 +4910,9 @@ function renderGuess(){
     body=hints+grid+(G.over?end:gkbHtml())+`<p class="note gleg"><span class="gt t-ok mini">a</span>位置對<span class="gt t-in mini">b</span>有但位置不對<span class="gt t-no mini">c</span>沒有</p>`;
   }
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px" class="gwrap">${topbar("猜字方格",`來源：${esc(srcName(quizSrc))}`)}
-    <div class="row2 mbar"><button class="btn ghost small" id="gBack">回到測驗</button><button class="btn${G.over?"":" ghost"} small" id="gNext">${G.over?"下一個字":"換一個字"}</button></div>${body}</div>`;
+    <div class="row2 mbar"><button class="btn ghost small" id="gBack">回到遊戲</button><button class="btn${G.over?"":" ghost"} small" id="gNext">${G.over?"下一個字":"換一個字"}</button></div>${body}</div>`;
   bindTop();
-  $("#gBack").onclick=()=>{guess=null;renderQuiz()};
+  $("#gBack").onclick=()=>{guess=null;renderGames();window.scrollTo(0,0)};
   $("#gNext").onclick=()=>{if(!G.over&&G.rows.length){const R=gameRec();if(R.guess&&R.guess.streak){R.guess.streak=0;gameRecSet(R)}}startGuess();renderGuess()};
   view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderGuess();window.scrollTo(0,y)});
@@ -4882,7 +4940,7 @@ function gkey(k){const G=guess;if(!G||G.over||!G.x)return;const n=G.ans.length;
   const r=$("#gNow");if(!r)return;
   r.querySelectorAll(".gt").forEach((t,i)=>{const c=G.cur[i]||"";if(t.textContent!==c){t.textContent=c;t.classList.toggle("fill",!!c);if(c){t.classList.remove("pop");void t.offsetWidth;t.classList.add("pop")}}});
 }
-document.addEventListener("keydown",e=>{if(!U||tab!=="quiz"||!guess||guess.over||!document.getElementById("gGrid"))return;
+document.addEventListener("keydown",e=>{if(!U||tab!=="games"||!guess||guess.over||!document.getElementById("gGrid"))return;
   if(e.ctrlKey||e.metaKey||e.altKey)return;const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;
   if(e.key==="Enter"){if(t&&t.tagName==="BUTTON"&&!t.closest("#gKb"))return;e.preventDefault();gkey("enter")}
   else if(e.key==="Backspace"){e.preventDefault();gkey("back")}
@@ -4932,9 +4990,9 @@ function renderOrder(){
         :`<button class="btn ghost small" id="oHint" ${oRight(q)?"disabled":""}>提示一個字</button>${q.tries>=2?`<button class="btn ghost small" id="oGive">看答案</button>`:""}<button class="btn small" id="oCheck" ${full?"":"disabled"}>檢查</button>`}</div>`;
   }
   view.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px" class="gwrap owrap">${topbar("句子重組",`來源：${esc(srcName(quizSrc))}`)}
-    <div class="row2 mbar"><button class="btn ghost small" id="oBack">回到測驗</button><button class="btn${O.done?"":" ghost"} small" id="oNew">${O.done?"再玩一輪":"換一組句子"}</button></div>${body}</div>`;
+    <div class="row2 mbar"><button class="btn ghost small" id="oBack">回到遊戲</button><button class="btn${O.done?"":" ghost"} small" id="oNew">${O.done?"再玩一輪":"換一組句子"}</button></div>${body}</div>`;
   bindTop();O.fresh=-1;
-  $("#oBack").onclick=()=>{order=null;renderQuiz()};
+  $("#oBack").onclick=()=>{order=null;renderGames();window.scrollTo(0,0)};
   $("#oNew").onclick=()=>{order=null;renderOrder();window.scrollTo(0,0)};
   view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
   view.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{const id=b.dataset.star;toggleNb(id);toast(inNb(id)?"已加入筆記本":"已從筆記本移除");const y=window.scrollY;renderOrder();window.scrollTo(0,y)});
