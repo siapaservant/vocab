@@ -1186,6 +1186,25 @@ details.set:not(.ssub)>summary:focus-visible{outline:3px solid var(--accent);out
 .qfix .qact .icon{width:44px;height:44px}
 @media (min-width:700px){.qr-num b,.qr-num.two b{font-size:88px}.qstamp strong{font-size:34px}}
 @media (prefers-reduced-motion:reduce){.qstamp.go,.qres.thud{animation:none}.qmarks.go path{animation:none;stroke-dashoffset:0}}
+/* 新聞文章標題：螢光筆底線改畫在每一行字下面（標題是 flex 子項會變成 block，底線原本會變成一整條橫跨的色條） */
+article.art h1.ah{display:block;background-image:none;padding:0;margin-left:0}
+article.art h1.ah .ahl{background-image:linear-gradient(transparent 84%,var(--hl) 84%);padding:0 4px 1px;margin-left:-4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) article.art h1.ah .ahl{background-image:linear-gradient(transparent 86%,var(--hl) 86% 96%,transparent 96%)}}
+:root[data-theme="dark"] article.art h1.ah .ahl{background-image:linear-gradient(transparent 86%,var(--hl) 86% 96%,transparent 96%)}
+/* 結果頁：點紅叉跳到訂正區那個字，螢光筆閃一下 */
+.qmarks .qmk{position:relative;display:grid;justify-items:center;align-content:start;gap:1px;width:30px;height:40px;padding:0;margin:0;border:0;border-radius:8px;background:none;color:inherit;font:inherit;cursor:pointer}
+.qmarks .qmk::before{content:"";position:absolute;inset:-2px -7px}
+.qmarks .qmk:hover{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.qmarks .qmk svg{stroke:var(--bad)}
+.qmhint{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.qfix li{scroll-margin:90px 0;border-radius:6px}
+.qfix li:focus{outline:none}
+.qfix li.flash{animation:qfixHl 1.6s ease-out}
+@keyframes qfixHl{0%,40%{background:color-mix(in srgb,var(--hl) 50%,transparent)}100%{background:transparent}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .qfix li.flash{animation-name:qfixHlD}}
+:root[data-theme="dark"] .qfix li.flash{animation-name:qfixHlD}
+@keyframes qfixHlD{0%,40%{background:color-mix(in srgb,var(--hl) 22%,transparent);box-shadow:inset 4px 0 0 var(--hl)}100%{background:transparent}}
+@media (prefers-reduced-motion:reduce){.qfix li.flash{animation:none;background:color-mix(in srgb,var(--hl) 35%,transparent)}}
 /* ===== v29 深色模式逐頁檢查：白字不再壓在整塊螢光黃上（改成細底線或深色字） ===== */
 @media (prefers-color-scheme: dark){
 :root:not([data-theme="light"]) .kw,:root:not([data-theme="light"]) .kwdemo,:root:not([data-theme="light"]) .score,:root:not([data-theme="light"]) .qr-num b,:root:not([data-theme="light"]) .nscore b,:root:not([data-theme="light"]) .cover .cw{background-image:linear-gradient(transparent 86%,var(--hl) 86% 97%,transparent 97%)}
@@ -1893,7 +1912,7 @@ daily:[
 ["decide","/dɪˈsaɪd/","v.","決定","We decided to take the train instead.","我們決定改搭火車。","decides · decided · deciding｜n. decision｜adj. decisive"],
 ["embarrass","/ɪmˈbærəs/","v.","使尷尬","Please don't embarrass me in front of my friends.","拜託別在我朋友面前讓我難堪。","embarrasses · embarrassed · embarrassing｜n. embarrassment"],
 ["familiar","/fəˈmɪliər/","adj.","熟悉的","This song sounds familiar.","這首歌聽起來很耳熟。","n. familiarity｜v. familiarize"],
-["grateful","/ˈɡreɪtfəl/","adj.","感激的","I'm grateful for all your help.","我很感謝你的所有幫忙。","n. gratitude｜adv. gratefully"],
+["grateful","/ˈɡreɪtfl/","adj.","感激的","I'm grateful for all your help.","我很感謝你的所有幫忙。","n. gratitude｜adv. gratefully"],
 ["habit","/ˈhæbɪt/","n.","習慣","Reading before bed is a good habit.","睡前閱讀是個好習慣。","adj. habitual｜adv. habitually"],
 ["ignore","/ɪɡˈnɔːr/","v.","忽視","He ignored the warning signs.","他忽略了那些警訊。","ignores · ignored · ignoring｜n. ignorance｜adj. ignorant"],
 ["journey","/ˈdʒɜːrni/","n.","旅程","The journey took about six hours.","這趟旅程大約花了六個小時。","複數 journeys"],
@@ -2195,7 +2214,7 @@ gsat1:[
 ["together","/təˈɡeðər/","adv.","一起","Let's do our homework together after school.","放學後我們一起寫功課吧。","get together 聚會｜n. togetherness 團結"],
 ["tooth","/tuːθ/","n.","牙齒","I broke a tooth when I fell.","我跌倒時摔斷了一顆牙。","複數 teeth"],
 ["traffic","/ˈtræfɪk/","n.","交通；車流","The traffic is terrible during rush hour.","尖峰時段的交通很糟。","不可數｜traffic jam 塞車｜traffic light 紅綠燈"],
-["travel","/ˈtrævəl/","v.","旅行","I want to travel around the world someday.","我想有一天環遊世界。","travels · traveled · traveling｜n. traveler"],
+["travel","/ˈtrævl/","v.","旅行","I want to travel around the world someday.","我想有一天環遊世界。","travels · traveled · traveling｜n. traveler"],
 ["trouble","/ˈtrʌbl/","n.","麻煩；困難","I had trouble falling asleep last night.","我昨晚很難入睡。","v. trouble"],
 ["umbrella","/ʌmˈbrelə/","n.","雨傘","Take an umbrella. It looks like rain.","帶把傘吧，看起來要下雨了。","複數 umbrellas"],
 ["understand","/ˌʌndərˈstænd/","v.","了解；懂","I don't understand what the teacher said.","我聽不懂老師說的話。","understands · understood · understanding"],
@@ -2712,7 +2731,7 @@ gsat6:[
 ["contemplate","/ˈkɑːntəmpleɪt/","v.","沉思；考慮","She is contemplating studying abroad next year.","她正在考慮明年出國留學。","contemplates · contemplated · contemplating｜n. contemplation"],
 ["converge","/kənˈvɜːrdʒ/","v.","匯集；聚集","Thousands of fans converged on the stadium.","數千名球迷湧向體育場。","converges · converged · converging｜n. convergence｜反義 diverge"],
 ["cordial","/ˈkɔːrdʒəl/","adj.","熱誠的；友好的","We received a cordial welcome from our hosts.","我們受到主人熱情的歡迎。","adv. cordially"],
-["cosmopolitan","/ˌkɑːzməˈpɑːlɪtən/","adj.","國際性的；見多識廣的","Taipei has become a truly cosmopolitan city.","台北已成為一座真正的國際化都市。","n. cosmopolitanism 世界主義"],
+["cosmopolitan","/ˌkɑːzməˈpɑːlɪtn/","adj.","國際性的；見多識廣的","Taipei has become a truly cosmopolitan city.","台北已成為一座真正的國際化都市。","n. cosmopolitanism 世界主義"],
 ["counterfeit","/ˈkaʊntərfɪt/","adj.","偽造的；仿冒的","The police seized thousands of counterfeit bills.","警方查獲了數千張偽鈔。","v. counterfeits · counterfeited · counterfeiting｜同義 fake"],
 ["covet","/ˈkʌvət/","v.","覬覦；渴望","The award is coveted by every young filmmaker.","這個獎項是每位年輕電影人夢寐以求的。","covets · coveted · coveting｜adj. coveted 令人垂涎的"],
 ["culminate","/ˈkʌlmɪneɪt/","v.","達到頂點；以…告終","Years of hard work culminated in a gold medal.","多年的努力最終換來一面金牌。","culminates · culminated · culminating｜n. culmination｜culminate in 以…告終"],
@@ -3051,7 +3070,7 @@ const COLLOC={"ambiguous":"an ambiguous answer 模稜兩可的回答｜ambiguous
 "recession":"economic recession 經濟衰退｜go into recession 陷入衰退",
 "consumer":"consumer demand 消費需求｜consumer protection 消費者保護"};
 /* ===== WORD-SHARDS START（額外的單字資料檔：每個檔案是 {"分類":[[7 個欄位],...], "COLLOC":{...}}，放在 words/ 資料夾，新增檔案時把檔名加進這個清單） ===== */
-const SHARDS=["words/b000.json","words/b001.json","words/b002.json","words/b003.json","words/b005.json","words/b006.json","words/b007.json","words/b008.json","words/b009.json","words/b010.json","words/b011.json","words/b012.json","words/b013.json","words/b014.json","words/b015.json","words/b016.json","words/b017.json","words/b018.json","words/b019.json","words/b020.json"];
+const SHARDS=["words/b000.json","words/b001.json","words/b002.json","words/b003.json","words/b005.json","words/b006.json","words/b007.json","words/b008.json","words/b009.json","words/b010.json","words/b011.json","words/b012.json","words/b013.json","words/b014.json","words/b015.json","words/b016.json","words/b017.json","words/b018.json","words/b019.json","words/b020.json","words/b021.json"];
 /* ===== WORD-SHARDS END ===== */
 /* ===== DAILY-SENTENCE START (每日一句：排程每天只更新這一段) ===== */
 const DAILY={
@@ -4197,7 +4216,7 @@ function renderArticle(it,date){
     <div class="nback"><button class="btn ghost small" id="nBack">← 新聞列表</button><button class="who" id="switch" aria-label="切換用戶">${avatar(U)}${esc(U.name)}</button></div>
     <article class="art">
       <div class="nmeta">${ntag(it.topic)}<span>${fmtDate(date)} · 程度 ${esc(it.level)}</span></div>
-      <h1 class="ah">${esc(it.title)}</h1><p class="azht">${esc(it.titleZh)}</p>
+      <h1 class="ah"><span class="ahl">${esc(it.title)}</span></h1><p class="azht">${esc(it.titleZh)}</p>
       <div class="atools"><button class="chipbtn" id="nZh" aria-pressed="${newsZhAll}">${newsZhAll?"隱藏全部翻譯":"顯示全部翻譯"}</button><button class="chipbtn" id="nSayAll">${ICON.spk} 全文朗讀</button></div>
       ${it.paras.map((p,i)=>`<div class="apara" data-pi="${i}"><div class="aen">${newsPara(p[0],it.words,it)}</div>
         <div class="arow"><button class="icon" data-ps="${i}" aria-label="朗讀這段">${ICON.spk}</button><button class="linkbtn" data-pz="${i}">${newsZhAll||newsZhOpen[i]?"收起翻譯":"看這段翻譯"}</button></div>
@@ -4579,16 +4598,16 @@ function renderQuiz(){
     const n=Q.qs.length,pct=n?Q.score/n:0,fresh=!Q.shown;Q.shown=true;
     const gr=pct>=1?["滿分",""]:pct>=.8?["優秀",""]:pct>=.6?["及格","mid"]:["再練練","low"];
     const dt=new Date(),dstr=`${dt.getMonth()+1}/${dt.getDate()}`;
-    const res=Q.res&&Q.res.length===n?Q.res:null,wq=res?res.map((r,i)=>r?0:i+1).filter(Boolean):[];
+    const res=Q.res&&Q.res.length===n?Q.res:null,wq=res?res.map((r,i)=>r?0:i+1).filter(Boolean):[],jump=wq.length>0&&wq.length===Q.wrong.length;
     const mk=ok=>`<svg viewBox="0 0 26 26" aria-hidden="true">${ok?'<path d="M5 14l5 6L21 6"/>':'<path d="M6 6l14 14"/><path d="M20 6L6 20"/>'}</svg>`;
     body=`<div class="qcard qres${fresh?" thud":""}">
       <div class="meta"><span>測驗結果 · ${esc(QMODES[Q.mode])}${Q.retry?` <span class="qretry">重測答錯</span>`:""}</span><span>${esc(srcName(Q.src))}</span></div>
       <div class="qr-top"><div><div class="qr-num${String(Q.score).length>1?" two":""}" aria-label="答對 ${Q.score} 題，共 ${n} 題"><b>${Q.score}</b><span>/ ${n}</span></div>
         <p class="qr-cap">${Q.wrong.length?`答錯 ${Q.wrong.length} 題`:"一題都沒錯"}</p></div>
         <div class="qstamp ${gr[1]}${fresh?" go":""}" role="img" aria-label="評語：${gr[0]}"><div><strong>${gr[0]}</strong><small>${dstr}</small></div></div></div>
-      ${res?`<ol class="qmarks${fresh?" go":""}" aria-label="每題對錯">${res.map((r,i)=>`<li class="${r?"ok":"no"}" style="--i:${i}" aria-label="第 ${i+1} 題${r?"答對":"答錯"}">${mk(r)}<small>${i+1}</small></li>`).join("")}</ol>`:""}
+      ${res?`<ol class="qmarks${fresh?" go":""}" aria-label="每題對錯">${res.map((r,i)=>!r&&jump?`<li class="no" style="--i:${i}"><button type="button" class="qmk" data-qj="${i+1}" aria-label="第 ${i+1} 題答錯，跳到要訂正的字">${mk(r)}<small>${i+1}</small></button></li>`:`<li class="${r?"ok":"no"}" style="--i:${i}" aria-label="第 ${i+1} 題${r?"答對":"答錯"}">${mk(r)}<small>${i+1}</small></li>`).join("")}</ol>${jump?`<p class="qmhint">點紅叉，直接跳到那個字</p>`:""}`:""}
       ${Q.wrong.length?`<p class="note" style="margin:0">${Q.mode==="confuse"?"答錯的字整理在下面，多比較幾次就不會搞混了。":"答錯的字已收進筆記本，明天也會排進複習。"}</p>
-        <div class="qfix"><h3 class="qfix-h">要訂正的 ${Q.wrong.length} 個字</h3><ol>${Q.wrong.map((x,k)=>`<li>${wq[k]?`<span class="qn" aria-label="第 ${wq[k]} 題">${wq[k]}</span>`:`<span class="qn" aria-hidden="true">✗</span>`}<div class="qw"><b lang="en">${esc(x.w)}</b>${x.ipa?`<i>${esc(x.ipa)}</i>`:""}</div><div class="qact"><button class="icon" data-say="${esc(x.w)}" aria-label="發音 ${esc(x.w)}">${ICON.spk}</button>${starBtn(x.id)}</div><p class="qz">${x.pos?`<em>${esc(x.pos)}</em>`:""}${esc(x.zh)}</p></li>`).join("")}</ol></div>`:`<p style="margin:0">全對，這組掌握得很好。</p>`}
+        <div class="qfix"><h3 class="qfix-h">要訂正的 ${Q.wrong.length} 個字</h3><ol>${Q.wrong.map((x,k)=>`<li${jump?` id="qfx${wq[k]}" tabindex="-1"`:""}>${wq[k]?`<span class="qn" aria-label="第 ${wq[k]} 題">${wq[k]}</span>`:`<span class="qn" aria-hidden="true">✗</span>`}<div class="qw"><b lang="en">${esc(x.w)}</b>${x.ipa?`<i>${esc(x.ipa)}</i>`:""}</div><div class="qact"><button class="icon" data-say="${esc(x.w)}" aria-label="發音 ${esc(x.w)}">${ICON.spk}</button>${starBtn(x.id)}</div><p class="qz">${x.pos?`<em>${esc(x.pos)}</em>`:""}${esc(x.zh)}</p></li>`).join("")}</ol></div>`:`<p style="margin:0">全對，這組掌握得很好。</p>`}
       <div class="row2">${Q.wrong.length&&Q.mode!=="confuse"?`<button class="btn" id="retryW">重測錯的 ${new Set(Q.wrong.map(x=>x.id)).size} 個</button>`:""}<button class="btn${Q.wrong.length&&Q.mode!=="confuse"?" ghost":""}" id="again">${Q.retry?"換一組新題目":"再測一次"}</button>${Q.wrong.length&&Q.mode!=="confuse"?`<button class="btn ghost" id="toNb">翻卡複習答錯的字</button>`:""}</div></div>`;
   }else if(Q.mode==="confuse"){
     const q=Q.qs[Q.i],g=q.g,qq=q.q,answered=Q.picked!==null;
@@ -4634,7 +4653,10 @@ function renderQuiz(){
   $("#modeQ").onclick=e=>{const b=e.target.closest("[data-m]");if(b){qmode=b.dataset.m;quiz=null;renderQuiz()}};
   {const tg=$("#toGames");if(tg)tg.onclick=()=>go("games")}
   if(Q.empty)return;
-  if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
+  if(Q.i>=Q.qs.length){view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));$("#again").onclick=()=>{quiz=null;renderQuiz()};const rw=$("#retryW");if(rw)rw.onclick=retryWrong;
+    view.querySelectorAll("[data-qj]").forEach(b=>b.onclick=()=>{const li=document.getElementById("qfx"+b.dataset.qj);if(!li)return;
+      const calm=matchMedia("(prefers-reduced-motion: reduce)").matches;li.scrollIntoView({behavior:calm?"auto":"smooth",block:"center"});
+      li.classList.remove("flash");void li.offsetWidth;li.classList.add("flash");try{li.focus({preventScroll:true})}catch(e){}setTimeout(()=>li.classList.remove("flash"),1800)});const t=$("#toNb");if(t)t.onclick=()=>{studySrc="nb";session=null;go("study")};return}
   const q=Q.qs[Q.i];
   if(Q.mode==="confuse"){
     view.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say));
